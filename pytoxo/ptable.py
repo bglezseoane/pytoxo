@@ -35,11 +35,11 @@ class PTable:
         values : [int]
              Value for each of the variables represented in model.
         """
-        self._order = model._order
+        self._order = model.order
         self._variables = {
-            str(model._variables[0]): values[0],
-            str(model._variables[1]): values[1],
+            str(model.variables[0]): values[0],
+            str(model.variables[1]): values[1],
         }
         self._penetrance_values = substitution(
-            model._penetraces, model._variables, values
+            model.penetrances, model.variables, values
         )
