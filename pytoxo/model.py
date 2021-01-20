@@ -99,3 +99,24 @@ class Model:
             raise e
         except:  # Generic drain for unchecked parsing errors
             raise ModelCSVParsingError(filename)
+
+    # Getters and setters
+    def get_name(self):
+        return self._name
+
+    def set_name(self, name: str):
+        self._name = name
+
+    name = property(get_name, set_name)
+
+    @property
+    def order(self):
+        return self._order
+
+    @property
+    def penetrances(self):
+        return self._penetrances
+
+    @property
+    def variables(self):
+        return self._variables
