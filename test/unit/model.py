@@ -1,0 +1,121 @@
+# -*- coding: utf-8 -*-
+
+###########################################################
+# PyToxo
+#
+# A Python library for calculating penetrance tables of any
+# bivariate epistasis model.
+#
+# Copyright 2021 Borja González Seoane
+#
+# Contact: borja.gseoane@udc.es
+###########################################################
+
+"""PyToxo model unit test suite."""
+
+import os
+import tempfile
+import unittest
+
+import sympy
+
+from pytoxo.errors import ModelCSVParsingError
+from pytoxo.model import Model
+
+
+class ModelUnitTestSuite(unittest.TestCase):
+    """Tests for `pytoxo/model.py` at unit level.
+
+    Warnings
+    --------
+    Tests are sensible to model files `models/additive_2.csv` and
+    `models/multiplicative_2.csv`.
+    """
+
+    def test_file_parsing(self):
+        """Test model files parsing."""
+        m = Model("models/multiplicative_2.csv")
+
+        # Name
+        self.assertEqual(m._name, "multiplicative_2")
+
+        # Order
+        self.assertEqual(m._order, 2)
+
+        # Penetrances
+        """The following expressions are those of the file 
+        `models/multiplicative_2.csv`, but corrected with small modifications
+        that the library Sympy does when normalizing them. E.g .: symbol `**` 
+        instead of `^`, spaces around additions, etc."""
+        self.assertEqual(str(m._penetrances[0]), "x")
+        self.assertEqual(str(m._penetrances[1]), "x")
+        self.assertEqual(str(m._penetrances[2]), "x")
+        self.assertEqual(str(m._penetrances[3]), "x")
+        self.assertEqual(str(m._penetrances[4]), "x*(y + 1)")
+        self.assertEqual(str(m._penetrances[5]), "x*(y + 1)**2")
+        self.assertEqual(str(m._penetrances[6]), "x")
+        self.assertEqual(str(m._penetrances[7]), "x*(y + 1)**2")
+        self.assertEqual(str(m._penetrances[8]), "x*(y + 1)**4")
+        # Some type checks
+        self.assertEqual(type(m._penetrances[0]), sympy.Symbol)
+        self.assertEqual(type(m._penetrances[4]), sympy.Mul)
+        self.assertEqual(type(m._penetrances[8]), sympy.Mul)
+
+        # Variables
+        sx = sympy.Symbol("x")
+        sy = sympy.Symbol("y")
+        self.assertIn(sx, m._variables[0])
+        self.assertIn(sx, m._variables[1])
+        self.assertIn(sx, m._variables[2])
+        self.assertIn(sx, m._variables[3])
+        self.assertIn(sx, m._variables[4])
+        self.assertIn(sx, m._variables[5])
+        self.assertIn(sx, m._variables[6])
+        self.assertIn(sx, m._variables[7])
+        self.assertIn(sx, m._variables[8])
+        self.assertIn(sy, m._variables[4])
+        self.assertIn(sy, m._variables[5])
+        self.assertIn(sy, m._variables[7])
+        self.assertIn(sy, m._variables[8])
+
+    def test_file_parsing_error_detection(self):
+        """Test error handling during model files parsing."""
+
+        # Test nonexistent file raise
+        self.assertRaises(OSError, lambda: Model("nonexistent_file.csv"))
+
+        # Read a well formed sample model to corrupt it and assert error raises
+        with open("models/additive_2.csv", "r") as f:
+            well_formed_file_content = f.readlines()
+
+        with tempfile.TemporaryDirectory() as mock_bad_formed_models_dir:
+            # Create some bad formed models using well formed content
+            bad_formed_models_paths = [
+                os.path.join(mock_bad_formed_models_dir, filename)
+                for filename in ["1.csv", "2.csv", "3.csv"]
+            ]
+            for bad_formed_models_path in bad_formed_models_paths:
+                with open(bad_formed_models_path, "w+") as f:
+                    for line in well_formed_file_content:
+                        # Introduce some errors
+                        if os.path.basename(bad_formed_models_path) == "1.csv":
+                            if "AABB" in line:
+                                line = line.replace("AABB", "AAB")
+                        if os.path.basename(bad_formed_models_path) == "2.csv":
+                            if line.startswith("A") or line.startswith("a"):
+                                splitted_line = line.split(",")
+                                line = f"{splitted_line[0][:3]}, {splitted_line[1]}"
+                        if os.path.basename(bad_formed_models_path) == "3.csv":
+                            if "x*(1+y)^3" in line:
+                                line = line.replace("x*(1+y)^3", "x*+*(1+y)^3")
+                        f.write(line)
+
+            # Test bad formed files raise
+            for bad_formed_models_path in bad_formed_models_paths:
+                self.assertRaises(
+                    ModelCSVParsingError, lambda: Model(bad_formed_models_path)
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()
