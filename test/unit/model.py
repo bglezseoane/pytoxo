@@ -37,29 +37,29 @@ class ModelUnitTestSuite(unittest.TestCase):
         m = Model("models/multiplicative_2.csv")
 
         # Name
-        self.assertEqual(m._name, "multiplicative_2")
+        self.assertEqual("multiplicative_2", m._name)
 
         # Order
-        self.assertEqual(m._order, 2)
+        self.assertEqual(2, m._order)
 
         # Penetrances
         """The following expressions are those of the file 
         `models/multiplicative_2.csv`, but corrected with small modifications
         that the library Sympy does when normalizing them. E.g .: symbol `**` 
         instead of `^`, spaces around additions, etc."""
-        self.assertEqual(str(m._penetrances[0]), "x")
-        self.assertEqual(str(m._penetrances[1]), "x")
-        self.assertEqual(str(m._penetrances[2]), "x")
-        self.assertEqual(str(m._penetrances[3]), "x")
-        self.assertEqual(str(m._penetrances[4]), "x*(y + 1)")
-        self.assertEqual(str(m._penetrances[5]), "x*(y + 1)**2")
-        self.assertEqual(str(m._penetrances[6]), "x")
-        self.assertEqual(str(m._penetrances[7]), "x*(y + 1)**2")
-        self.assertEqual(str(m._penetrances[8]), "x*(y + 1)**4")
+        self.assertEqual("x", str(m._penetrances[0]))
+        self.assertEqual("x", str(m._penetrances[1]))
+        self.assertEqual("x", str(m._penetrances[2]))
+        self.assertEqual("x", str(m._penetrances[3]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[4]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[5]))
+        self.assertEqual("x", str(m._penetrances[6]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[7]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[8]))
         # Some type checks
-        self.assertEqual(type(m._penetrances[0]), sympy.Symbol)
-        self.assertEqual(type(m._penetrances[4]), sympy.Mul)
-        self.assertEqual(type(m._penetrances[8]), sympy.Mul)
+        self.assertEqual(sympy.Symbol, type(m._penetrances[0]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[4]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[8]))
 
         # Variables
         sx = sympy.Symbol("x")
