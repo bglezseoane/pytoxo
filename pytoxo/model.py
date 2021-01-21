@@ -100,7 +100,9 @@ class Model:
         except:  # Generic drain for unchecked parsing errors
             raise ModelCSVParsingError(filename)
 
+    ########################################
     # Getters and setters
+
     def get_name(self):
         return self._name
 
@@ -120,3 +122,5 @@ class Model:
     @property
     def variables(self):
         return self._variables
+
+    ########################################
