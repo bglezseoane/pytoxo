@@ -47,14 +47,14 @@ class PTable:
             model.penetrances, model.variables, values
         )
 
-    def compute_prevalence(self, mafs: [float], gp: [float] = None) -> float:
+    def compute_prevalence(self, mafs: list[float], gp: list[float] = None) -> float:
         """Compute the prevalence of the penetrance table.
 
         Parameters
         ----------
-        mafs : [float]
+        mafs : list[float]
             Minor allele frequencies array.
-        gp : [float], optional
+        gp : list[float], optional
             Genotype probabilities array.
 
         Returns
@@ -67,12 +67,12 @@ class PTable:
 
         return float(np.sum(np.multiply(self._penetrance_values, gp)))
 
-    def compute_heritability(self, mafs: [float]) -> float:
+    def compute_heritability(self, mafs: list[float]) -> float:
         """Compute the heritability of the penetrance table.
 
         Parameters
         ----------
-        mafs : [float]
+        mafs : list[float]
             Minor allele frequencies array.
 
         Returns

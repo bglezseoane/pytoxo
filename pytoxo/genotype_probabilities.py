@@ -20,7 +20,7 @@ import operator
 from sympy import sympify
 
 
-def genotype_probabilities(mafs: [float]) -> [float]:
+def genotype_probabilities(mafs: list[float]) -> list[float]:
     """Compute the probabilities associated with all genotype combinations given
     each MAF (minor allele frequency).
 
@@ -40,12 +40,12 @@ def genotype_probabilities(mafs: [float]) -> [float]:
 
     Parameters
     ----------
-    mafs : [float]
+    mafs : list[float]
         Minor allele frequencies array.
 
     Returns
     -------
-    [float]
+    list[float]
         Array with the probabilities of all possible allele combinations.
     """
     af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
