@@ -176,8 +176,8 @@ class Model:
         return s_x, s_y
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> "PTable":
-        """Calculate the penetrance table of the model whose prevalence is
-        maximum given its MAFs and heritability.
+        """Computes the table whose prevalence is maximum for the given MAFs
+        and heritability, and returns it within a `PTable` object.
 
         Parameters
         ----------
@@ -189,13 +189,13 @@ class Model:
         Returns
         -------
         PTable
-            Penetrance table obtained.
+            Penetrance table obtained within a `PTable` object.
         """
         pass
 
     def find_max_heritability(self, mafs: list[float], p: float) -> "PTable":
-        """Calculate the penetrance table of the model whose prevalence is
-        maximum given its MAFs and heritability.
+        """Computes the table whose heritability is maximum for the given MAFs
+        and prevalence, and returns it within a `PTable` object.
 
         Parameters
         ----------
@@ -207,6 +207,6 @@ class Model:
         Returns
         -------
         PTable
-            Penetrance table obtained.
+            Penetrance table obtained within a `PTable` object.
         """
         pass
