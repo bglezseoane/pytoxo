@@ -129,3 +129,39 @@ class Model:
         return self._variables
 
     ########################################
+
+    def find_max_prevalence(self, mafs: list[float], h: float) -> "PTable":
+        """Calculate the penetrance table of the model whose prevalence is
+        maximum given its MAFs and heritability.
+
+        Parameters
+        ----------
+        mafs : list[float]
+            Array of floats representing the MAF of each locus.
+        h : float
+            Heritability of thr table.
+
+        Returns
+        -------
+        PTable
+            Penetrance table obtained.
+        """
+        pass
+
+    def find_max_heritability(self, mafs: list[float], p: float) -> "PTable":
+        """Calculate the penetrance table of the model whose prevalence is
+        maximum given its MAFs and heritability.
+
+        Parameters
+        ----------
+        mafs : list[float]
+            Array of floats representing the MAF of each locus.
+        p : float
+            Prevalence of the table.
+
+        Returns
+        -------
+        PTable
+            Penetrance table obtained.
+        """
+        pass
