@@ -14,7 +14,10 @@
 """Epistasis model definition."""
 
 import os
-from sympy import Symbol, sympify, SympifyError
+
+import numpy as np
+import sympy
+from sympy import Symbol, sympify, SympifyError, degree, solve
 
 from pytoxo.errors import ModelCSVParsingError
 
@@ -129,6 +132,48 @@ class Model:
         return self._variables
 
     ########################################
+
+    def _max_penetrance(self):
+        """Returns the largest polynomial from all penetrance expressions, for
+        any real and positive value of the two variables."""
+        p = np.transpose(
+            np.unique(np.array(filter(lambda x: degree(x) > 0, self._penetrances)))
+        )
+
+        """Convert model variables to constraints to extend them and build the
+        final expression"""
+        var_constraints = []
+        for var in self._variables:
+            var_constraints.append(var >= 0)
+
+        tmp_max = p[1]  # Temporary maximum
+        for i in p[2:]:
+            constraints = var_constraints  # Load computed vars constraints
+            # TODO: Check only real numbers are returned in `solve`
+            s_x, _ = solve(constraints.extend([p >= 0, p <= 1, tmp_max > i]))
+            if not s_x:
+                tmp_max = i
+        return tmp_max
+
+    def _solve(
+        self, constraints: list[sympy.core.relational.Relational]
+    ) -> tuple[float]:
+        """Solves the equation system formed by the provided equations.
+
+        Parameters
+        ----------
+        constraints : list[sympy.core.relational.Relational]
+            Input constraints that define the equation.
+
+        Returns
+        -------
+        tuple[float]
+            The equation solution.
+        """
+        # TODO: Consider add assumptions to vars real and greather than 0
+        [s_x, s_y] = solve(constraints, self._variables)
+        # TODO: `solve` return check and raising
+        return s_x, s_y
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> "PTable":
         """Calculate the penetrance table of the model whose prevalence is
