@@ -157,13 +157,21 @@ class Model:
         final expression"""
         var_constraints = []
         for var in self._variables:
-            var_constraints.append(var >= 0)
+            var_constraints.append(sympy.sympify(sympy.Symbol(var) >= 0))
 
         tmp_max = p[1]  # Temporary maximum
         for i in p[2:]:
             constraints = var_constraints  # Load computed vars constraints
             # TODO: Check only real numbers are returned in `solve`
-            s_x, _ = sympy.solve(constraints.extend([p >= 0, p <= 1, tmp_max > i]))
+            s_x, _ = sympy.solve(
+                constraints.extend(
+                    [
+                        sympy.Symbol(p) >= 0,
+                        sympy.Symbol(p) <= 1,
+                        sympy.Symbol(tmp_max) > sympy.Symbol(i),
+                    ]
+                )
+            )
             if not s_x:
                 tmp_max = i
         return tmp_max
