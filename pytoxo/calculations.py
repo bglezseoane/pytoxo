@@ -11,13 +11,14 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""Genotype probabilities operation."""
+"""PyToxo calculations module: some math-based methods used in different
+parts of the library."""
 
 import functools
 import itertools
 import operator
 
-from sympy import sympify
+import sympy
 
 
 def genotype_probabilities(mafs: list[float]) -> list[float]:
@@ -50,8 +51,8 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
     """
     af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
     for maf in mafs:
-        m = sympify(maf)
-        M = 1 - sympify(maf)
+        m = sympy.sympify(maf)
+        M = 1 - sympy.sympify(maf)
         af_zip.append((m, M))
 
     gen_probs = []  # Genotype probabilities as `[M ** 2, 2 * M * m, m ** 2]` sub-lists
