@@ -97,10 +97,11 @@ class Model:
             for snd_member in snd_members:
                 self._variables.append([Symbol(i) for i in snd_member if i.isalpha()])
             # Check support: only 2 variables are supported by PyToxo
-            if not len(self._variables) == 2:
-                raise ModelCSVParsingError(
-                    filename, "Only models with 2 variables are supported."
-                )
+            for vars in self._variables:
+                if not len(vars) <= 2:
+                    raise ModelCSVParsingError(
+                        filename, "Only models with 2 variables are supported."
+                    )
         except IOError as e:
             raise e
         except ModelCSVParsingError as e:
