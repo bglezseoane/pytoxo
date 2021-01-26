@@ -17,9 +17,9 @@ import os
 
 import numpy as np
 import sympy
-from sympy import Symbol, sympify, SympifyError, degree, solve
 
-from pytoxo.errors import ModelCSVParsingError
+import pytoxo.errors
+import pytoxo.ptable
 
 
 class Model:
@@ -48,7 +48,7 @@ class Model:
 
         Raises
         ------
-        ModelCSVParsingError
+        pytoxo.errors.ModelCSVParsingError
             If the parsing tentative fails due to the file is not well formed.
         IOError
            If the input file is not found or the reading tentative fails due
@@ -64,7 +64,9 @@ class Model:
 
             # Check not empty file
             if not lines:
-                raise ModelCSVParsingError(filename, "File without content.")
+                raise pytoxo.errors.ModelCSVParsingError(
+                    filename, "File without content."
+                )
 
             # Split lines around the comma (',')
             fst_members = [line.split(",")[0] for line in lines]
@@ -78,36 +80,44 @@ class Model:
             # Assert all the first members have the same length
             for fst_member in fst_members:
                 if len(fst_member) != len_fst_member:
-                    raise ModelCSVParsingError(
+                    raise pytoxo.errors.ModelCSVParsingError(
                         filename, "All the genotypes should have the same order."
                     )
             # Assert first members length is odd
             if len_fst_member % 2 != 0:
-                raise ModelCSVParsingError(filename, "Bad genotype specification.")
+                raise pytoxo.errors.ModelCSVParsingError(
+                    filename, "Bad genotype specification."
+                )
             # Save the order
             self._order = len_fst_member // 2
 
             # Save the penetrances as symbolic expressions
             try:
-                self._penetrances = [sympify(snd_member) for snd_member in snd_members]
-            except SympifyError:
-                raise ModelCSVParsingError(filename, "Bad penetrance specification.")
+                self._penetrances = [
+                    sympy.sympify(snd_member) for snd_member in snd_members
+                ]
+            except sympy.SympifyError:
+                raise pytoxo.errors.ModelCSVParsingError(
+                    filename, "Bad penetrance specification."
+                )
 
             # Save the variables of the used expressions
             for snd_member in snd_members:
-                self._variables.append([Symbol(i) for i in snd_member if i.isalpha()])
+                self._variables.append(
+                    [sympy.Symbol(i) for i in snd_member if i.isalpha()]
+                )
             # Check support: only 2 variables are supported by PyToxo
             for vars in self._variables:
                 if not len(vars) <= 2:
-                    raise ModelCSVParsingError(
+                    raise pytoxo.errors.ModelCSVParsingError(
                         filename, "Only models with 2 variables are supported."
                     )
         except IOError as e:
             raise e
-        except ModelCSVParsingError as e:
+        except pytoxo.errors.ModelCSVParsingError as e:
             raise e
         except:  # Generic drain for unchecked parsing errors
-            raise ModelCSVParsingError(filename)
+            raise pytoxo.errors.ModelCSVParsingError(filename)
 
     ########################################
     # Getters and setters
@@ -138,7 +148,9 @@ class Model:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
         p = np.transpose(
-            np.unique(np.array(filter(lambda x: degree(x) > 0, self._penetrances)))
+            np.unique(
+                np.array(filter(lambda x: sympy.degree(x) > 0, self._penetrances))
+            )
         )
 
         """Convert model variables to constraints to extend them and build the
@@ -151,7 +163,7 @@ class Model:
         for i in p[2:]:
             constraints = var_constraints  # Load computed vars constraints
             # TODO: Check only real numbers are returned in `solve`
-            s_x, _ = solve(constraints.extend([p >= 0, p <= 1, tmp_max > i]))
+            s_x, _ = sympy.solve(constraints.extend([p >= 0, p <= 1, tmp_max > i]))
             if not s_x:
                 tmp_max = i
         return tmp_max
@@ -172,11 +184,11 @@ class Model:
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
-        [s_x, s_y] = solve(constraints, self._variables)
+        [s_x, s_y] = sympy.solve(constraints, self._variables)
         # TODO: `solve` return check and raising
         return s_x, s_y
 
-    def find_max_prevalence(self, mafs: list[float], h: float) -> "PTable":
+    def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
         and heritability, and returns it within a `PTable` object.
 
@@ -189,12 +201,14 @@ class Model:
 
         Returns
         -------
-        PTable
+        pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
         pass
 
-    def find_max_heritability(self, mafs: list[float], p: float) -> "PTable":
+    def find_max_heritability(
+        self, mafs: list[float], p: float
+    ) -> pytoxo.ptable.PTable:
         """Computes the table whose heritability is maximum for the given MAFs
         and prevalence, and returns it within a `PTable` object.
 
@@ -207,7 +221,7 @@ class Model:
 
         Returns
         -------
-        PTable
+        pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
         pass

@@ -11,13 +11,15 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""Genotype probabilities operation."""
+"""PyToxo calculations module: some math-based methods used in different
+parts of the library."""
 
 import functools
 import itertools
 import operator
 
-from sympy import sympify
+import sympy
+import numpy as np
 
 
 def genotype_probabilities(mafs: list[float]) -> list[float]:
@@ -50,8 +52,8 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
     """
     af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
     for maf in mafs:
-        m = sympify(maf)
-        M = 1 - sympify(maf)
+        m = sympy.sympify(maf)
+        M = 1 - sympy.sympify(maf)
         af_zip.append((m, M))
 
     gen_probs = []  # Genotype probabilities as `[M ** 2, 2 * M * m, m ** 2]` sub-lists
@@ -69,3 +71,56 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
         gen_probs_cp_red.append(functools.reduce(operator.mul, o, 1))
 
     return gen_probs_cp_red
+
+
+def compute_prevalence(
+    penetrances: list[float], mafs: list[float], gp: list[float] = None
+) -> float:
+    """Compute the prevalence for a given the penetrance table
+    defined by its values.
+
+    Parameters
+    ----------
+    penetrances : list[float]
+        Penetrance values array.
+    mafs : list[float]
+        Minor allele frequencies array.
+    gp : list[float], optional
+        Genotype probabilities array.
+
+    Returns
+    -------
+    float
+        Prevalence of the penetrance table.
+    """
+    if not gp:
+        gp = genotype_probabilities(mafs)
+
+    return float(np.sum(np.multiply(penetrances, gp)))
+
+
+def compute_heritability(penetrances: list[float], mafs: list[float]) -> float:
+    """Compute the heritability for a given the penetrance table
+    defined by its values.
+
+    Parameters
+    ----------
+    penetrances : list[float]
+        Penetrance values array.
+    mafs : list[float]
+        Minor allele frequencies array.
+
+    Returns
+    -------
+    float
+        Heritability of the penetrance table.
+    """
+    gp = genotype_probabilities(mafs)
+    p = compute_prevalence(mafs, gp)
+    return float(
+        np.sum(
+            np.multiply(np.power(np.subtract(penetrances, p), 2)),
+            gp,
+        )
+        / (p * (1 - p))
+    )

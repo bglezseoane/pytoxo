@@ -13,11 +13,7 @@
 
 """Penetrance table definition."""
 
-import numpy as np
-from sympy import *
-
-from pytoxo.genotype_probabilities import genotype_probabilities
-from pytoxo.model import Model
+import sympy
 
 
 class PTable:
@@ -27,65 +23,35 @@ class PTable:
     _variables = []  # Values for the variables present in the original model
     _penetrance_values = []  # Array of symbolic penetrances values
 
-    def __init__(self, model: Model, values: [int]):
-        """Creates a penetrance table from a given PyToxo model and its
-        variable values.
+    def __init__(
+        self,
+        model_order: int,
+        model_variables: list[sympy.Symbol],
+        model_penetrances: list[float],
+        values: [int],
+    ):
+        """Creates a penetrance table from a given PyToxo model defined by
+        its variables and penetrances, and its variable values.
 
         Parameters
         ----------
-        model : Model
-            Model from which to create the penetrance table.
+        model_order : int
+            Order from the PyToxo model from which to create the penetrance
+            table.
+        model_variables : list[sympy.Symbol]
+            Variables from the PyToxo model from which to create the penetrance
+            table.
+        model_penetrances : list[float]
+            Penetrances from the PyToxo model from which to create the
+            penetrance table.
         values : [int]
              Value for each of the variables represented in model.
         """
-        self._order = model.order
+        self._order = model_order
         self._variables = {
-            str(model.variables[0]): values[0],
-            str(model.variables[1]): values[1],
+            str(model_variables[0]): values[0],
+            str(model_variables[1]): values[1],
         }
-        self._penetrance_values = substitution(
-            model.penetrances, model.variables, values
-        )
-
-    def compute_prevalence(self, mafs: list[float], gp: list[float] = None) -> float:
-        """Compute the prevalence of the penetrance table.
-
-        Parameters
-        ----------
-        mafs : list[float]
-            Minor allele frequencies array.
-        gp : list[float], optional
-            Genotype probabilities array.
-
-        Returns
-        -------
-        float
-            Prevalence of the penetrance table.
-        """
-        if not gp:
-            gp = genotype_probabilities(mafs)
-
-        return float(np.sum(np.multiply(self._penetrance_values, gp)))
-
-    def compute_heritability(self, mafs: list[float]) -> float:
-        """Compute the heritability of the penetrance table.
-
-        Parameters
-        ----------
-        mafs : list[float]
-            Minor allele frequencies array.
-
-        Returns
-        -------
-        float
-            Heritability of the penetrance table.
-        """
-        gp = genotype_probabilities(mafs)
-        p = self.compute_prevalence(mafs, gp)
-        return float(
-            np.sum(
-                np.multiply(np.power(np.subtract(self._penetrance_values, p), 2)),
-                gp,
-            )
-            / (p * (1 - p))
+        self._penetrance_values = sympy.substitution(
+            model_penetrances, model_variables, values
         )

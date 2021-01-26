@@ -15,11 +15,11 @@
 
 import unittest
 
-from pytoxo.genotype_probabilities import genotype_probabilities
+from pytoxo.calculations import genotype_probabilities
 
 
 class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
-    """Tests for `pytoxo/genotype_probabilities.py` at unit level."""
+    """Tests for `pytoxo/calculations.py` at unit level."""
 
     def test_computation_order(self):
         """Test the output disposition ot be the same as Toxo's one."""
