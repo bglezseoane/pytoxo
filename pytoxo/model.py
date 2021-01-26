@@ -31,7 +31,7 @@ class Model:
     _penetrances = []  # Array of symbolic expressions representing the epistatic model
     _variables = []  # List of symbolic variables used throughout the model
 
-    def __init__(self, filename: str) :
+    def __init__(self, filename: str):
         """Reads the model from its text representation in `file` and inits
         an object with its data.
 
@@ -123,29 +123,29 @@ class Model:
     ########################################
     # Getters and setters
 
-    def get_name(self)-> None:
+    def get_name(self) -> None:
         return self._name
 
-    def set_name(self, name: str)-> None:
+    def set_name(self, name: str) -> None:
         self._name = name
 
     name = property(get_name, set_name)
 
     @property
-    def order(self)-> None:
+    def order(self) -> None:
         return self._order
 
     @property
-    def penetrances(self)-> None:
+    def penetrances(self) -> None:
         return self._penetrances
 
     @property
-    def variables(self)-> None:
+    def variables(self) -> None:
         return self._variables
 
     ########################################
 
-    def _max_penetrance(self)-> None:
+    def _max_penetrance(self) -> None:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
         p = np.transpose(
