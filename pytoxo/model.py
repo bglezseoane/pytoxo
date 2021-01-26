@@ -20,6 +20,7 @@ import sympy
 
 import pytoxo.errors
 import pytoxo.ptable
+import pytoxo.calculations
 
 
 class Model:
@@ -212,7 +213,17 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        pass
+        c1 = sympy.sympify(
+            pytoxo.calculations.compute_heritability(self._penetrances, mafs) == h
+        )
+        c2 = sympy.sympify(self._max_penetrance() == 1)
+        [s_x, s_y] = self._solve(constraints=[c1, c2])
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_variables=self._variables,
+            model_penetrances=self._penetrances,
+            values=[s_x, s_y],
+        )
 
     def find_max_heritability(
         self, mafs: list[float], p: float
