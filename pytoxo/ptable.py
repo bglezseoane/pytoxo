@@ -15,6 +15,8 @@
 
 import sympy
 
+import pytoxo.model
+
 
 class PTable:
     """Representation of a penetrance table."""
@@ -23,7 +25,7 @@ class PTable:
     _variables = []  # Values for the variables present in the original model
     _penetrance_values = []  # Array of symbolic penetrances values
 
-    def __init__(self, model: Model, values: [int]):
+    def __init__(self, model: pytoxo.model.Model, values: [int]):
         """Creates a penetrance table from a given PyToxo model and its
         variable values.
 
@@ -39,7 +41,6 @@ class PTable:
             str(model.variables[0]): values[0],
             str(model.variables[1]): values[1],
         }
-        self._penetrance_values = substitution(
+        self._penetrance_values = sympy.substitution(
             model.penetrances, model.variables, values
-        )
         )
