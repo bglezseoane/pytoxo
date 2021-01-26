@@ -13,11 +13,7 @@
 
 """Penetrance table definition."""
 
-import numpy as np
-from sympy import *
-
-from pytoxo.genotype_probabilities import genotype_probabilities
-from pytoxo.model import Model
+import sympy
 
 
 class PTable:
@@ -46,46 +42,4 @@ class PTable:
         self._penetrance_values = substitution(
             model.penetrances, model.variables, values
         )
-
-    def compute_prevalence(self, mafs: list[float], gp: list[float] = None) -> float:
-        """Compute the prevalence of the penetrance table.
-
-        Parameters
-        ----------
-        mafs : list[float]
-            Minor allele frequencies array.
-        gp : list[float], optional
-            Genotype probabilities array.
-
-        Returns
-        -------
-        float
-            Prevalence of the penetrance table.
-        """
-        if not gp:
-            gp = genotype_probabilities(mafs)
-
-        return float(np.sum(np.multiply(self._penetrance_values, gp)))
-
-    def compute_heritability(self, mafs: list[float]) -> float:
-        """Compute the heritability of the penetrance table.
-
-        Parameters
-        ----------
-        mafs : list[float]
-            Minor allele frequencies array.
-
-        Returns
-        -------
-        float
-            Heritability of the penetrance table.
-        """
-        gp = genotype_probabilities(mafs)
-        p = self.compute_prevalence(mafs, gp)
-        return float(
-            np.sum(
-                np.multiply(np.power(np.subtract(self._penetrance_values, p), 2)),
-                gp,
-            )
-            / (p * (1 - p))
         )
