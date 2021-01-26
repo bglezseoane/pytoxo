@@ -166,9 +166,9 @@ class Model:
             s_x, _ = sympy.solve(
                 constraints.extend(
                     [
-                        sympy.Symbol(p) >= 0,
-                        sympy.Symbol(p) <= 1,
-                        sympy.Symbol(tmp_max) > sympy.Symbol(i),
+                        sympy.sympify(sympy.Symbol(p) >= 0),
+                        sympy.sympify(sympy.Symbol(p) <= 1),
+                        sympy.sympify(sympy.Symbol(tmp_max) > sympy.Symbol(i)),
                     ]
                 )
             )
