@@ -21,8 +21,8 @@ from pytoxo.calculations import genotype_probabilities
 class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     """Tests for `pytoxo/calculations.py` at unit level."""
 
-    def test_computation_order(self):
-        """Test the output disposition ot be the same as Toxo's one."""
+    def test_genotype_probabilities_order(self):
+        """Test the output disposition to be the same as Toxo's one."""
         input_mafs = [1, 1, 0]
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
@@ -60,9 +60,9 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
 
         self.assertEqual(expected_output, output)
 
-    def test_computation_1(self):
+    def test_genotype_probabilities_1(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given condifuration."""
+        equal with a given configuration."""
         input_mafs = [0.1, 0.1, 0.1]
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
@@ -101,9 +101,9 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
-    def test_computation_2(self):
+    def test_genotype_probabilities_2(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given condifuration."""
+        equal with a given configuration."""
         input_mafs = [0.1, 0.4, 0.5]
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
@@ -142,9 +142,9 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
-    def test_computation_3(self):
+    def test_genotype_probabilities_3(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given condifuration."""
+        equal with a given configuration."""
         input_mafs = [0.01, 0.05, 0.5, 0.7, 0.87, 0.543]
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
