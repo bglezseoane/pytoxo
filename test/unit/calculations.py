@@ -11,19 +11,30 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""PyToxo genotype probabilities computation unit test suite."""
+"""PyToxo calculations unit test suite."""
 
 import unittest
 
-from pytoxo.calculations import genotype_probabilities
+import pytoxo.calculations
 
 
 class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
-    """Tests for `pytoxo/calculations.py` at unit level."""
+    """Tests for `pytoxo/calculations.py` at unit level.
+
+    In this suite the correctness and accuracy of the different functions of the
+    calculations module are checked. Mock values are used to check that PyToxo
+    outputs match those of Toxo for those values.
+
+    These tests focus on purely numerical calculations and not their meaning.
+    """
 
     def test_genotype_probabilities_order(self):
         """Test the output disposition to be the same as Toxo's one."""
-        input_mafs = [1, 1, 0]
+        input_mafs = [
+            1,
+            1,
+            0,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -56,14 +67,18 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         self.assertEqual(expected_output, output)
 
     def test_genotype_probabilities_1(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.1, 0.1, 0.1]
+        input_mafs = [
+            0.1,
+            0.1,
+            0.1,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -96,7 +111,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             1 / 1000000,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
@@ -104,7 +119,11 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     def test_genotype_probabilities_2(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.1, 0.4, 0.5]
+        input_mafs = [
+            0.1,
+            0.4,
+            0.5,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -137,7 +156,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             1 / 2500,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
@@ -145,7 +164,14 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     def test_genotype_probabilities_3(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.01, 0.05, 0.5, 0.7, 0.87, 0.543]
+        input_mafs = [
+            0.01,
+            0.05,
+            0.5,
+            0.7,
+            0.87,
+            0.543,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -880,10 +906,313 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             109353891969 / 16000000000000000000,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
+
+    def test_compute_prevalence_1(self):
+        """Test that PyToxo and Toxo `compute_prevalence` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            0.2589158758688671,
+            0.4692129571716719,
+            0.3646383680654557,
+            0.490777573993914,
+            0.5020410805786457,
+            0.36819868656603394,
+            0.12013219628777405,
+            0.626111833703049,
+            0.14207012897125182,
+            0.34859830286644566,
+            0.6779024685225011,
+            0.08827936891397803,
+            0.4350358298259681,
+            0.6022663885821758,
+            0.9474134576051509,
+            0.009043110474026061,
+            0.9753576496514897,
+            0.44532536005752865,
+            0.8345931481010112,
+            0.8259834049333902,
+            0.013271939592359838,
+            0.8743197369513187,
+            0.45483621921829664,
+            0.46948518779113235,
+            0.22784703471051548,
+            0.075431174804928,
+            0.17057404807699605,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.1,
+            0.08,
+            0.74,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
+
+        """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 0.40144105104785651915693307500987
+
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_prevalence_2(self):
+        """Test that PyToxo and Toxo `compute_prevalence` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            839.2878566124077,
+            315.9453559692004,
+            421.03960640663183,
+            691.7630195711189,
+            37.7162839318429,
+            126.64029134369217,
+            117.69204297051768,
+            618.7825832529591,
+            404.29131112494395,
+            627.6111059002137,
+            470.9833278837673,
+            113.0433123924197,
+            527.8594415304226,
+            237.8502326249068,
+            528.4804845478371,
+            752.3707762253403,
+            524.6192103000715,
+            366.3392103818515,
+            641.6237937506357,
+            564.6554211939755,
+            729.314716298435,
+            264.7105675910287,
+            892.7888718410087,
+            120.09477331376341,
+            861.3025523656033,
+            745.1922421657799,
+            732.1534135272663,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.01,
+            0.34,
+            0.002,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
+
+        """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 685.98053933311562259667558609863
+
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_prevalence_3(self):
+        """Test that PyToxo and Toxo `compute_prevalence` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            95.8664528902537,
+            107.846688399269,
+            -93.62595461309878,
+            -24.44462181519748,
+            -82.04905759379164,
+            -68.13774680416012,
+            74.07501528050682,
+            87.54870240631405,
+            -32.17547812697022,
+            -0.14578541128821598,
+            -90.62884044170451,
+            -51.16403082025444,
+            -104.50845286057239,
+            41.24370991036267,
+            34.245892227604145,
+            -15.408900376091736,
+            -48.831684783979696,
+            80.3688781558649,
+            -71.8120695585337,
+            56.76116574424435,
+            -83.4879650020254,
+            116.88397011638688,
+            -38.05750121385162,
+            -103.86636959299118,
+            -27.655163812967118,
+            107.35569341850186,
+            119.26611877333363,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.0005,
+            0.012,
+            0.05678,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
+
+        """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 93.411917433245971426364773230649
+
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_heritability_1(self):
+        """Test that PyToxo and Toxo `compute_heritability` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            0.5597454928050867,
+            0.5134279372481442,
+            0.5011489674198678,
+            0.9528876751156692,
+            0.3303192009175796,
+            0.9692678465170659,
+            0.7878965759011138,
+            0.7576335752324885,
+            0.08588034915614196,
+            0.7958804563675798,
+            0.057015534243262445,
+            0.8580171775270028,
+            0.9475534334262562,
+            0.01892495029577035,
+            0.4242367159069138,
+            0.8947792942275012,
+            0.22273242101976698,
+            0.46691293856787575,
+            0.24994669337788888,
+            0.9108627215906617,
+            0.15287739051041693,
+            0.7325089156603076,
+            0.3720370395547171,
+            0.19766116513501475,
+            0.13326984696145783,
+            0.06255814002375837,
+            0.28029515489155943,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.001,
+            0.8,
+            0.99,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+
+        """Output from Toxo's `h = heritability(obj, mafs)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 0.69452809596596335590155503681319
+
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_heritability_2(self):
+        """Test that PyToxo and Toxo `compute_heritability` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            0.03656577618228967,
+            0.02507835851309162,
+            0.009703792459144517,
+            0.014693215353451207,
+            0.022081284510741317,
+            0.01983312785898994,
+            0.0353397743346328,
+            0.03929249587208901,
+            0.038864398353670365,
+            0.03532269064538115,
+            0.013687612735540833,
+            0.012954366606499096,
+            0.002278330195820072,
+            0.04965890323123148,
+            0.03213685283849256,
+            0.028384006338640907,
+            0.02644607843737471,
+            0.026549759295197248,
+            0.010966175724674333,
+            0.029378813672326434,
+            0.03285383880449491,
+            0.04400738539753308,
+            0.04624758276346051,
+            0.03719801315883338,
+            0.0034132124224478923,
+            0.04400255348868094,
+            0.011652374490291818,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.1,
+            0.56,
+            0.12299,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+
+        """Output from Toxo's `h = heritability(obj, mafs)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 0.0056375178546100495372714631917117
+
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_heritability_3(self):
+        """Test that PyToxo and Toxo `compute_heritability` functions work
+        equal with a given configuration. In Toxo, this function is the method
+        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
+        has been refactored to an independent function."""
+        input_penetrances = [
+            0.0017079671255362228,
+            0.0046969093871244835,
+            0.007374983772754158,
+            0.0028716661473391593,
+            0.0016730051783969769,
+            0.0055237817888343765,
+            0.008358675608519684,
+            0.0013050971143227774,
+            0.008074745462009284,
+            0.009218337636725691,
+            0.0011000993172244433,
+            0.003736221334078098,
+            0.005955968221146741,
+            0.007349721900702389,
+            0.009525173314820376,
+            0.008871937722702195,
+            0.009820855305340673,
+            0.0052400849673103315,
+            0.0019933678312761905,
+            0.00435593905950336,
+            0.008713207828583192,
+            0.003663353797316681,
+            0.005568856298783635,
+            0.003470482644809193,
+            0.0026103161923466136,
+            0.006072035343217137,
+            0.0016712704259998679,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.22221,
+            0.56,
+            0.99,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+
+        """Output from Toxo's `h = heritability(obj, mafs)` function for 
+        `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = 0.00059919817204865162645758711079879
+
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
 
 if __name__ == "__main__":

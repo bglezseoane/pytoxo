@@ -116,11 +116,8 @@ def compute_heritability(penetrances: list[float], mafs: list[float]) -> float:
         Heritability of the penetrance table.
     """
     gp = genotype_probabilities(mafs)
-    p = compute_prevalence(mafs, gp)
+    p = compute_prevalence(penetrances, mafs, gp)
     return float(
-        np.sum(
-            np.multiply(np.power(np.subtract(penetrances, p), 2)),
-            gp,
-        )
+        np.sum(np.multiply(np.power(np.subtract(penetrances, p), 2), gp))
         / (p * (1 - p))
     )
