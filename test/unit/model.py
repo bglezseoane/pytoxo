@@ -19,8 +19,8 @@ import unittest
 
 import sympy
 
-from pytoxo.errors import ModelCSVParsingError
-from pytoxo.model import Model
+import pytoxo.errors
+import pytoxo.model
 
 
 class ModelUnitTestSuite(unittest.TestCase):
@@ -34,7 +34,7 @@ class ModelUnitTestSuite(unittest.TestCase):
 
     def test_file_parsing(self):
         """Test model files parsing."""
-        m = Model("models/multiplicative_2.csv")
+        m = pytoxo.model.Model("models/multiplicative_2.csv")
 
         # Name
         self.assertEqual("multiplicative_2", m._name)
@@ -82,7 +82,7 @@ class ModelUnitTestSuite(unittest.TestCase):
         """Test error handling during model files parsing."""
 
         # Test nonexistent file raise
-        self.assertRaises(OSError, lambda: Model("nonexistent_file.csv"))
+        self.assertRaises(OSError, lambda: pytoxo.model.Model("nonexistent_file.csv"))
 
         # Read a well formed sample model to corrupt it and assert error raises
         with open("models/additive_2.csv", "r") as f:
@@ -113,7 +113,8 @@ class ModelUnitTestSuite(unittest.TestCase):
             # Test bad formed files raise
             for bad_formed_models_path in bad_formed_models_paths:
                 self.assertRaises(
-                    ModelCSVParsingError, lambda: Model(bad_formed_models_path)
+                    pytoxo.errors.ModelCSVParsingError,
+                    lambda: pytoxo.model.Model(bad_formed_models_path),
                 )
 
 

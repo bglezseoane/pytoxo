@@ -15,11 +15,7 @@
 
 import unittest
 
-from pytoxo.calculations import (
-    genotype_probabilities,
-    compute_prevalence,
-    compute_heritability,
-)
+import pytoxo.calculations
 
 
 class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
@@ -60,7 +56,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         self.assertEqual(expected_output, output)
 
@@ -100,7 +96,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             1 / 1000000,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
@@ -141,7 +137,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             1 / 2500,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
@@ -884,7 +880,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             109353891969 / 16000000000000000000,
         ]
 
-        output = genotype_probabilities(input_mafs)
+        output = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
@@ -924,14 +920,16 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0.17057404807699605,
         ]  # These are simply mock values to assert the calculation correction and accuracy
         input_mafs = [0.1, 0.08, 0.74]
-        input_gp = genotype_probabilities(input_mafs)
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
         Matlab debugging session"""
         expected_output = 0.40144105104785651915693307500987
 
-        output = compute_prevalence(input_penetrances, input_mafs, input_gp)
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
@@ -970,14 +968,16 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             732.1534135272663,
         ]  # These are simply mock values to assert the calculation correction and accuracy
         input_mafs = [0.01, 0.34, 0.002]
-        input_gp = genotype_probabilities(input_mafs)
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
         Matlab debugging session"""
         expected_output = 685.98053933311562259667558609863
 
-        output = compute_prevalence(input_penetrances, input_mafs, input_gp)
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
@@ -1016,14 +1016,16 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             119.26611877333363,
         ]  # These are simply mock values to assert the calculation correction and accuracy
         input_mafs = [0.0005, 0.012, 0.05678]
-        input_gp = genotype_probabilities(input_mafs)
+        input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
         Matlab debugging session"""
         expected_output = 93.411917433245971426364773230649
 
-        output = compute_prevalence(input_penetrances, input_mafs, input_gp)
+        output = pytoxo.calculations.compute_prevalence(
+            input_penetrances, input_mafs, input_gp
+        )
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
@@ -1068,7 +1070,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
         Matlab debugging session"""
         expected_output = 0.69452809596596335590155503681319
 
-        output = compute_heritability(input_penetrances, input_mafs)
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
@@ -1113,7 +1115,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
         Matlab debugging session"""
         expected_output = 0.0056375178546100495372714631917117
 
-        output = compute_heritability(input_penetrances, input_mafs)
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
@@ -1158,7 +1160,7 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
         Matlab debugging session"""
         expected_output = 0.00059919817204865162645758711079879
 
-        output = compute_heritability(input_penetrances, input_mafs)
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
