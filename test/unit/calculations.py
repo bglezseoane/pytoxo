@@ -11,7 +11,7 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""PyToxo genotype probabilities computation unit test suite."""
+"""PyToxo calculations unit test suite."""
 
 import unittest
 
@@ -19,11 +19,22 @@ import pytoxo.calculations
 
 
 class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
-    """Tests for `pytoxo/calculations.py` at unit level."""
+    """Tests for `pytoxo/calculations.py` at unit level.
+
+    In this suite the correctness and accuracy of the different functions of the
+    calculations module are checked. Mock values are used to check that PyToxo
+    outputs match those of Toxo for those values.
+
+    These tests focus on purely numerical calculations and not their meaning.
+    """
 
     def test_genotype_probabilities_order(self):
         """Test the output disposition to be the same as Toxo's one."""
-        input_mafs = [1, 1, 0]
+        input_mafs = [
+            1,
+            1,
+            0,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -63,7 +74,11 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     def test_genotype_probabilities_1(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.1, 0.1, 0.1]
+        input_mafs = [
+            0.1,
+            0.1,
+            0.1,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -104,7 +119,11 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     def test_genotype_probabilities_2(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.1, 0.4, 0.5]
+        input_mafs = [
+            0.1,
+            0.4,
+            0.5,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -145,7 +164,14 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
     def test_genotype_probabilities_3(self):
         """Test that PyToxo and Toxo `genotype_probabilities` functions work
         equal with a given configuration."""
-        input_mafs = [0.01, 0.05, 0.5, 0.7, 0.87, 0.543]
+        input_mafs = [
+            0.01,
+            0.05,
+            0.5,
+            0.7,
+            0.87,
+            0.543,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         # Output from Toxo's `genotype_probabilities` function for `input_mafs` input
         expected_output = [
@@ -918,8 +944,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0.22784703471051548,
             0.075431174804928,
             0.17057404807699605,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.1, 0.08, 0.74]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.1,
+            0.08,
+            0.74,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
         input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
@@ -966,8 +996,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             861.3025523656033,
             745.1922421657799,
             732.1534135272663,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.01, 0.34, 0.002]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.01,
+            0.34,
+            0.002,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
         input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
@@ -1014,8 +1048,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             -27.655163812967118,
             107.35569341850186,
             119.26611877333363,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.0005, 0.012, 0.05678]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.0005,
+            0.012,
+            0.05678,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
         input_gp = pytoxo.calculations.genotype_probabilities(input_mafs)
 
         """Output from Toxo's `p = prevalence(obj, mafs, gp)` function for 
@@ -1062,8 +1100,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0.13326984696145783,
             0.06255814002375837,
             0.28029515489155943,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.001, 0.8, 0.99]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.001,
+            0.8,
+            0.99,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         """Output from Toxo's `h = heritability(obj, mafs)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
@@ -1107,8 +1149,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0.0034132124224478923,
             0.04400255348868094,
             0.011652374490291818,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.1, 0.56, 0.12299]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.1,
+            0.56,
+            0.12299,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         """Output from Toxo's `h = heritability(obj, mafs)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
@@ -1152,8 +1198,12 @@ class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
             0.0026103161923466136,
             0.006072035343217137,
             0.0016712704259998679,
-        ]  # These are simply mock values to assert the calculation correction and accuracy
-        input_mafs = [0.22221, 0.56, 0.99]
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_mafs = [
+            0.22221,
+            0.56,
+            0.99,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
 
         """Output from Toxo's `h = heritability(obj, mafs)` function for 
         `input_penetrances`, `input_mafs` and `input_gp` input. Forced in a 
