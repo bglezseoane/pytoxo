@@ -12,7 +12,10 @@
 ###########################################################
 
 """Penetrance table definition."""
+
+import itertools
 import os
+import string
 
 import sympy
 
@@ -101,5 +104,23 @@ class PTable:
         if os.path.exists(filename) and not os.path.isfile(filename):
             raise IsADirectoryError(filename)
 
+        # Generate genotypes column with genotype names
+        # Deduce alleles attending to the table order
+        # TODO: Is `len(ascii_lowercase) < self._order` possible?
+        letters = list(string.ascii_lowercase[: self._order])
+        alleles = []
+        for letter in letters:
+            lower = letter
+            upper = letter.upper()
+            alleles.append([f"{upper}{upper}", f"{upper}{lower}", f"{lower}{lower}"])
+        # Generate genotypes tracing the alleles cartesian product
+        genotypes = list(itertools.product(*alleles))
+
+        # Generate lines of the file with genotypes and its penetrances
+        lines = []
+        for genotype, penetrance in zip(genotypes, self._penetrance_values):
+            lines.append(f"{genotype},{penetrance}")
+
+        # Write file
         with open(filename) as f:
-            raise NotImplementedError  # TODO: Implement
+            f.writelines(lines)
