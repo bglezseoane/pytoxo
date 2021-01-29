@@ -119,7 +119,7 @@ class PTable:
         # Generate lines of the file with genotypes and its penetrances
         lines = []
         for genotype, penetrance in zip(genotypes, self._penetrance_values):
-            lines.append(f"{genotype},{penetrance}")
+            lines.append(f"{''.join(genotype)},{penetrance}\n")
 
         # Write file
         with open(filename, "x") as f:
