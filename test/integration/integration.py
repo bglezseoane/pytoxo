@@ -88,6 +88,7 @@ class PenetranceTableGenerationTestSuite(unittest.TestCase):
                         ptable.write_to_file(output_file)
                         output_files.append(f"{output_file}.csv")
 
+            # Compare Toxo and PyToxo outputs
             for expected_output_file, output_file in zip(
                 expected_output_files, expected_output_files
             ):
