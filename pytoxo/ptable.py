@@ -122,5 +122,5 @@ class PTable:
             lines.append(f"{genotype},{penetrance}")
 
         # Write file
-        with open(filename) as f:
+        with open(filename, "x") as f:
             f.writelines(lines)
