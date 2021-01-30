@@ -78,6 +78,59 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertIn(sy, m._variables[7])
         self.assertIn(sy, m._variables[8])
 
+    def test_file_parsing_2(self):
+        """Test model files parsing."""
+        m = pytoxo.model.Model("models/additive_2.csv")
+
+        # Name
+        self.assertEqual("additive_2", m._name)
+
+        # Order
+        self.assertEqual(2, m._order)
+
+        # Penetrances
+        """The following expressions are those of the file 
+        `models/additive_2.csv`, but corrected with small modifications
+        that the library Sympy does when normalizing them. E.g .: symbol `**` 
+        instead of `^`, spaces around additions, etc."""
+        self.assertEqual("x", str(m._penetrances[0]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[1]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[2]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[3]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[4]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[5]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[6]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[7]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[8]))
+        # Some type checks
+        self.assertEqual(sympy.Symbol, type(m._penetrances[0]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[1]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[2]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[3]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[4]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[5]))
+
+        # Variables
+        sx = sympy.abc.x
+        sy = sympy.abc.y
+        self.assertIn(sx, m._variables[0])
+        self.assertIn(sx, m._variables[1])
+        self.assertIn(sx, m._variables[2])
+        self.assertIn(sx, m._variables[3])
+        self.assertIn(sx, m._variables[4])
+        self.assertIn(sx, m._variables[5])
+        self.assertIn(sx, m._variables[6])
+        self.assertIn(sx, m._variables[7])
+        self.assertIn(sx, m._variables[8])
+        self.assertIn(sy, m._variables[1])
+        self.assertIn(sy, m._variables[2])
+        self.assertIn(sy, m._variables[3])
+        self.assertIn(sy, m._variables[4])
+        self.assertIn(sy, m._variables[5])
+        self.assertIn(sy, m._variables[6])
+        self.assertIn(sy, m._variables[7])
+        self.assertIn(sy, m._variables[8])
+
     def test_file_parsing_error_detection(self):
         """Test error handling during model files parsing."""
 
