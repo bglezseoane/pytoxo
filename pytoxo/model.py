@@ -214,16 +214,16 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.sympify(
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs) == h
+        c1 = sympy.Eq(
+            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
         )
-        c2 = sympy.sympify(self._max_penetrance() == 1)
-        [s_x, s_y] = self._solve(constraints=[c1, c2])
+        c2 = sympy.Eq(self._max_penetrance(), 1)
+        sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=[s_x, s_y],
+            values=sol,
         )
 
     def find_max_heritability(
@@ -244,14 +244,14 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.sympify(
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs) == p
+        c1 = sympy.Eq(
+            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
         )
-        c2 = sympy.sympify(self._max_penetrance() == 1)
-        [s_x, s_y] = self._solve(constraints=[c1, c2])
+        c2 = sympy.Eq(self._max_penetrance(), 1)
+        sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=[s_x, s_y],
+            values=sol,
         )
