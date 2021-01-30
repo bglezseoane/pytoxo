@@ -14,6 +14,7 @@
 """Epistasis model definition."""
 
 import os
+import typing
 
 import numpy as np
 import sympy
@@ -123,7 +124,7 @@ class Model:
     ########################################
     # Getters and setters
 
-    def get_name(self) -> None:
+    def get_name(self) -> str:
         return self._name
 
     def set_name(self, name: str) -> None:
@@ -132,20 +133,20 @@ class Model:
     name = property(get_name, set_name)
 
     @property
-    def order(self) -> None:
+    def order(self) -> int:
         return self._order
 
     @property
-    def penetrances(self) -> None:
+    def penetrances(self) -> list[typing.Union[float, sympy.Expr]]:
         return self._penetrances
 
     @property
-    def variables(self) -> None:
+    def variables(self) -> list[sympy.Symbol]:
         return self._variables
 
     ########################################
 
-    def _max_penetrance(self) -> None:
+    def _max_penetrance(self) -> sympy.Expr:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
         p = np.transpose(
