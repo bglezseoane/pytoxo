@@ -117,6 +117,30 @@ class ModelUnitTestSuite(unittest.TestCase):
                     lambda: pytoxo.model.Model(bad_formed_models_path),
                 )
 
+    def test_max_penetrance_1(self):
+        """Test model `max_penetrance` method."""
+        m = pytoxo.model.Model("models/additive_3.csv")
+
+        """Output from Toxo's `m = max_penetrance(obj)` private method for 
+        the given model, adapted to a Sympy object"""
+        expected_output = sympy.sympify("x*(y + 1)**6")
+
+        output = m._max_penetrance()
+
+        self.assertEqual(expected_output, output)
+
+    def test_max_penetrance_2(self):
+        """Test model `max_penetrance` method."""
+        m = pytoxo.model.Model("models/multiplicative_4.csv")
+
+        """Output from Toxo's `m = max_penetrance(obj)` private method for 
+        the given model, adapted to a Sympy object"""
+        expected_output = sympy.sympify("x*(y + 1)**16")
+
+        output = m._max_penetrance()
+
+        self.assertEqual(expected_output, output)
+
 
 if __name__ == "__main__":
     unittest.main()
