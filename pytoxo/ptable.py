@@ -23,10 +23,6 @@ import sympy
 class PTable:
     """Representation of a penetrance table."""
 
-    _order = None  # Number of locus defined by the penetrance table
-    _variables = []  # Values for the variables present in the original model
-    _penetrance_values = []  # Array of symbolic penetrances values
-
     def __init__(
         self,
         model_order: int,
