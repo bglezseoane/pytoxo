@@ -18,6 +18,7 @@ import tempfile
 import unittest
 
 import sympy
+import sympy.abc
 
 import pytoxo.errors
 import pytoxo.model
@@ -32,7 +33,7 @@ class ModelUnitTestSuite(unittest.TestCase):
     `models/multiplicative_2.csv`.
     """
 
-    def test_file_parsing(self):
+    def test_file_parsing_1(self):
         """Test model files parsing."""
         m = pytoxo.model.Model("models/multiplicative_2.csv")
 
@@ -62,8 +63,8 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertEqual(sympy.Mul, type(m._penetrances[8]))
 
         # Variables
-        sx = sympy.Symbol("x")
-        sy = sympy.Symbol("y")
+        sx = sympy.abc.x
+        sy = sympy.abc.y
         self.assertIn(sx, m._variables[0])
         self.assertIn(sx, m._variables[1])
         self.assertIn(sx, m._variables[2])
