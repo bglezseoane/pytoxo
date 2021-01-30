@@ -16,8 +16,8 @@
 import os
 import typing
 
-import numpy as np
 import sympy
+import sympy.abc
 
 import pytoxo.errors
 import pytoxo.ptable
@@ -152,34 +152,45 @@ class Model:
     def _max_penetrance(self) -> sympy.Expr:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
-        p = np.transpose(
-            np.unique(
-                np.array(filter(lambda x: sympy.degree(x) > 0, self._penetrances))
-            )
-        )
 
-        """Convert model variables to constraints to extend them and build the
-        final expression"""
-        var_constraints = []
-        for var in self._variables:
-            var_constraints.append(sympy.sympify(sympy.Symbol(var) >= 0))
+        def check_polynomial(candidate) -> bool:
+            """Help function that check if `candidate` is a valid polynomial
+            expression."""
+            try:
+                sympy.Poly(candidate)
+            except sympy.polys.polyerrors.GeneratorsNeeded:
+                return False
+            # Else...
+            return True
 
-        tmp_max = p[1]  # Temporary maximum
-        for i in p[2:]:
-            constraints = var_constraints  # Load computed vars constraints
-            # TODO: Check only real numbers are returned in `solve`
-            s_x, _ = sympy.solve(
-                constraints.extend(
-                    [
-                        sympy.sympify(sympy.Symbol(p) >= 0),
-                        sympy.sympify(sympy.Symbol(p) <= 1),
-                        sympy.sympify(sympy.Symbol(tmp_max) > sympy.Symbol(i)),
-                    ]
-                )
-            )
-            if not s_x:
-                tmp_max = i
-        return tmp_max
+        # Filter non-polynomial penetrance expressions
+        polynomials = [
+            penetrance
+            for penetrance in self._penetrances
+            if check_polynomial(penetrance)
+        ]
+
+        """Create constraints as `0 <= polynomial <= 1` for all the 
+        polynomials."""
+        constraints = []
+        for polynomial in polynomials:
+            constraints.append(polynomial >= 0)
+            constraints.append(polynomial <= 1)
+
+        # Get then the maximum polynomial
+        max_polynomial = polynomials[0]  # Temporal maximum
+        for polynomial in polynomials[1:]:
+            solution = sympy.solve(
+                constraints + [max_polynomial > polynomial],
+                sympy.abc.x,
+                nonnegative=True,
+                domain=sympy.S.Reals,
+            )  # Constrainted to only real and positive solutions
+            if not solution:
+                max_polynomial = polynomial
+
+        # Return the maximum polynomial
+        return max_polynomial
 
     def _solve(
         self, constraints: list[sympy.core.relational.Relational]
