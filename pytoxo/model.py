@@ -27,11 +27,6 @@ import pytoxo.calculations
 class Model:
     """Representation of an epistasis model."""
 
-    _name = None  # Name of the model
-    _order = None  # Number of locus defined in the model
-    _penetrances = []  # Array of symbolic expressions representing the epistatic model
-    _variables = []  # List of symbolic variables used throughout the model
-
     def __init__(self, filename: str):
         """Reads the model from its text representation in `file` and inits
         an object with its data.
@@ -56,6 +51,13 @@ class Model:
            If the input file is not found or the reading tentative fails due
            to other unexpected operative system level cause.
         """
+        self._name = None  # Name of the model
+        self._order = None  # Number of locus defined in the model
+        self._penetrances = (
+            []
+        )  # Array of symbolic expressions representing the epistatic model
+        self._variables = []  # List of symbolic variables used throughout the model
+
         try:
             with open(filename, "r") as f:
                 lines = f.readlines()
@@ -71,8 +73,8 @@ class Model:
                 )
 
             # Split lines around the comma (',')
-            fst_members = [line.split(",")[0] for line in lines]
-            snd_members = [line.split(",")[1] for line in lines]
+            fst_members = [line.split(",")[0].strip() for line in lines]
+            snd_members = [line.split(",")[1].strip() for line in lines]
 
             # Save the name of the model
             self._name = os.path.basename(filename).split(".")[0]
@@ -106,8 +108,9 @@ class Model:
             # Save the variables of the used expressions
             for snd_member in snd_members:
                 self._variables.append(
-                    [sympy.Symbol(i) for i in snd_member if i.isalpha()]
+                    sympy.symbols([i for i in snd_member if i.isalpha()])
                 )
+
             # Check support: only 2 variables are supported by PyToxo
             for vars in self._variables:
                 if not len(vars) <= 2:
