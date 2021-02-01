@@ -195,6 +195,37 @@ class ModelUnitTestSuite(unittest.TestCase):
 
         self.assertEqual(expected_output, output)
 
+    def test_max_penetrance_3(self):
+        """Test model `max_penetrance` method.
+
+        This test uses mock file content with the peculiarity that the
+        polynomial that is known larger is not in last place, as it usually
+        is in real models. This circumstance is verified because the way in
+        which the loop of the `max_penetrance` function works.
+        """
+        mock_model_content = (
+            "aabbCcddEeffGgHH, x\n"
+            + "aabbCcddEeffGgHh, x*(1+y)^16\n"
+            + "aabbCcddEeffGghh, x*(1+y)^32\n"
+            + "aabbCcddEeffgghh, x*(1+y)^64\n"
+            + "aabbCcddEeffggHH, x\n"
+            + "aabbCcddEeffggHh, x*(1+y)^32\n"
+        )
+
+        with tempfile.TemporaryDirectory() as mock_model_dir:
+            mock_model_file = os.path.join(mock_model_dir, "model.csv")
+            with open(mock_model_file, "x") as f:
+                f.write(mock_model_content)
+
+            m = pytoxo.model.Model(mock_model_file)
+
+            # Known larger polynomial as Sympy string
+            expected_output = sympy.sympify("x*(y + 1)**64")
+
+            output = m._max_penetrance()
+
+            self.assertEqual(expected_output, output)
+
 
 if __name__ == "__main__":
     unittest.main()
