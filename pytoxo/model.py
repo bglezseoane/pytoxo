@@ -168,14 +168,12 @@ class Model:
         degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
         return unique_penetrances[degrees.index(max(degrees))]
 
-    def _solve(
-        self, constraints: list[sympy.core.relational.Relational]
-    ) -> tuple[float]:
+    def _solve(self, constraints: list[sympy.Eq]) -> tuple[float]:
         """Solves the equation system formed by the provided equations.
 
         Parameters
         ----------
-        constraints : list[sympy.core.relational.Relational]
+        constraints : list[sympy.Eq]
             Input constraints that define the equation.
 
         Returns
@@ -184,9 +182,16 @@ class Model:
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
-        [s_x, s_y] = sympy.solve(constraints, self._variables)
+        sol = sympy.solve(
+            constraints,
+            self._variables[0],
+            self._variables[1],
+            manual=True,
+            rational=False,
+        )
+        # TODO: Other solvers?
         # TODO: `solve` return check and raising
-        return s_x, s_y
+        return sol[0]  # Catch real solution, discarding complex ones
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
