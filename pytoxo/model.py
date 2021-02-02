@@ -17,7 +17,6 @@ import os
 import typing
 
 import sympy
-import sympy.abc
 
 import pytoxo.errors
 import pytoxo.ptable
@@ -106,17 +105,25 @@ class Model:
                 )
 
             # Save the variables of the used expressions
+            all_variables = []
             for snd_member in snd_members:
-                self._variables.append(
+                all_variables.append(
                     sympy.symbols([i for i in snd_member if i.isalpha()])
                 )
 
-            # Check support: only 2 variables are supported by PyToxo
-            for vars in self._variables:
-                if not len(vars) <= 2:
-                    raise pytoxo.errors.ModelCSVParsingError(
-                        filename, "Only models with 2 variables are supported."
-                    )
+            # Reduce the variables to avoid replication
+            all_variables = [
+                item for subl in all_variables for item in subl
+            ]  # Flat list
+            different_variables = list(set(all_variables))
+
+            # Check support: only 2 different variables are supported by PyToxo
+            if not 0 < len(different_variables) <= 2:
+                raise pytoxo.errors.ModelCSVParsingError(
+                    filename, "Only models with 2 different variables are supported."
+                )
+            else:
+                self._variables = different_variables
         except IOError as e:
             raise e
         except pytoxo.errors.ModelCSVParsingError as e:
