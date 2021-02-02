@@ -27,8 +27,8 @@ class PTable:
         self,
         model_order: int,
         model_variables: list[sympy.Symbol],
-        model_penetrances: list[float],
-        values: [int],
+        model_penetrances: list[sympy.Expr],
+        values: list[float],
     ):
         """Creates a penetrance table from a given PyToxo model defined by
         its variables and penetrances, and its variable values.
@@ -41,10 +41,10 @@ class PTable:
         model_variables : list[sympy.Symbol]
             Variables from the PyToxo model from which to create the penetrance
             table.
-        model_penetrances : list[float]
+        model_penetrances : list[sympy.Expr]
             Penetrances from the PyToxo model from which to create the
             penetrance table.
-        values : [int]
+        values : list[float]
              Value for each of the variables represented in model.
         """
         self._order = model_order
