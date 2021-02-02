@@ -115,12 +115,20 @@ class Model:
             all_variables = [
                 item for subl in all_variables for item in subl
             ]  # Flat list
-            different_variables = list(set(all_variables))
+            different_variables = []
+            for variable in all_variables:
+                """Not use other more direct method like
+                `list(set(all_variables))` because the variable apparition
+                order must be preserved"""
+                if variable not in different_variables:
+                    different_variables.append(variable)
+                    # TODO: Test with other variable names to assert...
 
             # Check support: only 2 different variables are supported by PyToxo
             if not 0 < len(different_variables) <= 2:
                 raise pytoxo.errors.ModelCSVParsingError(
-                    filename, "Only models with 2 different variables are supported."
+                    filename,
+                    "Only models with 1 or 2 different variables are supported.",
                 )
             else:
                 self._variables = different_variables
