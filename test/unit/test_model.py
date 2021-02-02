@@ -63,21 +63,7 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertEqual(sympy.Mul, type(m._penetrances[8]))
 
         # Variables
-        sx = sympy.abc.x
-        sy = sympy.abc.y
-        self.assertIn(sx, m._variables[0])
-        self.assertIn(sx, m._variables[1])
-        self.assertIn(sx, m._variables[2])
-        self.assertIn(sx, m._variables[3])
-        self.assertIn(sx, m._variables[4])
-        self.assertIn(sx, m._variables[5])
-        self.assertIn(sx, m._variables[6])
-        self.assertIn(sx, m._variables[7])
-        self.assertIn(sx, m._variables[8])
-        self.assertIn(sy, m._variables[4])
-        self.assertIn(sy, m._variables[5])
-        self.assertIn(sy, m._variables[7])
-        self.assertIn(sy, m._variables[8])
+        self.assertEqual([sympy.abc.x, sympy.abc.y], m._variables)
 
     def test_file_parsing_2(self):
         """Test model files parsing."""
@@ -112,25 +98,7 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertEqual(sympy.Mul, type(m._penetrances[5]))
 
         # Variables
-        sx = sympy.abc.x
-        sy = sympy.abc.y
-        self.assertIn(sx, m._variables[0])
-        self.assertIn(sx, m._variables[1])
-        self.assertIn(sx, m._variables[2])
-        self.assertIn(sx, m._variables[3])
-        self.assertIn(sx, m._variables[4])
-        self.assertIn(sx, m._variables[5])
-        self.assertIn(sx, m._variables[6])
-        self.assertIn(sx, m._variables[7])
-        self.assertIn(sx, m._variables[8])
-        self.assertIn(sy, m._variables[1])
-        self.assertIn(sy, m._variables[2])
-        self.assertIn(sy, m._variables[3])
-        self.assertIn(sy, m._variables[4])
-        self.assertIn(sy, m._variables[5])
-        self.assertIn(sy, m._variables[6])
-        self.assertIn(sy, m._variables[7])
-        self.assertIn(sy, m._variables[8])
+        self.assertEqual([sympy.abc.x, sympy.abc.y], m._variables)
 
     def test_file_parsing_error_detection(self):
         """Test error handling during model files parsing."""
