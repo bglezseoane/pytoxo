@@ -83,9 +83,7 @@ class PTable:
             If `filename` is a existent directory.
         """
         # Input handling and checks
-        if format == "CSV":  # Deference fix
-            format = "csv"
-        else:
+        if not format == "csv":
             ValueError(f"Unsupported '{format}' format")
         # Calculate final filename
         filename = os.path.normpath(filename)
