@@ -18,7 +18,7 @@ import unittest
 import pytoxo.calculations
 
 
-class GenotypeProbabilitiesUnitTestSuite(unittest.TestCase):
+class CalculationsUnitTestSuite(unittest.TestCase):
     """Tests for `pytoxo/calculations.py` at unit level.
 
     In this suite the correctness and accuracy of the different functions of the
