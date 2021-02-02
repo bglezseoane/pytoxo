@@ -224,9 +224,8 @@ class Model:
         sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
-            model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=sol,
+            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
         )
 
     def find_max_heritability(
@@ -254,7 +253,6 @@ class Model:
         sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
-            model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=sol,
+            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
         )

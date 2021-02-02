@@ -26,9 +26,8 @@ class PTable:
     def __init__(
         self,
         model_order: int,
-        model_variables: list[sympy.Symbol],
         model_penetrances: list[sympy.Expr],
-        values: list[float],
+        values: dict[sympy.Symbol : float],
     ):
         """Creates a penetrance table from a given PyToxo model defined by
         its variables and penetrances, and its variable values.
@@ -38,20 +37,16 @@ class PTable:
         model_order : int
             Order from the PyToxo model from which to create the penetrance
             table.
-        model_variables : list[sympy.Symbol]
-            Variables from the PyToxo model from which to create the penetrance
-            table.
         model_penetrances : list[sympy.Expr]
             Penetrances from the PyToxo model from which to create the
             penetrance table.
-        values : list[float]
-             Value for each of the variables represented in model.
+        values : dict[sympy.Symbol: float]
+             Value for each of the variables represented in model, typically
+             `x` and `y`. Keys are the own variables as `sympy.Symbol`.
         """
         self._order = model_order
-        self._variables = model_variables
-        substitution = {(self._variables[0]): values[0], self._variables[1]: values[1]}
         self._penetrance_values = [
-            p.subs(substitution) for p in model_penetrances
+            p.subs(values) for p in model_penetrances
         ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
 
     def write_to_file(
