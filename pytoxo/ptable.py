@@ -66,7 +66,7 @@ class PTable:
         Parameters
         ----------
         filename : str
-            The full file name where writes the table, without extension.
+            The full file name where writes the table.
         overwrite : bool (default False)
             A flag that should be passed as true to overwrite the final file
             if it already exists.
@@ -87,13 +87,10 @@ class PTable:
         # Input handling and checks
         if format == "CSV":  # Deference fix
             format = "csv"
-        # Calculate extension
-        if format == "csv":
-            extension = ".csv"
         else:
             ValueError(f"Unsupported '{format}' format")
         # Calculate final filename
-        filename = os.path.normpath(filename + extension)
+        filename = os.path.normpath(filename)
         # Check final file name
         if os.path.exists(filename) and not overwrite:
             raise FileExistsError(filename)
