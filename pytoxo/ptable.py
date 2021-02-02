@@ -48,13 +48,11 @@ class PTable:
              Value for each of the variables represented in model.
         """
         self._order = model_order
-        self._variables = {
-            str(model_variables[0]): values[0],
-            str(model_variables[1]): values[1],
-        }
-        self._penetrance_values = sympy.substitution(
-            model_penetrances, model_variables, values
-        )
+        self._variables = model_variables
+        substitution = {(self._variables[0]): values[0], self._variables[1]: values[1]}
+        self._penetrance_values = [
+            p.subs(substitution) for p in model_penetrances
+        ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
 
     def write_to_file(
         self, filename: str, overwrite: bool = False, format: str = "csv"
