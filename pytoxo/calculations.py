@@ -77,7 +77,7 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
 def compute_prevalence(
     penetrances: list[float], mafs: list[float], gp: list[float] = None
 ) -> typing.Union[float, sympy.Expr]:
-    """Tries to compute the prevalence for a given the penetrance table
+    """Tries to compute the prevalence for a given penetrance table
     defined by its values.
 
     Parameters
@@ -110,7 +110,7 @@ def compute_prevalence(
 def compute_heritability(
     penetrances: list[float], mafs: list[float]
 ) -> typing.Union[float, sympy.Expr]:
-    """Tries to compute the heritability for a given the penetrance table
+    """Tries to compute the heritability for a given penetrance table
     defined by its values.
 
     Parameters
