@@ -17,6 +17,7 @@ parts of the library."""
 import functools
 import itertools
 import operator
+import typing
 
 import sympy
 import numpy as np
@@ -75,8 +76,8 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
 
 def compute_prevalence(
     penetrances: list[float], mafs: list[float], gp: list[float] = None
-) -> float:
-    """Compute the prevalence for a given the penetrance table
+) -> typing.Union[float, sympy.Expr]:
+    """Tries to compute the prevalence for a given the penetrance table
     defined by its values.
 
     Parameters
@@ -84,23 +85,32 @@ def compute_prevalence(
     penetrances : list[float]
         Penetrance values array.
     mafs : list[float]
-        Minor allele frequencies array.
+        Minor allele frequencies array. Ignored if `gp` is used.
     gp : list[float], optional
         Genotype probabilities array.
 
     Returns
     -------
-    float
-        Prevalence of the penetrance table.
+    typing.Union[float, sympy.Expr]
+        Prevalence of the penetrance table. Returns a float if the expression is
+        already solved and the expression itself as a Sympy expression
+        object if not.
     """
     if not gp:
         gp = genotype_probabilities(mafs)
 
-    return float(np.sum(np.multiply(penetrances, gp)))
+    res = np.sum(np.multiply(penetrances, gp))
+
+    if type(res) is np.ndarray:
+        res = float(res)
+
+    return res
 
 
-def compute_heritability(penetrances: list[float], mafs: list[float]) -> float:
-    """Compute the heritability for a given the penetrance table
+def compute_heritability(
+    penetrances: list[float], mafs: list[float]
+) -> typing.Union[float, sympy.Expr]:
+    """Tries to compute the heritability for a given the penetrance table
     defined by its values.
 
     Parameters
@@ -112,12 +122,19 @@ def compute_heritability(penetrances: list[float], mafs: list[float]) -> float:
 
     Returns
     -------
-    float
-        Heritability of the penetrance table.
+    typing.Union[float, sympy.Expr]
+        Heritability of the penetrance table. Returns a float if the expression
+        is already solved and the expression itself as a Sympy expression
+        object if not.
     """
     gp = genotype_probabilities(mafs)
     p = compute_prevalence(penetrances, mafs, gp)
-    return float(
-        np.sum(np.multiply(np.power(np.subtract(penetrances, p), 2), gp))
-        / (p * (1 - p))
+
+    res = np.sum(np.multiply(np.power(np.subtract(penetrances, p), 2), gp)) / (
+        p * (1 - p)
     )
+
+    if type(res) is np.ndarray:
+        res = float(res)
+
+    return res

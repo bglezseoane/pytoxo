@@ -14,8 +14,8 @@
 """Epistasis model definition."""
 
 import os
+import typing
 
-import numpy as np
 import sympy
 
 import pytoxo.errors
@@ -25,11 +25,6 @@ import pytoxo.calculations
 
 class Model:
     """Representation of an epistasis model."""
-
-    _name = None  # Name of the model
-    _order = None  # Number of locus defined in the model
-    _penetrances = []  # Array of symbolic expressions representing the epistatic model
-    _variables = []  # List of symbolic variables used throughout the model
 
     def __init__(self, filename: str):
         """Reads the model from its text representation in `file` and inits
@@ -55,6 +50,13 @@ class Model:
            If the input file is not found or the reading tentative fails due
            to other unexpected operative system level cause.
         """
+        self._name = None  # Name of the model
+        self._order = None  # Number of locus defined in the model
+        self._penetrances = (
+            []
+        )  # Array of symbolic expressions representing the epistatic model
+        self._variables = []  # List of symbolic variables used throughout the model
+
         try:
             with open(filename, "r") as f:
                 lines = f.readlines()
@@ -70,8 +72,8 @@ class Model:
                 )
 
             # Split lines around the comma (',')
-            fst_members = [line.split(",")[0] for line in lines]
-            snd_members = [line.split(",")[1] for line in lines]
+            fst_members = [line.split(",")[0].strip() for line in lines]
+            snd_members = [line.split(",")[1].strip() for line in lines]
 
             # Save the name of the model
             self._name = os.path.basename(filename).split(".")[0]
@@ -103,16 +105,33 @@ class Model:
                 )
 
             # Save the variables of the used expressions
+            all_variables = []
             for snd_member in snd_members:
-                self._variables.append(
-                    [sympy.Symbol(i) for i in snd_member if i.isalpha()]
+                all_variables.append(
+                    sympy.symbols([i for i in snd_member if i.isalpha()])
                 )
-            # Check support: only 2 variables are supported by PyToxo
-            for vars in self._variables:
-                if not len(vars) <= 2:
-                    raise pytoxo.errors.ModelCSVParsingError(
-                        filename, "Only models with 2 variables are supported."
-                    )
+
+            # Reduce the variables to avoid replication
+            all_variables = [
+                item for subl in all_variables for item in subl
+            ]  # Flat list
+            different_variables = []
+            for variable in all_variables:
+                """Not use other more direct method like
+                `list(set(all_variables))` because the variable apparition
+                order must be preserved"""
+                if variable not in different_variables:
+                    different_variables.append(variable)
+                    # TODO: Test with other variable names to assert...
+
+            # Check support: only 2 different variables are supported by PyToxo
+            if not 0 < len(different_variables) <= 2:
+                raise pytoxo.errors.ModelCSVParsingError(
+                    filename,
+                    "Only models with 1 or 2 different variables are supported.",
+                )
+            else:
+                self._variables = different_variables
         except IOError as e:
             raise e
         except pytoxo.errors.ModelCSVParsingError as e:
@@ -123,7 +142,7 @@ class Model:
     ########################################
     # Getters and setters
 
-    def get_name(self) -> None:
+    def get_name(self) -> str:
         return self._name
 
     def set_name(self, name: str) -> None:
@@ -132,59 +151,37 @@ class Model:
     name = property(get_name, set_name)
 
     @property
-    def order(self) -> None:
+    def order(self) -> int:
         return self._order
 
     @property
-    def penetrances(self) -> None:
+    def penetrances(self) -> list[typing.Union[float, sympy.Expr]]:
         return self._penetrances
 
     @property
-    def variables(self) -> None:
+    def variables(self) -> list[sympy.Symbol]:
         return self._variables
 
     ########################################
 
-    def _max_penetrance(self) -> None:
+    def _max_penetrance(self) -> sympy.Expr:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
-        p = np.transpose(
-            np.unique(
-                np.array(filter(lambda x: sympy.degree(x) > 0, self._penetrances))
-            )
-        )
 
-        """Convert model variables to constraints to extend them and build the
-        final expression"""
-        var_constraints = []
-        for var in self._variables:
-            var_constraints.append(sympy.sympify(sympy.Symbol(var) >= 0))
+        unique_penetrances = list(set(self._penetrances))
 
-        tmp_max = p[1]  # Temporary maximum
-        for i in p[2:]:
-            constraints = var_constraints  # Load computed vars constraints
-            # TODO: Check only real numbers are returned in `solve`
-            s_x, _ = sympy.solve(
-                constraints.extend(
-                    [
-                        sympy.sympify(sympy.Symbol(p) >= 0),
-                        sympy.sympify(sympy.Symbol(p) <= 1),
-                        sympy.sympify(sympy.Symbol(tmp_max) > sympy.Symbol(i)),
-                    ]
-                )
-            )
-            if not s_x:
-                tmp_max = i
-        return tmp_max
+        # Return the maximum penetrance expression with the largest degree
+        # TODO: Temporal patch. Revise math approach to achieve an stable
+        #  solution to this step...
+        degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
+        return unique_penetrances[degrees.index(max(degrees))]
 
-    def _solve(
-        self, constraints: list[sympy.core.relational.Relational]
-    ) -> tuple[float]:
+    def _solve(self, constraints: list[sympy.Eq]) -> tuple[float]:
         """Solves the equation system formed by the provided equations.
 
         Parameters
         ----------
-        constraints : list[sympy.core.relational.Relational]
+        constraints : list[sympy.Eq]
             Input constraints that define the equation.
 
         Returns
@@ -193,9 +190,16 @@ class Model:
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
-        [s_x, s_y] = sympy.solve(constraints, self._variables)
+        sol = sympy.solve(
+            constraints,
+            self._variables[0],
+            self._variables[1],
+            manual=True,
+            rational=False,
+        )
+        # TODO: Other solvers?
         # TODO: `solve` return check and raising
-        return s_x, s_y
+        return sol[0]  # Catch real solution, discarding complex ones
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
@@ -213,16 +217,16 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.sympify(
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs) == h
+        c1 = sympy.Eq(
+            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
         )
-        c2 = sympy.sympify(self._max_penetrance() == 1)
-        [s_x, s_y] = self._solve(constraints=[c1, c2])
+        c2 = sympy.Eq(self._max_penetrance(), 1)
+        sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=[s_x, s_y],
+            values=sol,
         )
 
     def find_max_heritability(
@@ -243,14 +247,14 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.sympify(
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs) == p
+        c1 = sympy.Eq(
+            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
         )
-        c2 = sympy.sympify(self._max_penetrance() == 1)
-        [s_x, s_y] = self._solve(constraints=[c1, c2])
+        c2 = sympy.Eq(self._max_penetrance(), 1)
+        sol = self._solve(constraints=[c1, c2])
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_variables=self._variables,
             model_penetrances=self._penetrances,
-            values=[s_x, s_y],
+            values=sol,
         )

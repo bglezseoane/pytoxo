@@ -23,10 +23,6 @@ import sympy
 class PTable:
     """Representation of a penetrance table."""
 
-    _order = None  # Number of locus defined by the penetrance table
-    _variables = []  # Values for the variables present in the original model
-    _penetrance_values = []  # Array of symbolic penetrances values
-
     def __init__(
         self,
         model_order: int,
@@ -52,13 +48,11 @@ class PTable:
              Value for each of the variables represented in model.
         """
         self._order = model_order
-        self._variables = {
-            str(model_variables[0]): values[0],
-            str(model_variables[1]): values[1],
-        }
-        self._penetrance_values = sympy.substitution(
-            model_penetrances, model_variables, values
-        )
+        self._variables = model_variables
+        substitution = {(self._variables[0]): values[0], self._variables[1]: values[1]}
+        self._penetrance_values = [
+            p.subs(substitution) for p in model_penetrances
+        ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
 
     def write_to_file(
         self, filename: str, overwrite: bool = False, format: str = "csv"
@@ -70,7 +64,7 @@ class PTable:
         Parameters
         ----------
         filename : str
-            The full file name where writes the table, without extension.
+            The full file name where writes the table.
         overwrite : bool (default False)
             A flag that should be passed as true to overwrite the final file
             if it already exists.
@@ -91,13 +85,10 @@ class PTable:
         # Input handling and checks
         if format == "CSV":  # Deference fix
             format = "csv"
-        # Calculate extension
-        if format == "csv":
-            extension = ".csv"
         else:
             ValueError(f"Unsupported '{format}' format")
         # Calculate final filename
-        filename = os.path.normpath(filename + extension)
+        filename = os.path.normpath(filename)
         # Check final file name
         if os.path.exists(filename) and not overwrite:
             raise FileExistsError(filename)
@@ -119,8 +110,8 @@ class PTable:
         # Generate lines of the file with genotypes and its penetrances
         lines = []
         for genotype, penetrance in zip(genotypes, self._penetrance_values):
-            lines.append(f"{genotype},{penetrance}")
+            lines.append(f"{''.join(genotype)},{penetrance}\n")
 
         # Write file
-        with open(filename) as f:
+        with open(filename, "x") as f:
             f.writelines(lines)
