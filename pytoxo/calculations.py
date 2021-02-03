@@ -23,9 +23,11 @@ import sympy
 import numpy as np
 
 
-def genotype_probabilities(mafs: list[float]) -> list[float]:
-    """Compute the probabilities associated with all genotype combinations given
-    each MAF (minor allele frequency).
+def genotype_probabilities(
+    mafs: typing.Union[list[sympy.Rational], list[float]]
+) -> list[sympy.Rational]:
+    """Computes the probabilities associated with all genotype combinations
+    given each MAF (minor allele frequency).
 
     The genotype frequency can be calculated from the allele frequencies. It
     is usually assumed for its calculation that the Hardy-Weinberg equilibrium
@@ -43,14 +45,17 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
 
     Parameters
     ----------
-    mafs : list[float]
-        Minor allele frequencies array.
+    mafs : typing.Union[list[sympy.Rational], list[float]]
+        Minor allele frequencies array. Accept rationals and floats.
 
     Returns
     -------
-    list[float]
-        Array with the probabilities of all possible allele combinations.
+    list[sympy.Rational]
+        Array with the probabilities of all possible allele combinations as
+        rational numbers.
     """
+    mafs = [sympy.nsimplify(m) for m in mafs]  # Assert rationals
+
     af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
     for maf in mafs:
         m = sympy.sympify(maf)
@@ -68,8 +73,8 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
 
     # Reduction of the cartesian product with a multiplication for each sub-list
     gen_probs_cp_red = []
-    for o in gen_probs_cp:
-        gen_probs_cp_red.append(functools.reduce(operator.mul, o, 1))
+    for sl in gen_probs_cp:
+        gen_probs_cp_red.append(functools.reduce(operator.mul, sl, 1))
 
     return gen_probs_cp_red
 
