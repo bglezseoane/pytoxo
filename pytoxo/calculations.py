@@ -85,7 +85,7 @@ def genotype_probabilities(
 
 def compute_prevalence(
     penetrances: typing.Union[list[Expr], list[Rational], list[float]],
-    mafs: typing.Union[list[Rational], list[float]],
+    mafs: typing.Union[list[Rational], list[float]] = None,
     gp: typing.Union[list[Rational], list[float]] = None,
 ) -> typing.Union[Rational, Expr]:
     """Tries to compute the prevalence for a given penetrance list.
