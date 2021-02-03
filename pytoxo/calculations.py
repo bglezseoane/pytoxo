@@ -124,7 +124,7 @@ def compute_prevalence(
 
     penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
 
-    # Product of each value of the two arrays
+    # `penetrances .* gp`
     prods = []
     for pen, prob in zip(penetrances, gp):
         prods.append(Mul(pen, prob))
@@ -157,15 +157,10 @@ def compute_heritability(
     gp = genotype_probabilities(mafs)
     p = compute_prevalence(penetrances, mafs, gp)
 
-    sub_squares = []
-    # Subtraction squares of each value of the two arrays
-    for pen in penetrances:
-        sub_squares.append(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)))
-
-    # Product of each value of the two arrays
+    # `(penetrances - p).^2 .* gp`
     prods = []
-    for ssq, prob in zip(sub_squares, gp):
-        prods.append(Mul(ssq, prob))
+    for pen, prob in zip(penetrances, gp):
+        prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
 
     # Denominator of the final expression
     denom = Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
