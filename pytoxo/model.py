@@ -176,7 +176,7 @@ class Model:
         degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
         return unique_penetrances[degrees.index(max(degrees))]
 
-    def _solve(self, constraints: list[sympy.Eq]) -> tuple[float]:
+    def _solve(self, constraints: list[sympy.Eq]) -> pytoxo.ptable.PTable:
         """Solves the equation system formed by the provided equations.
 
         Parameters
@@ -186,7 +186,7 @@ class Model:
 
         Returns
         -------
-        tuple[float]
+        pytoxo.ptable.PTable
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
@@ -199,7 +199,12 @@ class Model:
         )
         # TODO: Other solvers?
         # TODO: `solve` return check and raising
-        return sol[0]  # Catch real solution, discarding complex ones
+        real_sol = sol[0]  # Catch real solution, discarding complex ones
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_penetrances=self._penetrances,
+            values={self._variables[0]: real_sol[0], self._variables[1]: real_sol[1]},
+        )
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
@@ -221,12 +226,7 @@ class Model:
             pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
         )
         c2 = sympy.Eq(self._max_penetrance(), 1)
-        sol = self._solve(constraints=[c1, c2])
-        return pytoxo.ptable.PTable(
-            model_order=self._order,
-            model_penetrances=self._penetrances,
-            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
-        )
+        return self._solve(constraints=[c1, c2])
 
     def find_max_heritability(
         self, mafs: list[float], p: float
@@ -250,9 +250,4 @@ class Model:
             pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
         )
         c2 = sympy.Eq(self._max_penetrance(), 1)
-        sol = self._solve(constraints=[c1, c2])
-        return pytoxo.ptable.PTable(
-            model_order=self._order,
-            model_penetrances=self._penetrances,
-            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
-        )
+        return self._solve(constraints=[c1, c2])
