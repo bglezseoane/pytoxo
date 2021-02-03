@@ -36,6 +36,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -49,7 +50,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_1_h_1(self):
@@ -59,6 +60,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         """
 
         model = "multiplicative_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -72,7 +74,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_1_h_1(self):
@@ -81,6 +83,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -94,7 +97,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_1_h_1(self):
@@ -103,6 +106,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -116,7 +120,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_1_h_1(self):
@@ -125,6 +129,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "multiplicative_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -138,7 +143,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_1_h_1(self):
@@ -147,6 +152,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
         expected_output_file = (
@@ -160,7 +166,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_1_h_8(self):
@@ -169,6 +175,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -182,7 +189,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_1_h_8(self):
@@ -192,6 +199,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         """
 
         model = "multiplicative_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -205,7 +213,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_1_h_8(self):
@@ -214,6 +222,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_3"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -227,7 +236,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_1_h_8(self):
@@ -236,6 +245,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -249,7 +259,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_1_h_8(self):
@@ -258,6 +268,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "multiplicative_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -271,7 +282,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_1_h_8(self):
@@ -280,6 +291,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_4"
+        order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
         expected_output_file = (
@@ -293,7 +305,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_4_h_1(self):
@@ -302,6 +314,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -315,7 +328,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_4_h_1(self):
@@ -325,6 +338,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         """
 
         model = "multiplicative_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -338,7 +352,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_4_h_1(self):
@@ -347,6 +361,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -360,7 +375,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_4_h_1(self):
@@ -369,6 +384,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -382,7 +398,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_4_h_1(self):
@@ -391,6 +407,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "multiplicative_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -404,7 +421,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_4_h_1(self):
@@ -413,6 +430,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
         expected_output_file = (
@@ -426,7 +444,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_4_h_8(self):
@@ -435,6 +453,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -448,7 +467,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_4_h_8(self):
@@ -458,6 +477,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         """
 
         model = "multiplicative_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -471,7 +491,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_4_h_8(self):
@@ -480,6 +500,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_3"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -493,7 +514,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_4_h_8(self):
@@ -502,6 +523,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "additive_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -515,7 +537,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_4_h_8(self):
@@ -524,6 +546,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "multiplicative_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -537,7 +560,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_4_h_8(self):
@@ -546,6 +569,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         compares it with the collected Toxo's output for the same input.
         """
         model = "threshold_4"
+        order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
         expected_output_file = (
@@ -559,7 +583,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7,
+            accuracy_places=7 - order,
         )
 
     @staticmethod
