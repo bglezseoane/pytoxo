@@ -71,9 +71,9 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertEqual(expected_output, output)
 
-    def test_genotype_probabilities_1(self):
-        """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given configuration."""
+    def test_genotype_probabilities_num_1(self):
+        """Test numerically that PyToxo and Toxo `genotype_probabilities`
+        functions work equal with a given configuration."""
         input_mafs = [
             0.1,
             0.1,
@@ -116,9 +116,9 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
-    def test_genotype_probabilities_2(self):
-        """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given configuration."""
+    def test_genotype_probabilities_num_2(self):
+        """Test numerically that PyToxo and Toxo `genotype_probabilities`
+        functions work equal with a given configuration."""
         input_mafs = [
             0.1,
             0.4,
@@ -161,9 +161,9 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
-    def test_genotype_probabilities_3(self):
-        """Test that PyToxo and Toxo `genotype_probabilities` functions work
-        equal with a given configuration."""
+    def test_genotype_probabilities_num_3(self):
+        """Test numerically that PyToxo and Toxo `genotype_probabilities`
+        functions work equal with a given configuration."""
         input_mafs = [
             0.01,
             0.05,
@@ -911,11 +911,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
-    def test_compute_prevalence_1(self):
-        """Test that PyToxo and Toxo `compute_prevalence` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_prevalence_num_1(self):
+        """Test numerically that PyToxo and Toxo `compute_prevalence`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `p = prevalence(obj, mafs, gp)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             0.2589158758688671,
             0.4692129571716719,
@@ -963,11 +963,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
-    def test_compute_prevalence_2(self):
-        """Test that PyToxo and Toxo `compute_prevalence` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_prevalence_num_2(self):
+        """Test numerically that PyToxo and Toxo `compute_prevalence`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `p = prevalence(obj, mafs, gp)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             839.2878566124077,
             315.9453559692004,
@@ -1015,11 +1015,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
-    def test_compute_prevalence_3(self):
-        """Test that PyToxo and Toxo `compute_prevalence` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `p = prevalence(obj, mafs, gp)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_prevalence_num_3(self):
+        """Test numerically that PyToxo and Toxo `compute_prevalence`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `p = prevalence(obj, mafs, gp)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             95.8664528902537,
             107.846688399269,
@@ -1067,11 +1067,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
-    def test_compute_heritability_1(self):
-        """Test that PyToxo and Toxo `compute_heritability` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_heritability_num_1(self):
+        """Test numerically that PyToxo and Toxo `compute_heritability`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `h = heritability(obj, mafs)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             0.5597454928050867,
             0.5134279372481442,
@@ -1116,11 +1116,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
-    def test_compute_heritability_2(self):
-        """Test that PyToxo and Toxo `compute_heritability` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_heritability_num_2(self):
+        """Test numerically that PyToxo and Toxo `compute_heritability`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `h = heritability(obj, mafs)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             0.03656577618228967,
             0.02507835851309162,
@@ -1165,11 +1165,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
-    def test_compute_heritability_3(self):
-        """Test that PyToxo and Toxo `compute_heritability` functions work
-        equal with a given configuration. In Toxo, this function is the method
-        `h = heritability(obj, mafs)` of the `PTable` class; in PyToxo it
-        has been refactored to an independent function."""
+    def test_compute_heritability_num_3(self):
+        """Test numerically that PyToxo and Toxo `compute_heritability`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `h = heritability(obj, mafs)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
         input_penetrances = [
             0.0017079671255362228,
             0.0046969093871244835,
