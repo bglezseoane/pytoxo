@@ -131,33 +131,41 @@ def compute_prevalence(
 
 
 def compute_heritability(
-    penetrances: list[float], mafs: list[float]
-) -> typing.Union[float, sympy.Expr]:
+    penetrances: typing.Union[list[sympy.Expr], list[sympy.Rational], list[float]],
+    mafs: typing.Union[list[sympy.Rational], list[float]],
+) -> typing.Union[sympy.Rational, sympy.Expr]:
     """Tries to compute the heritability for a given penetrance table
     defined by its values.
 
     Parameters
     ----------
-    penetrances : list[float]
+    penetrances : typing.Union[list[sympy.Expr], list[sympy.Rational], list[float]]
         Penetrance values array.
-    mafs : list[float]
+    mafs : typing.Union[list[sympy.Rational], list[float]], optional
         Minor allele frequencies array.
 
     Returns
     -------
-    typing.Union[float, sympy.Expr]
-        Heritability of the penetrance table. Returns a float if the expression
-        is already solved and the expression itself as a Sympy expression
-        object if not.
+    typing.Union[sympy.Rational, sympy.Expr]
+        Heritability of the penetrance table. Returns a rational if it is
+        possible to solve the expression numerically and the expression if not.
     """
+    penetrances = [sympy.nsimplify(p) for p in penetrances]  # Assert rationals
+
     gp = genotype_probabilities(mafs)
     p = compute_prevalence(penetrances, mafs, gp)
 
-    res = np.sum(np.multiply(np.power(np.subtract(penetrances, p), 2), gp)) / (
-        p * (1 - p)
-    )
+    sub_squares = []
+    # Subtraction squares of each value of the two arrays
+    for pen in penetrances:
+        sub_squares.append(sympy.Pow(sympy.Add(pen, sympy.Mul(-1, p)), 2))
 
-    if type(res) is np.ndarray:
-        res = float(res)
+    # Product of each value of the two arrays
+    prods = []
+    for ssq, prob in zip(sub_squares, gp):
+        prods.append(ssq * prob)
 
-    return res
+    # Denominator of the final expression
+    denom = sympy.Pow(sympy.Mul(p, sympy.Add(1, sympy.Mul(p, -1))), -1)
+
+    return sympy.Mul(sympy.Add(*prods), denom)
