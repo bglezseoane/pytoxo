@@ -27,7 +27,7 @@ from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify
 
 def genotype_probabilities(
     mafs: typing.Union[list[Rational], list[float]]
-) -> list[Rational]:
+) -> typing.Union[list[Rational], list[Expr]]:
     """Computes the probabilities associated with all genotype combinations
     given each MAF (minor allele frequency).
 
@@ -52,7 +52,7 @@ def genotype_probabilities(
 
     Returns
     -------
-    list[Rational]
+    typing.Union[list[Rational], list[Expr]]
         Array with the probabilities of all possible allele combinations as
         rational numbers.
     """
