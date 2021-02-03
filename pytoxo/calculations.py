@@ -12,20 +12,24 @@
 ###########################################################
 
 """PyToxo calculations module: some math-based methods used in different
-parts of the library."""
+parts of the library.
+
+If possible, internal Sympy classes and methods are chosen instead of Python
+built-ins for optimization.
+"""
 
 import functools
 import itertools
-import operator
 import typing
 
-import sympy
-import numpy as np
+from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify
 
 
-def genotype_probabilities(mafs: list[float]) -> list[float]:
-    """Compute the probabilities associated with all genotype combinations given
-    each MAF (minor allele frequency).
+def genotype_probabilities(
+    mafs: typing.Union[list[Rational], list[float]]
+) -> typing.Union[list[Rational], list[Expr]]:
+    """Computes the probabilities associated with all genotype combinations
+    given each MAF (minor allele frequency).
 
     The genotype frequency can be calculated from the allele frequencies. It
     is usually assumed for its calculation that the Hardy-Weinberg equilibrium
@@ -43,98 +47,122 @@ def genotype_probabilities(mafs: list[float]) -> list[float]:
 
     Parameters
     ----------
-    mafs : list[float]
-        Minor allele frequencies array.
+    mafs : typing.Union[list[Rational], list[float]]
+        Minor allele frequencies array. Accept rationals and floats.
 
     Returns
     -------
-    list[float]
-        Array with the probabilities of all possible allele combinations.
+    typing.Union[list[Rational], list[Expr]]
+        Array with the probabilities of all possible allele combinations as
+        rational numbers.
     """
+    mafs = [nsimplify(m) for m in mafs]  # Assert rationals
+
     af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
     for maf in mafs:
-        m = sympy.sympify(maf)
-        M = 1 - sympy.sympify(maf)
+        m = maf
+        M = Add(Integer(1), Mul(Integer(-1), maf))
         af_zip.append((m, M))
 
     gen_probs = []  # Genotype probabilities as `[M ** 2, 2 * M * m, m ** 2]` sub-lists
     for allele_pair in af_zip:
         m = allele_pair[0]
         M = allele_pair[1]
-        gen_probs.append([M ** 2, 2 * M * m, m ** 2])
+        gen_probs.append(
+            [Pow(M, Integer(2)), Mul(Integer(2), M, m), Pow(m, Integer(2))]
+        )
 
     # Cartesian product of the probabilities
-    gen_probs_cp = list(itertools.product(*gen_probs))
+    gen_probs_cps = list(itertools.product(*gen_probs))
 
     # Reduction of the cartesian product with a multiplication for each sub-list
     gen_probs_cp_red = []
-    for o in gen_probs_cp:
-        gen_probs_cp_red.append(functools.reduce(operator.mul, o, 1))
+    for gen_probs_cp in gen_probs_cps:
+        gen_probs_cp_red.append(functools.reduce(Mul, gen_probs_cp, Integer(1)))
 
     return gen_probs_cp_red
 
 
 def compute_prevalence(
-    penetrances: list[float], mafs: list[float], gp: list[float] = None
-) -> typing.Union[float, sympy.Expr]:
-    """Tries to compute the prevalence for a given penetrance table
-    defined by its values.
+    penetrances: typing.Union[list[Expr], list[Rational], list[float]],
+    mafs: typing.Union[list[Rational], list[float]] = None,
+    gp: typing.Union[list[Rational], list[float]] = None,
+) -> typing.Union[Rational, Expr]:
+    """Tries to compute the prevalence for a given penetrance list.
+
+    One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored.
 
     Parameters
     ----------
-    penetrances : list[float]
+    penetrances : typing.Union[list[Expr], list[Rational], list[float]]
         Penetrance values array.
-    mafs : list[float]
+    mafs : typing.Union[list[Rational], list[float]], optional
         Minor allele frequencies array. Ignored if `gp` is used.
-    gp : list[float], optional
+    gp : typing.Union[list[Rational], list[float]], optional
         Genotype probabilities array.
 
     Returns
     -------
-    typing.Union[float, sympy.Expr]
-        Prevalence of the penetrance table. Returns a float if the expression is
-        already solved and the expression itself as a Sympy expression
-        object if not.
+    typing.Union[Rational, Expr]
+        Prevalence of the penetrance table. Returns a rational if it is
+        possible to solve the expression numerically and the expression if not.
+
+    Raises
+    ------
+    ValueError
+        If none of `mafs` and `gp` are passed as parameter.
     """
     if not gp:
-        gp = genotype_probabilities(mafs)
+        if not mafs:
+            raise ValueError(
+                "One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored."
+            )
+        else:
+            gp = genotype_probabilities(mafs)
+    else:
+        gp = [nsimplify(p) for p in gp]  # Assert rationals
 
-    res = np.sum(np.multiply(penetrances, gp))
+    penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
 
-    if type(res) is np.ndarray:
-        res = float(res)
+    # `penetrances .* gp`
+    prods = []
+    for pen, prob in zip(penetrances, gp):
+        prods.append(Mul(pen, prob))
 
-    return res
+    return Add(*prods)  # Return the addition of all the elements of the product array
 
 
 def compute_heritability(
-    penetrances: list[float], mafs: list[float]
-) -> typing.Union[float, sympy.Expr]:
+    penetrances: typing.Union[list[Expr], list[Rational], list[float]],
+    mafs: typing.Union[list[Rational], list[float]],
+) -> typing.Union[Rational, Expr]:
     """Tries to compute the heritability for a given penetrance table
     defined by its values.
 
     Parameters
     ----------
-    penetrances : list[float]
+    penetrances : typing.Union[list[Expr], list[Rational], list[float]]
         Penetrance values array.
-    mafs : list[float]
+    mafs : typing.Union[list[Rational], list[float]], optional
         Minor allele frequencies array.
 
     Returns
     -------
-    typing.Union[float, sympy.Expr]
-        Heritability of the penetrance table. Returns a float if the expression
-        is already solved and the expression itself as a Sympy expression
-        object if not.
+    typing.Union[Rational, Expr]
+        Heritability of the penetrance table. Returns a rational if it is
+        possible to solve the expression numerically and the expression if not.
     """
+    penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
+
     gp = genotype_probabilities(mafs)
     p = compute_prevalence(penetrances, mafs, gp)
 
-    res = np.sum(np.multiply(np.power(np.subtract(penetrances, p), 2), gp)) / (
-        p * (1 - p)
-    )
+    # `(penetrances - p).^2 .* gp`
+    prods = []
+    for pen, prob in zip(penetrances, gp):
+        prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
 
-    if type(res) is np.ndarray:
-        res = float(res)
+    # Denominator of the final expression
+    denom = Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
 
-    return res
+    return Mul(Add(*prods), denom)
