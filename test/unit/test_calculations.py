@@ -15,6 +15,8 @@
 
 import unittest
 
+import sympy
+
 import pytoxo.calculations
 
 
@@ -911,6 +913,85 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         for par in zip(expected_output, output):
             self.assertAlmostEqual(par[0], par[1])  # Default precision 7 decimals
 
+    def test_compute_prevalence_sym(self):
+        """Test symbolically that PyToxo and Toxo `compute_prevalence`
+        functions work equal with a given configuration. In Toxo,
+        this function is the method `p = prevalence(obj, mafs, gp)` of the
+        `PTable` class; in PyToxo it has been refactored to an independent
+        function."""
+        input_penetrances_str = [
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x*(y + 1)",
+            "x*(y + 1)^2",
+            "x",
+            "x*(y + 1)^2",
+            "x*(y + 1)^4",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x*(y + 1)^2",
+            "x*(y + 1)^4",
+            "x",
+            "x*(y + 1)^4",
+            "x*(y + 1)^8",
+        ]  # An example case of real penetrances used here and in Toxo
+        input_penetrances = sympy.sympify(input_penetrances_str)
+        input_gp = [
+            sympy.Mul(531441, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(125000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(1, sympy.Pow(1000000, sympy.Integer(-1))),
+        ]
+
+        """Output expression as string, from Toxo's `p = prevalence(obj, mafs, 
+        gp)` function for `input_penetrances` and `input_gp` input. Forced in a
+        Matlab debugging session"""
+        expected_output = sympy.sympify(
+            "(993141*x)/1000000 + (243*x*(y + 1)^2)/250000 + "
+            + "(27*x*(y + 1)^4)/500000 + (x*(y + 1)^8)/1000000 + "
+            + "(729*x*(y + 1))/125000"
+        )
+
+        output = pytoxo.calculations.compute_prevalence(input_penetrances, gp=input_gp)
+
+        self.assertEqual(expected_output, output)
+
     def test_compute_prevalence_num_1(self):
         """Test numerically that PyToxo and Toxo `compute_prevalence`
         functions work equal with a given configuration. In Toxo, this function
@@ -1066,6 +1147,107 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         )
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
+
+    def test_compute_heritability_sym(self):
+        """Test symbolically that PyToxo and Toxo `compute_heritability`
+        functions work equal with a given configuration. In Toxo, this function
+        is the method `h = heritability(obj, mafs)` of the `PTable` class; in
+        PyToxo it has been refactored to an independent function."""
+        input_penetrances_str = [
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x*(y + 1)",
+            "x*(y + 1)^2",
+            "x",
+            "x*(y + 1)^2",
+            "x*(y + 1)^4",
+            "x",
+            "x",
+            "x",
+            "x",
+            "x*(y + 1)^2",
+            "x*(y + 1)^4",
+            "x",
+            "x*(y + 1)^4",
+            "x*(y + 1)^8",
+        ]  # An example case of real penetrances used here and in Toxo
+        input_penetrances = sympy.sympify(input_penetrances_str)
+        input_mafs = [
+            0.1,
+            0.1,
+            0.1,
+        ]  # These are simply mock values to assert the calculation correctness and accuracy
+        input_gp = [
+            sympy.Mul(531441, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(59049, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(125000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(6561, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(729, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(250000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(81, sympy.Pow(1000000, sympy.Integer(-1))),
+            sympy.Mul(9, sympy.Pow(500000, sympy.Integer(-1))),
+            sympy.Mul(1, sympy.Pow(1000000, sympy.Integer(-1))),
+        ]
+
+        """Output expression as string, from Toxo's `h = heritability(mafs)`
+        function for `input_penetrances` and `input_mafs` input. Forced in a 
+        Matlab debugging session"""
+        expected_output = sympy.sympify(
+            "-((993141*((243*x*(y + 1)^2)/250000 - (6859*x)/1000000 + (27*x*("
+            + "y + 1)^4)/500000 + (x*(y + 1)^8)/1000000 + (729*x*(y + "
+            + "1))/125000)^2)/1000000 + (729*((993141*x)/1000000 + (243*x*(y + "
+            + "1)^2)/250000 + (27*x*(y + 1)^4)/500000 + (x*(y + 1)^8)/1000000 - "
+            + "(124271*x*(y + 1))/125000)^2)/125000 + (243*((993141*x)/1000000 "
+            + "- (249757*x*(y + 1)^2)/250000 + (27*x*(y + 1)^4)/500000 + (x*(y "
+            + "+ 1)^8)/1000000 + (729*x*(y + 1))/125000)^2)/250000 + (27*(("
+            + "993141*x)/1000000 + (243*x*(y + 1)^2)/250000 - (499973*x*(y + "
+            + "1)^4)/500000 + (x*(y + 1)^8)/1000000 + (729*x*(y + "
+            + "1))/125000)^2)/500000 + ((993141*x)/1000000 + (243*x*(y + "
+            + "1)^2)/250000 + (27*x*(y + 1)^4)/500000 - (999999*x*(y + "
+            + "1)^8)/1000000 + (729*x*(y + 1))/125000)^2/1000000)/((("
+            + "993141*x)/1000000 + (243*x*(y + 1)^2)/250000 + (27*x*(y + "
+            + "1)^4)/500000 + (x*(y + 1)^8)/1000000 + (729*x*(y + 1))/125000)*("
+            + "(993141*x)/1000000 + (243*x*(y + 1)^2)/250000 + (27*x*(y + "
+            + "1)^4)/500000 + (x*(y + 1)^8)/1000000 + (729*x*(y + 1))/125000 - "
+            + "1)) "
+        )
+
+        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
+
+        # Simplification necessary to compare
+        expected_output = sympy.simplify(expected_output)
+        output = sympy.simplify(output)
+
+        self.assertEqual(expected_output, output)
 
     def test_compute_heritability_num_1(self):
         """Test numerically that PyToxo and Toxo `compute_heritability`
