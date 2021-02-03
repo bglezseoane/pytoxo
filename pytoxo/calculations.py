@@ -80,36 +80,54 @@ def genotype_probabilities(
 
 
 def compute_prevalence(
-    penetrances: list[float], mafs: list[float], gp: list[float] = None
-) -> typing.Union[float, sympy.Expr]:
-    """Tries to compute the prevalence for a given penetrance table
-    defined by its values.
+    penetrances: typing.Union[list[sympy.Expr], list[sympy.Rational], list[float]],
+    mafs: typing.Union[list[sympy.Rational], list[float]],
+    gp: typing.Union[list[sympy.Rational], list[float]] = None,
+) -> typing.Union[sympy.Rational, sympy.Expr]:
+    """Tries to compute the prevalence for a given penetrance list.
+
+    One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored.
 
     Parameters
     ----------
-    penetrances : list[float]
+    penetrances : typing.Union[list[sympy.Expr], list[sympy.Rational], list[float]]
         Penetrance values array.
-    mafs : list[float]
+    mafs : typing.Union[list[sympy.Rational], list[float]], optional
         Minor allele frequencies array. Ignored if `gp` is used.
-    gp : list[float], optional
+    gp : typing.Union[list[sympy.Rational], list[float]], optional
         Genotype probabilities array.
 
     Returns
     -------
-    typing.Union[float, sympy.Expr]
-        Prevalence of the penetrance table. Returns a float if the expression is
-        already solved and the expression itself as a Sympy expression
-        object if not.
+    typing.Union[sympy.Rational, sympy.Expr]
+        Prevalence of the penetrance table. Returns a rational if it is
+        possible to solve the expression numerically and the expression if not.
+
+    Raises
+    ------
+    ValueError
+        If none of `mafs` and `gp` are passed as parameter.
     """
     if not gp:
-        gp = genotype_probabilities(mafs)
+        if not mafs:
+            raise ValueError(
+                "One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored."
+            )
+        else:
+            gp = genotype_probabilities(mafs)
+    else:
+        gp = [sympy.nsimplify(p) for p in gp]  # Assert rationals
 
-    res = np.sum(np.multiply(penetrances, gp))
+    penetrances = [sympy.nsimplify(p) for p in penetrances]  # Assert rationals
 
-    if type(res) is np.ndarray:
-        res = float(res)
+    # Product of each value of the two arrays
+    prods = []
+    for pen, prob in zip(penetrances, gp):
+        prods.append(pen * prob)
 
-    return res
+    return sympy.Add(
+        *prods
+    )  # Return the addition of all the elements of the product array
 
 
 def compute_heritability(
