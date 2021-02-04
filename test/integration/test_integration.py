@@ -44,7 +44,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -68,7 +68,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -91,7 +91,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -114,7 +114,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -137,7 +137,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -160,7 +160,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -183,7 +183,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -207,7 +207,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -230,7 +230,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -253,7 +253,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -276,7 +276,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -299,7 +299,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -322,7 +322,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -346,7 +346,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -369,7 +369,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -392,7 +392,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -415,7 +415,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -438,7 +438,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -461,7 +461,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -485,7 +485,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -508,7 +508,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -531,7 +531,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -554,7 +554,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -577,7 +577,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
         # Run within the helper function
-        self.helper_toxo_calculate_tables(
+        self._helper_toxo_calculate_tables(
             test=self,
             model_file=f"models/{model}.csv",
             expected_output_file=expected_output_file,
@@ -587,7 +587,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
     @staticmethod
-    def helper_toxo_calculate_tables(
+    def _helper_toxo_calculate_tables(
         test, model_file, expected_output_file, maf, heritability, accuracy_delta
     ):
         """Helper method with the test skeleton to the penetrance tables
