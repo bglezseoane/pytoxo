@@ -223,10 +223,8 @@ class Model:
             Penetrance table obtained within a `PTable` object.
         """
         h = sympy.nsimplify(h)  # Assert rational
-        c1 = sympy.Eq(
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
-        )
-        c2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
+        c1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])
 
     def find_max_heritability(
@@ -248,8 +246,6 @@ class Model:
             Penetrance table obtained within a `PTable` object.
         """
         p = sympy.nsimplify(p)  # Assert rational
-        c1 = sympy.Eq(
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
-        )
-        c2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
+        c1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])
