@@ -50,7 +50,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_1_h_1(self):
@@ -74,7 +74,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_1_h_1(self):
@@ -97,7 +97,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_1_h_1(self):
@@ -120,7 +120,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_1_h_1(self):
@@ -143,7 +143,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_1_h_1(self):
@@ -166,7 +166,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_1_h_8(self):
@@ -189,7 +189,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_1_h_8(self):
@@ -213,7 +213,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_1_h_8(self):
@@ -236,7 +236,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_1_h_8(self):
@@ -259,7 +259,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_1_h_8(self):
@@ -282,7 +282,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_1_h_8(self):
@@ -305,7 +305,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_4_h_1(self):
@@ -328,7 +328,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_4_h_1(self):
@@ -352,7 +352,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_4_h_1(self):
@@ -375,7 +375,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_4_h_1(self):
@@ -398,7 +398,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_4_h_1(self):
@@ -421,7 +421,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_4_h_1(self):
@@ -444,7 +444,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_3_maf_4_h_8(self):
@@ -467,7 +467,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_3_maf_4_h_8(self):
@@ -491,7 +491,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_3_maf_4_h_8(self):
@@ -514,7 +514,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_additive_4_maf_4_h_8(self):
@@ -537,7 +537,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_multiplicative_4_maf_4_h_8(self):
@@ -560,7 +560,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     def test_toxo_calculate_tables_threshold_4_maf_4_h_8(self):
@@ -583,12 +583,12 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
-            accuracy_places=7 - order,
+            accuracy_delta=0.01,
         )
 
     @staticmethod
     def helper_toxo_calculate_tables(
-        test, model_file, expected_output_file, maf, heritability, accuracy_places
+        test, model_file, expected_output_file, maf, heritability, accuracy_delta
     ):
         """Helper method with the test skeleton to the penetrance tables
         generation tests of `ToxoCalculateTablesTestSuite` test suite.
@@ -631,11 +631,17 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             for expected_penetrance, penetrance in zip(
                 expected_penetrances, penetrances
             ):
-                test.assertAlmostEqual(
-                    float(expected_penetrance),
-                    float(penetrance),
-                    places=accuracy_places,
-                )
+                # Cast the penetrances
+                expected_penetrance = float(expected_penetrance)
+                penetrance = float(penetrance)
+                # First check penetrance values are coherent
+                test.assertGreaterEqual(1, expected_penetrance)
+                test.assertLessEqual(0, expected_penetrance)
+                test.assertGreaterEqual(1, penetrance)
+                test.assertLessEqual(0, penetrance)
+                # Calculate delta between the two penetrances
+                penetrance_delta = abs(expected_penetrance - penetrance)
+                test.assertLess(penetrance_delta, accuracy_delta)
 
 
 if __name__ == "__main__":
