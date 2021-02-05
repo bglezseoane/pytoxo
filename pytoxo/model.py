@@ -170,13 +170,44 @@ class Model:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
 
-        unique_penetrances = list(set(self._penetrances))
+        def check_polynomial(candidate) -> bool:
+            """Help function that check if `candidate` is a valid polynomial
+            expression."""
+            try:
+                sympy.Poly(candidate)
+            except sympy.polys.polyerrors.GeneratorsNeeded:
+                return False
+            # Else...
+            return True
 
-        # Return the maximum penetrance expression with the largest degree
-        # TODO: Temporal patch. Revise math approach to achieve an stable
-        #  solution to this step...
-        degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
-        return unique_penetrances[degrees.index(max(degrees))]
+        # Filter non-polynomial penetrance expressions
+        polynomials = [
+            penetrance
+            for penetrance in self._penetrances
+            if check_polynomial(penetrance)
+        ]
+
+        """Create constraints as `0 <= polynomial <= 1` for all the 
+        polynomials."""
+        constraints = []
+        for polynomial in polynomials:
+            constraints.append(polynomial >= 0)
+            constraints.append(polynomial <= 1)
+
+        # Get then the maximum polynomial
+        max_polynomial = polynomials[0]  # Temporal maximum
+        for polynomial in polynomials[1:]:
+            solution = sympy.solve(
+                constraints + [max_polynomial > polynomial],
+                sympy.abc.x,
+                nonnegative=True,
+                domain=sympy.S.Reals,
+            )  # Constrainted to only real and positive solutions
+            if not solution:
+                max_polynomial = polynomial
+
+        # Return the maximum polynomial
+        return max_polynomial
 
     def _solve(
         self, constraints: list[sympy.Eq], risky: bool = False
