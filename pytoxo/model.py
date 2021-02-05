@@ -201,23 +201,12 @@ class Model:
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
-        """Sometimes the solver does not find the correct solution, so the 
-        next lines calculate an initial solution and then a confirmation one. 
-        If the two are equivalent, the solution is considered as the correct. 
-        If not, more calls to the solver are required to achieve a 75 % of 
-        votation for the final one."""
 
-        sol_minimum_acceptance_frequency = 0.75
-        max_attempts = 10
         solve_timeout = 20
-        risky = False
 
-        def try_to_solve(attempts: int) -> tuple[list[tuple[float]], int]:
+        def try_to_solve() -> list[tuple[float]]:
             """Tries solve the given constraints with Sympy and returns
-            solutions, filtering unreal and negative ones. Also returns an
-            updated flag with the number of used solve attempts. Actually,
-            this function always adds one to this counter."""
-            attempts += 1
+            solutions, filtering unreal and negative ones."""
 
             @timeout_decorator.timeout_decorator.timeout(
                 solve_timeout, timeout_exception=StopIteration
@@ -237,53 +226,17 @@ class Model:
             try:
                 sols = solver_call()
             except StopIteration:
-                return [], attempts
+                return []
 
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
             # Discard negative solutions
-            return [s for s in sols if s[0] > 0 and s[1] > 0], attempts
+            return [s for s in sols if s[0] > 0 and s[1] > 0]
 
-        def check_solutions(sols) -> tuple[bool, typing.Union[tuple[float], None]]:
-            """Checks if there are a valid solution in the input solutions
-            list (a valid solution is one that has been reached at least with
-            the `sol_minimum_acceptance_frequency` frequency). Returns true of
-            false about the above check and also the mode solution. Returns
-            false and none if a empty list is passed. Returns false and the
-            unique solution is a list with only one solution is passed."""
-            if not sols:
-                return False, None
-            elif len(sols) == 1:
-                return False, sols[0]
-            else:
-                mode_sol = statistics.mode(sols)
-                if sols.count(mode_sol) >= sol_minimum_acceptance_frequency * len(sols):
-                    return True, mode_sol
-                else:
-                    return False, mode_sol
-
-        sols = []
-        attempts = 0
-        # First tentative to achieve the solution
-        for _ in range(max_attempts):
-            new_sols, attempts = try_to_solve(attempts)
-            sols.extend(new_sols)
-            if sols:
-                sol = sols[0]  # Simply use the first one, if exists
-                break
-
-        # If not in risky mode, confirm the solution
-        if not risky:
-            ok = False
-            while not ok:
-                new_sols, attempts = try_to_solve(attempts)
-                sols.extend(new_sols)
-                ok, sol = check_solutions(sols)
-                if attempts >= max_attempts:  # Protection against infinite loop
-                    break
-
-        # TODO: `solve` return check and raising
-        if not sol:
+        try:
+            sol = try_to_solve()[0]
+            # TODO: `solve` return check and raising
+        except:
             raise ValueError("PyToxo can not solve this model.")
 
         # Return the final achieved solution
