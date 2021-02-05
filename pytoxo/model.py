@@ -262,10 +262,8 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = (
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
-        ).simplify()
-        c2 = (self._max_penetrance() - sympy.Integer(1)).simplify()
+        c1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])
 
     def find_max_heritability(
@@ -286,8 +284,6 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = (
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
-        ).nsimplify()
-        c2 = (self._max_penetrance() - sympy.Integer(1)).simplify()
+        c1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])
