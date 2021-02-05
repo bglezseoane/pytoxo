@@ -178,7 +178,9 @@ class Model:
         degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
         return unique_penetrances[degrees.index(max(degrees))]
 
-    def _solve(self, constraints: list[sympy.Eq]) -> pytoxo.ptable.PTable:
+    def _solve(
+        self, constraints: list[sympy.Eq], risky: bool = False
+    ) -> pytoxo.ptable.PTable:
         """Solves the equation system formed by the provided equations.
 
         Parameters
@@ -199,13 +201,16 @@ class Model:
         votation for the final one."""
 
         sol_minimum_acceptance_frequency = 0.75
-        max_steps = 5
-        solve_timeout = 10
+        max_attempts = 10
+        solve_timeout = 20
         risky = False
 
-        def try_to_solve() -> list[tuple[float]]:
+        def try_to_solve(attempts: int) -> tuple[list[tuple[float]], int]:
             """Tries solve the given constraints with Sympy and returns
-            solutions, filtering unreal and negative ones."""
+            solutions, filtering unreal and negative ones. Also returns an
+            updated flag with the number of used solve attempts. Actually,
+            this function always adds one to this counter."""
+            attempts += 1
 
             @timeout_decorator.timeout_decorator.timeout(
                 solve_timeout, timeout_exception=StopIteration
@@ -225,12 +230,12 @@ class Model:
             try:
                 sols = solver_call()
             except StopIteration:
-                return []
+                return [], attempts
 
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
             # Discard negative solutions
-            return [s for s in sols if s[0] > 0 and s[1] > 0]
+            return [s for s in sols if s[0] > 0 and s[1] > 0], attempts
 
         def check_solutions(sols) -> tuple[bool, typing.Union[tuple[float], None]]:
             """Checks if there are a valid solution in the input solutions
@@ -251,9 +256,11 @@ class Model:
                     return False, mode_sol
 
         sols = []
+        attempts = 0
         # First tentative to achieve the solution
-        for _ in range(max_steps):
-            sols.extend(try_to_solve())
+        for _ in range(max_attempts):
+            new_sols, attempts = try_to_solve(attempts)
+            sols.extend(new_sols)
             if sols:
                 sol = sols[0]  # Simply use the first one, if exists
                 break
@@ -262,9 +269,10 @@ class Model:
         if not risky:
             ok = False
             while not ok:
-                sols.extend(try_to_solve())
+                new_sols, attempts = try_to_solve(attempts)
+                sols.extend(new_sols)
                 ok, sol = check_solutions(sols)
-                if len(sols) >= max_steps:  # Protection against infinite loop
+                if attempts >= max_attempts:  # Protection against infinite loop
                     break
 
         # TODO: `solve` return check and raising
