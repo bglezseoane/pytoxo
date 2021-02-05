@@ -170,44 +170,20 @@ class Model:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
 
-        def check_polynomial(candidate) -> bool:
-            """Help function that check if `candidate` is a valid polynomial
-            expression."""
-            try:
-                sympy.Poly(candidate)
-            except sympy.polys.polyerrors.GeneratorsNeeded:
-                return False
-            # Else...
-            return True
+        # Remove duplicate expressions to evaluate them
+        unique_penetrances = list(set(self._penetrances))
 
-        # Filter non-polynomial penetrance expressions
-        polynomials = [
-            penetrance
-            for penetrance in self._penetrances
-            if check_polynomial(penetrance)
-        ]
-
-        """Create constraints as `0 <= polynomial <= 1` for all the 
-        polynomials."""
-        constraints = []
-        for polynomial in polynomials:
-            constraints.append(polynomial >= 0)
-            constraints.append(polynomial <= 1)
-
-        # Get then the maximum polynomial
-        max_polynomial = polynomials[0]  # Temporal maximum
-        for polynomial in polynomials[1:]:
-            solution = sympy.solve(
-                constraints + [max_polynomial > polynomial],
-                sympy.abc.x,
-                nonnegative=True,
-                domain=sympy.S.Reals,
-            )  # Constrainted to only real and positive solutions
-            if not solution:
-                max_polynomial = polynomial
-
-        # Return the maximum polynomial
-        return max_polynomial
+        """The expressions must be monotonically non-decreasing and 
+        sortable when `x` and `y` are real positive numbers. So, to achieve 
+        the largest polynomial within the penetrance expressions, simply 
+        does a substitution for `x` and `y` to real positive numbers and the 
+        largest numerical reduction of the expressions will be also the 
+        largest expression."""
+        substitutions = [
+            p.subs({self._variables[0]: 1, self._variables[1]: 1})
+            for p in unique_penetrances
+        ]  # 1 is real positive
+        return unique_penetrances[substitutions.index((max(substitutions)))]
 
     def _solve(
         self, constraints: list[sympy.Eq], risky: bool = False
