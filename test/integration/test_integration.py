@@ -602,7 +602,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             model = pytoxo.model.Model(model_file)
 
             # Generate penetrance table
-            ptable = model.find_max_prevalence([maf] * model.order, heritability)
+            ptable = model.find_max_prevalence_table([maf] * model.order, heritability)
 
             # Save table to a file to compare then with the Toxo equivalent
             output_file = os.path.join(

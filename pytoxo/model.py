@@ -304,7 +304,7 @@ class Model:
             values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
         )
 
-    def find_max_prevalence(
+    def find_max_prevalence_table(
         self, mafs: list[float], h: float, solve_timeout: int = None
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
@@ -339,7 +339,7 @@ class Model:
         else:
             return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
 
-    def find_max_heritability(
+    def find_max_heritability_table(
         self, mafs: list[float], p: float, solve_timeout: int = None
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose heritability is maximum for the given MAFs
