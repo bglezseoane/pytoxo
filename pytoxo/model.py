@@ -304,7 +304,9 @@ class Model:
             values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
         )
 
-    def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
+    def find_max_prevalence(
+        self, mafs: list[float], h: float, solve_timeout: int = None
+    ) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
         and heritability, and returns it within a `PTable` object.
 
@@ -314,18 +316,31 @@ class Model:
             Array of floats representing the MAF of each locus.
         h : float
             Heritability of the table.
+        solve_timeout : int, optional
+            A maximum timeout, as seconds, for try to resolve the model. If
+            it is exceeded, the operation will be aborted.
 
         Returns
         -------
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
+
+        Raises
+        ------
+        pytoxo.errors.ResolutionError
+            If PyToxo is not able to solve the model.
         """
         eq1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
         eq2 = self._max_penetrance() - sympy.Integer(1)
-        return self._solve(eq_system=[eq1, eq2])
+
+        # Delegates to the solve method, passing timeout if the user specifies it
+        if not solve_timeout:
+            return self._solve(eq_system=[eq1, eq2])
+        else:
+            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
 
     def find_max_heritability(
-        self, mafs: list[float], p: float
+        self, mafs: list[float], p: float, solve_timeout: int = None
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose heritability is maximum for the given MAFs
         and prevalence, and returns it within a `PTable` object.
@@ -336,12 +351,25 @@ class Model:
             Array of floats representing the MAF of each locus.
         p : float
             Prevalence of the table.
+        solve_timeout : int, optional
+            A maximum timeout, as seconds, for try to resolve the model. If
+            it is exceeded, the operation will be aborted.
 
         Returns
         -------
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
+
+        Raises
+        ------
+        pytoxo.errors.ResolutionError
+            If PyToxo is not able to solve the model.
         """
         eq1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
         eq2 = self._max_penetrance() - sympy.Integer(1)
-        return self._solve(eq_system=[eq1, eq2])
+
+        # Delegates to the solve method, passing timeout if the user specifies it
+        if not solve_timeout:
+            return self._solve(eq_system=[eq1, eq2])
+        else:
+            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
