@@ -1,4 +1,4 @@
-.F..EEEE....EEEE........
+.F..EF.F....EEEE........
 ======================================================================
 ERROR: test_toxo_calculate_tables_additive_4_maf_1_h_1 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
 Test the calculation of a penetrance table for the `additive_4`
@@ -17,110 +17,8 @@ Traceback (most recent call last):
     self.helper_toxo_calculate_tables(
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
     ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
-    sol = sympy.solve(
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
-    solution = _solve_system(f, symbols, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1938, in _solve_system
-    soln = _solve(eq2, s, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1628, in _solve
-    soln = roots(poly, **solvers)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polyroots.py", line 1001, in roots
-    for r in f.nroots():
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3670, in nroots
-    raise NoConvergence(
-mpmath.libmp.libhyper.NoConvergence: convergence to root failed; try n < 15 or maxsteps > 50
-
-======================================================================
-ERROR: test_toxo_calculate_tables_additive_4_maf_1_h_8 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
-Test the calculation of a penetrance table for the `additive_4`
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3662, in nroots
-    roots = mpmath.polyroots(coeffs, maxsteps=maxsteps,
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/mpmath/calculus/polynomials.py", line 195, in polyroots
-    raise ctx.NoConvergence("Didn't converge in maxsteps=%d steps." \
-mpmath.libmp.libhyper.NoConvergence: Didn't converge in maxsteps=50 steps.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 246, in test_toxo_calculate_tables_additive_4_maf_1_h_8
-    self.helper_toxo_calculate_tables(
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
-    ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
-    sol = sympy.solve(
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
-    solution = _solve_system(f, symbols, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1938, in _solve_system
-    soln = _solve(eq2, s, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1628, in _solve
-    soln = roots(poly, **solvers)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polyroots.py", line 1001, in roots
-    for r in f.nroots():
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3670, in nroots
-    raise NoConvergence(
-mpmath.libmp.libhyper.NoConvergence: convergence to root failed; try n < 15 or maxsteps > 50
-
-======================================================================
-ERROR: test_toxo_calculate_tables_additive_4_maf_4_h_1 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
-Test the calculation of a penetrance table for the `additive_4`
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3662, in nroots
-    roots = mpmath.polyroots(coeffs, maxsteps=maxsteps,
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/mpmath/calculus/polynomials.py", line 195, in polyroots
-    raise ctx.NoConvergence("Didn't converge in maxsteps=%d steps." \
-mpmath.libmp.libhyper.NoConvergence: Didn't converge in maxsteps=50 steps.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 379, in test_toxo_calculate_tables_additive_4_maf_4_h_1
-    self.helper_toxo_calculate_tables(
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
-    ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
-    sol = sympy.solve(
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
-    solution = _solve_system(f, symbols, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1938, in _solve_system
-    soln = _solve(eq2, s, **flags)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1628, in _solve
-    soln = roots(poly, **solvers)
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polyroots.py", line 1001, in roots
-    for r in f.nroots():
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3670, in nroots
-    raise NoConvergence(
-mpmath.libmp.libhyper.NoConvergence: convergence to root failed; try n < 15 or maxsteps > 50
-
-======================================================================
-ERROR: test_toxo_calculate_tables_additive_4_maf_4_h_8 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
-Test the calculation of a penetrance table for the `additive_4`
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/polys/polytools.py", line 3662, in nroots
-    roots = mpmath.polyroots(coeffs, maxsteps=maxsteps,
-  File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/mpmath/calculus/polynomials.py", line 195, in polyroots
-    raise ctx.NoConvergence("Didn't converge in maxsteps=%d steps." \
-mpmath.libmp.libhyper.NoConvergence: Didn't converge in maxsteps=50 steps.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 512, in test_toxo_calculate_tables_additive_4_maf_4_h_8
-    self.helper_toxo_calculate_tables(
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
-    ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 229, in find_max_prevalence
+    return self._solve(constraints=[c1, c2])
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
     sol = sympy.solve(
   File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
@@ -153,8 +51,8 @@ Traceback (most recent call last):
     self.helper_toxo_calculate_tables(
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
     ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 229, in find_max_prevalence
+    return self._solve(constraints=[c1, c2])
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
     sol = sympy.solve(
   File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
@@ -187,8 +85,8 @@ Traceback (most recent call last):
     self.helper_toxo_calculate_tables(
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
     ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 229, in find_max_prevalence
+    return self._solve(constraints=[c1, c2])
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
     sol = sympy.solve(
   File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
@@ -221,8 +119,8 @@ Traceback (most recent call last):
     self.helper_toxo_calculate_tables(
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
     ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 229, in find_max_prevalence
+    return self._solve(constraints=[c1, c2])
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
     sol = sympy.solve(
   File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
@@ -254,9 +152,9 @@ Traceback (most recent call last):
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 534, in test_toxo_calculate_tables_multiplicative_4_maf_4_h_8
     self.helper_toxo_calculate_tables(
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 580, in helper_toxo_calculate_tables
-    ptable = model.find_max_prevalence([maf] * model.order, heritability)
-  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 224, in find_max_prevalence
-    sol = self._solve(constraints=[c1, c2])
+    self.helper_toxo_calculate_tables(
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 229, in find_max_prevalence
+    return self._solve(constraints=[c1, c2])
   File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/pytoxo/model.py", line 193, in _solve
     sol = sympy.solve(
   File "/Users/bglezseoane/.pyenv/versions/udc-gei-tfg-pytoxo/lib/python3.9/site-packages/sympy/solvers/solvers.py", line 1099, in solve
@@ -282,7 +180,29 @@ Traceback (most recent call last):
     test.assertAlmostEqual(
 AssertionError: 0.00422857 != 0.00422864357257377 within 7 places (7.357257377025445e-08 difference)
 
+======================================================================
+FAIL: test_toxo_calculate_tables_additive_4_maf_1_h_8 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
+Test the calculation of a penetrance table for the `additive_4`
 ----------------------------------------------------------------------
-Ran 24 tests in 414.047s
+Traceback (most recent call last):
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 246, in test_toxo_calculate_tables_additive_4_maf_1_h_8
+    self.helper_toxo_calculate_tables(
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 610, in helper_toxo_calculate_tables
+    test.assertAlmostEqual(
+AssertionError: 1.173e-05 != 9.88399895131496e-11 within 7 places (1.1729901160010486e-05 difference)
 
-FAILED (failures=1, errors=8)
+======================================================================
+FAIL: test_toxo_calculate_tables_additive_4_maf_4_h_8 (test.integration.test_integration.ToxoCalculateTablesTestSuite)
+Test the calculation of a penetrance table for the `additive_4`
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 512, in test_toxo_calculate_tables_additive_4_maf_4_h_8
+    self.helper_toxo_calculate_tables(
+  File "/Users/bglezseoane/Garaje/udc-gei-tfg-pytoxo/test/integration/test_integration.py", line 610, in helper_toxo_calculate_tables
+    test.assertAlmostEqual(
+AssertionError: 0.00036757 != 0.000369379935097628 within 7 places (1.8099350976279877e-06 difference)
+
+----------------------------------------------------------------------
+Ran 24 tests in 390.852s
+
+FAILED (failures=3, errors=5)

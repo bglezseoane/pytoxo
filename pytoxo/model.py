@@ -14,9 +14,11 @@
 """Epistasis model definition."""
 
 import os
+import statistics
 import typing
 
 import sympy
+import timeout_decorator
 
 import pytoxo.errors
 import pytoxo.ptable
@@ -168,15 +170,24 @@ class Model:
         """Returns the largest polynomial from all penetrance expressions, for
         any real and positive value of the two variables."""
 
+        # Remove duplicate expressions to evaluate them
         unique_penetrances = list(set(self._penetrances))
 
-        # Return the maximum penetrance expression with the largest degree
-        # TODO: Temporal patch. Revise math approach to achieve an stable
-        #  solution to this step...
-        degrees = [max(sympy.Poly(p).degree_list()) for p in unique_penetrances]
-        return unique_penetrances[degrees.index(max(degrees))]
+        """The expressions must be monotonically non-decreasing and 
+        sortable when `x` and `y` are real positive numbers. So, to achieve 
+        the largest polynomial within the penetrance expressions, simply 
+        does a substitution for `x` and `y` to real positive numbers and the 
+        largest numerical reduction of the expressions will be also the 
+        largest expression."""
+        substitutions = [
+            p.subs({self._variables[0]: 1, self._variables[1]: 1})
+            for p in unique_penetrances
+        ]  # 1 is real positive
+        return unique_penetrances[substitutions.index((max(substitutions)))]
 
-    def _solve(self, constraints: list[sympy.Eq]) -> pytoxo.ptable.PTable:
+    def _solve(
+        self, constraints: list[sympy.Eq], risky: bool = False
+    ) -> pytoxo.ptable.PTable:
         """Solves the equation system formed by the provided equations.
 
         Parameters
@@ -190,20 +201,49 @@ class Model:
             The equation solution.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
-        sol = sympy.solve(
-            constraints,
-            self._variables[0],
-            self._variables[1],
-            manual=True,
-            rational=False,
-        )
-        # TODO: Other solvers?
-        # TODO: `solve` return check and raising
-        real_sol = sol[0]  # Catch real solution, discarding complex ones
+
+        solve_timeout = 20
+
+        def try_to_solve() -> list[tuple[float]]:
+            """Tries solve the given constraints with Sympy and returns
+            solutions, filtering unreal and negative ones."""
+
+            @timeout_decorator.timeout_decorator.timeout(
+                solve_timeout, timeout_exception=StopIteration
+            )
+            def solver_call():
+                """Help function which encapsulate the call to the solver
+                with a timeout decorator to abort futile executions."""
+                return sympy.solve(
+                    constraints,
+                    self._variables[0],
+                    self._variables[1],
+                    manual=True,
+                    rational=False,
+                )
+
+            # Try to solve the system within the setting timeout
+            try:
+                sols = solver_call()
+            except StopIteration:
+                return []
+
+            # Discard unreal solutions
+            sols = [s for s in sols if s[0].is_real and s[1].is_real]
+            # Discard negative solutions
+            return [s for s in sols if s[0] > 0 and s[1] > 0]
+
+        try:
+            sol = try_to_solve()[0]
+            # TODO: `solve` return check and raising
+        except:
+            raise ValueError("PyToxo can not solve this model.")
+
+        # Return the final achieved solution
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_penetrances=self._penetrances,
-            values={self._variables[0]: real_sol[0], self._variables[1]: real_sol[1]},
+            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
         )
 
     def find_max_prevalence(self, mafs: list[float], h: float) -> pytoxo.ptable.PTable:
@@ -222,10 +262,8 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.Eq(
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
-        )
-        c2 = sympy.Eq(self._max_penetrance(), 1)
+        c1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])
 
     def find_max_heritability(
@@ -246,8 +284,6 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = sympy.Eq(
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
-        )
-        c2 = sympy.Eq(self._max_penetrance(), 1)
+        c1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
+        c2 = self._max_penetrance() - sympy.Integer(1)
         return self._solve(constraints=[c1, c2])

@@ -129,7 +129,9 @@ def compute_prevalence(
     for pen, prob in zip(penetrances, gp):
         prods.append(Mul(pen, prob))
 
-    return Add(*prods)  # Return the addition of all the elements of the product array
+    addition = Add(*prods)  # Addition of all the elements of the product array
+
+    return addition.simplify()  # Return simplified to optimize next steps
 
 
 def compute_heritability(
@@ -165,4 +167,7 @@ def compute_heritability(
     # Denominator of the final expression
     denom = Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
 
-    return Mul(Add(*prods), denom)
+    # `prods / denom`, because `denom` is a negative pow
+    mult = Mul(Add(*prods), denom).simplify()
+
+    return mult.simplify()  # Return simplified to optimize next steps
