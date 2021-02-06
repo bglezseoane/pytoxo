@@ -21,218 +21,237 @@ import pytoxo.calculations
 import pytoxo.model
 
 
-class ToxoCalculateTablesTestSuite(unittest.TestCase):
+class ToxoContrastTestSuite(unittest.TestCase):
     """Test suite which simulates the same penetrance tables generation in
-    PyToxo than the `example/calculate_tables.m` script in Toxo, and compare
-    the outputs of the two programs to be equivalent.
+    PyToxo and in Toxo, and compare the outputs of the two programs to be
+    equivalent.
+
+    At the beginning this tests suite was conformed by the same cases used in
+    Toxo's `example/calculate_tables.m`, but then more proves were added.
 
     Tests for PyToxo penetrance table generation process at integration
     level.
     """
 
-    def test_toxo_calculate_tables_additive_3_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `additive_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence, for the `additive_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_3_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `multiplicative_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
-        """
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
 
+        This case is used in Toxo's `example/calculate_tables.m` script.
+        """
         model = "multiplicative_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_3_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `threshold_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_4_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `additive_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_4_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `multiplicative_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "multiplicative_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_4_maf_1_h_1(self):
-        """Test the calculation of a penetrance table for the `threshold_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_1_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_3_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `additive_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_3_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `multiplicative_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
-        """
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
 
+        This case is used in Toxo's `example/calculate_tables.m` script.
+        """
         model = "multiplicative_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_3_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `threshold_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_3"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
@@ -240,347 +259,375 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
     @unittest.skip
-    def test_toxo_calculate_tables_additive_4_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `additive_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_4_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `multiplicative_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "multiplicative_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_4_maf_1_h_8(self):
-        """Test the calculation of a penetrance table for the `threshold_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_1_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_4"
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_3_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `additive_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_3_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `multiplicative_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
-        """
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
 
+        This case is used in Toxo's `example/calculate_tables.m` script.
+        """
         model = "multiplicative_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_3_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `threshold_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_4_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `additive_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_4_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `multiplicative_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "multiplicative_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_4_maf_4_h_1(self):
-        """Test the calculation of a penetrance table for the `threshold_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_4_h_1(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_3_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `additive_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_3_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `multiplicative_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
-        """
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
 
+        This case is used in Toxo's `example/calculate_tables.m` script.
+        """
         model = "multiplicative_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_3_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `threshold_3`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_3` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_3"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_additive_4_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `additive_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `additive_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "additive_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_multiplicative_4_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `multiplicative_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "multiplicative_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
             accuracy_delta=0.01,
         )
 
-    def test_toxo_calculate_tables_threshold_4_maf_4_h_8(self):
-        """Test the calculation of a penetrance table for the `threshold_4`
-        model, with a MAF 0.1 and an heritability 0.1. To check the result,
-        compares it with the collected Toxo's output for the same input.
+    def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_4_h_8(self):
+        """Test the calculation of a penetrance table maximizing the
+        prevalence for the `threshold_4` model, with a MAF 0.1 and an
+        heritability 0.1. To check the result, compares it with the collected
+        Toxo's output for the same input.
+
+        This case is used in Toxo's `example/calculate_tables.m` script.
         """
         model = "threshold_4"
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = (
-            f"test/integration/toxo_outputs/{model}_{maf}_h{heritability}.txt"
-        )
+        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
 
         # Run within the helper function
-        self._helper_toxo_calculate_tables(
+        self._helper_toxo_find_tables(
             test=self,
             model_file=f"models/{model}.csv",
+            max_method=pytoxo.model.Model.find_max_prevalence_table,
             expected_output_file=expected_output_file,
             maf=maf,
             heritability=heritability,
@@ -588,8 +635,14 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
         )
 
     @staticmethod
-    def _helper_toxo_calculate_tables(
-        test, model_file, expected_output_file, maf, heritability, accuracy_delta
+    def _helper_toxo_find_tables(
+        test,
+        model_file,
+        max_method,
+        expected_output_file,
+        maf,
+        heritability,
+        accuracy_delta,
     ):
         """Helper method with the test skeleton to the penetrance tables
         generation tests of `ToxoCalculateTablesTestSuite` test suite.
@@ -602,7 +655,7 @@ class ToxoCalculateTablesTestSuite(unittest.TestCase):
             model = pytoxo.model.Model(model_file)
 
             # Generate penetrance table
-            ptable = model.find_max_prevalence_table([maf] * model.order, heritability)
+            ptable = max_method(model, [maf] * model.order, heritability)
 
             # Save table to a file to compare then with the Toxo equivalent
             output_file = os.path.join(
