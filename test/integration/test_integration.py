@@ -847,7 +847,6 @@ class ToxoContrastTestSuite(unittest.TestCase):
             accuracy_delta=0.01,
         )
 
-    @unittest.skip
     def test_toxo_contrast_find_tables_max_heritability_additive_4_maf_1_p_6(self):
         """Test the calculation of a penetrance table maximizing the
         heritability for the `additive_4` model, with a MAF 0.1 and an
