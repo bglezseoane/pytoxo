@@ -186,7 +186,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `additive_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -211,7 +211,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -236,7 +236,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `threshold_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -262,7 +262,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `additive_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -287,7 +287,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -312,7 +312,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_1_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `threshold_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -487,7 +487,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_additive_3_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `additive_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -512,7 +512,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_multiplicative_3_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `multiplicative_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -537,7 +537,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_threshold_3_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `threshold_3` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -562,7 +562,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_additive_4_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `additive_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -587,7 +587,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_multiplicative_4_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `multiplicative_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -612,7 +612,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
     def test_toxo_contrast_find_tables_max_prevalence_threshold_4_maf_4_h_8(self):
         """Test the calculation of a penetrance table maximizing the
         prevalence for the `threshold_4` model, with a MAF 0.1 and an
-        heritability 0.1. To check the result, compares it with the collected
+        heritability 0.8. To check the result, compares it with the collected
         Toxo's output for the same input.
 
         This case is used in Toxo's `example/calculate_tables.m` script.
@@ -1215,7 +1215,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
         prevalence=None,
     ):
         """Helper method with the test skeleton to the penetrance tables
-        generation tests of `ToxoCalculateTablesTestSuite` test suite.
+        generation tests of `ToxoContrastTestSuite` test suite.
         """
 
         """Patch to allow execution of max heritability and max prevalence in 
