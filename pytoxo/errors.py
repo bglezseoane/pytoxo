@@ -14,11 +14,11 @@
 """PyToxo error definitions."""
 
 
-class ModelCSVParsingError(Exception):
-    """Representation of a parsing error with a model CSV file."""
+class ModelCSVParseError(Exception):
+    """Representation of a parse error with a model CSV file."""
 
     def __init__(self, filename: str, cause: str = "Bad formed file"):
-        """Creates an exception of a parsing error with a model CSV file.
+        """Creates an exception of a parse error with a model CSV file.
 
         Parameters
         ----------
@@ -29,12 +29,12 @@ class ModelCSVParsingError(Exception):
         """
         self.filename = filename
         self.cause = cause
-        self.message = f"ModelCSVParsingError with file '{filename}' due to: '{cause}'"
+        self.message = f"ModelCSVParseError with file '{filename}' due to: '{cause}'"
         super().__init__(self.message)
 
 
-class SolvingError(Exception):
-    """Representation of a solving error of PyToxo."""
+class ResolutionError(Exception):
+    """Representation of a resolution error of PyToxo."""
 
     def __init__(
         self, cause: str = "PyToxo can not solve this model", equation: str = None
@@ -44,18 +44,18 @@ class SolvingError(Exception):
         Parameters
         ----------
         cause : str, optional
-            The cause during solving process (default "PyToxo can not solve
+            The cause during solve process (default "PyToxo can not solve
             this model").
         equation : str, optional
-            The equation that cause the solving error, as string. Default is
+            The equation that cause the resolution error, as string. Default is
             none.
         """
         self.cause = cause
         self.equation = equation
         if self.equation:
             self.message = (
-                f"SolvingError: '{cause}'. Problematic equation: '{self.equation}'."
+                f"ResolutionError: '{cause}'. Problematic equation: '{self.equation}'."
             )
         else:
-            self.message = f"SolvingError: '{cause}'."
+            self.message = f"ResolutionError: '{cause}'."
         super().__init__(self.message)

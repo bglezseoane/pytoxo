@@ -14,7 +14,6 @@
 """Epistasis model definition."""
 
 import os
-import statistics
 import typing
 
 import sympy
@@ -29,15 +28,23 @@ class Model:
     """Representation of an epistasis model."""
 
     def __init__(self, filename: str):
-        """Reads the model from its text representation in `file` and inits
-        an object with its data.
+        """Init the object.
+
+        Uses the model from its text representation in `filename` file and
+        inits an object with its data.
 
         The input model must be formatted as a plain CSV, with each line of the
         file corresponding to a row of the model. The rows are made of the
         genotype definition and the probability associated with the given
-        genotype, separated by a comma. Probability is expressed as a function
-        of two variables, represented as alphabetical characters. Empty lines,
-        as well as lines starting with '#' will be ignored.
+        genotype, separated by a comma.
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file.
+
+        Empty lines, as well as lines starting with '#' will be ignored.
 
         Parameters
         ----------
@@ -46,8 +53,8 @@ class Model:
 
         Raises
         ------
-        pytoxo.errors.ModelCSVParsingError
-            If the parsing tentative fails due to the file is not well formed.
+        pytoxo.errors.ModelCSVParseError
+            If the parse tentative fails due to the file is not well formed.
         IOError
            If the input file is not found or the reading tentative fails due
            to other unexpected operative system level cause.
@@ -56,9 +63,44 @@ class Model:
         self._order = None  # Number of locus defined in the model
         self._penetrances = (
             []
-        )  # Array of symbolic expressions representing the epistatic model
+        )  # List of symbolic expressions representing the epistatic model
         self._variables = []  # List of symbolic variables used throughout the model
 
+        # Delegates parse to the `parse` method
+        self._parse(filename)
+
+    def _parse(self, filename: str) -> None:
+        """Takes the responsibility of the initializer to parse the model file.
+
+        Reads the model from its text representation in `filename` file and
+        inits the object with its data.
+
+        The input model must be formatted as a plain CSV, with each line of the
+        file corresponding to a row of the model. The rows are made of the
+        genotype definition and the probability associated with the given
+        genotype, separated by a comma.
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file.
+
+        Empty lines, as well as lines starting with '#' will be ignored.
+
+        Parameters
+        ----------
+        filename : str
+            The path of the text file with the model.
+
+        Raises
+        ------
+        pytoxo.errors.ModelCSVParseError
+            If the parse tentative fails due to the file is not well formed.
+        IOError
+           If the input file is not found or the reading tentative fails due
+           to other unexpected operative system level cause.
+        """
         try:
             with open(filename, "r") as f:
                 lines = f.readlines()
@@ -69,7 +111,7 @@ class Model:
 
             # Check not empty file
             if not lines:
-                raise pytoxo.errors.ModelCSVParsingError(
+                raise pytoxo.errors.ModelCSVParseError(
                     filename, "File without content."
                 )
 
@@ -85,12 +127,12 @@ class Model:
             # Assert all the first members have the same length
             for fst_member in fst_members:
                 if len(fst_member) != len_fst_member:
-                    raise pytoxo.errors.ModelCSVParsingError(
+                    raise pytoxo.errors.ModelCSVParseError(
                         filename, "All the genotypes should have the same order."
                     )
             # Assert first members length is odd
             if len_fst_member % 2 != 0:
-                raise pytoxo.errors.ModelCSVParsingError(
+                raise pytoxo.errors.ModelCSVParseError(
                     filename, "Bad genotype specification."
                 )
             # Save the order
@@ -102,7 +144,7 @@ class Model:
                     sympy.sympify(snd_member) for snd_member in snd_members
                 ]
             except sympy.SympifyError:
-                raise pytoxo.errors.ModelCSVParsingError(
+                raise pytoxo.errors.ModelCSVParseError(
                     filename, "Bad penetrance specification."
                 )
 
@@ -128,21 +170,21 @@ class Model:
 
             # Check support: only 2 different variables are supported by PyToxo
             if not 0 < len(different_variables) <= 2:
-                raise pytoxo.errors.ModelCSVParsingError(
+                raise pytoxo.errors.ModelCSVParseError(
                     filename,
-                    "Only models with 1 or 2 different variables are supported.",
+                    "Only two variables are supported at most.",
                 )
             else:
                 self._variables = different_variables
         except IOError as e:
             raise e
-        except pytoxo.errors.ModelCSVParsingError as e:
+        except pytoxo.errors.ModelCSVParseError as e:
             raise e
         except:  # Generic drain for unchecked parsing errors
-            raise pytoxo.errors.ModelCSVParsingError(filename)
+            raise pytoxo.errors.ModelCSVParseError(filename)
 
     ########################################
-    # Getters and setters
+    # Getters and setters for properties
 
     def get_name(self) -> str:
         return self._name
@@ -167,55 +209,71 @@ class Model:
     ########################################
 
     def _max_penetrance(self) -> sympy.Expr:
-        """Returns the largest polynomial from all penetrance expressions, for
-        any real and positive value of the two variables."""
+        """Returns the largest of all penetrance expressions, for any real
+        and positive value of the two variables and attending to the
+        mathematical restrictions of the model."""
 
-        # Remove duplicate expressions to evaluate them
+        # First, remove duplicate expressions to evaluate them
         unique_penetrances = list(set(self._penetrances))
 
         """The expressions must be monotonically non-decreasing and 
-        sortable when `x` and `y` are real positive numbers. So, to achieve 
-        the largest polynomial within the penetrance expressions, simply 
-        does a substitution for `x` and `y` to real positive numbers and the 
-        largest numerical reduction of the expressions will be also the 
-        largest expression."""
-        substitutions = [
+        sortable when `x` and `y` are real positive numbers. So, 
+        to achieve the largest polynomial within the penetrance expressions,
+        simply does a substitution for `x` and `y` to real positive numbers, and
+        the largest numerical reduction will represent also the largest 
+        symbolic expression."""
+        reductions = [
             p.subs({self._variables[0]: 1, self._variables[1]: 1})
             for p in unique_penetrances
-        ]  # 1 is real positive
-        return unique_penetrances[substitutions.index((max(substitutions)))]
+        ]  # 1 is real and positive
+        return unique_penetrances[reductions.index((max(reductions)))]
 
     def _solve(
-        self, constraints: list[sympy.Eq], risky: bool = False
+        self, eq_system: list[sympy.Eq], solve_timeout: int = 20
     ) -> pytoxo.ptable.PTable:
-        """Solves the equation system formed by the provided equations.
+        """Assumes the responsibility of solving the system of equations that
+        will define the values of the variables for the generation of the
+        penetrance table and is in charge of its construction.
+
+        `find_max_prevalence` and `find_max_heritability` delegates here
+        after conform their equations systems.
 
         Parameters
         ----------
-        constraints : list[sympy.Eq]
-            Input constraints that define the equation.
+        eq_system : list[sympy.Eq]
+            Input equations to solve.
+        solve_timeout : int, optional (default 20)
+            A maximum timeout, as seconds, for the solver to try to resolve the
+            model. If it is exceeded, the operation will be aborted. Default is
+            20 seconds. Pass as 'None' to do not use timeout.
 
         Returns
         -------
         pytoxo.ptable.PTable
             The equation solution.
+
+        Raises
+        ------
+        pytoxo.errors.ResolutionError
+            If PyToxo is not able to solve the model.
         """
         # TODO: Consider add assumptions to vars real and greather than 0
 
-        solve_timeout = 20
-
         def try_to_solve() -> list[tuple[float]]:
-            """Tries solve the given constraints with Sympy and returns
-            solutions, filtering unreal and negative ones."""
+            """Tries solve the given `eq_system` equations with Sympy and
+            returns solutions, filtering unreal and negative ones. The call
+            to the solver is protected with a timeout to prevent
+            non-termination issues of unsolvable models."""
 
             @timeout_decorator.timeout_decorator.timeout(
                 solve_timeout, timeout_exception=StopIteration
             )
             def solver_call():
                 """Help function which encapsulate the call to the solver
-                with a timeout decorator to abort futile executions."""
+                with a timeout decorator to abort futile executions of
+                unsolvable models."""
                 return sympy.solve(
-                    constraints,
+                    eq_system,
                     self._variables[0],
                     self._variables[1],
                     manual=True,
@@ -236,10 +294,10 @@ class Model:
         try:
             sol = try_to_solve()[0]
             # TODO: `solve` return check and raising
-        except:
+        except:  # Generic drain for unchecked resolution errors
             raise ValueError("PyToxo can not solve this model.")
 
-        # Return the final achieved solution
+        # Return the final achieved solution as peenetrance table object
         return pytoxo.ptable.PTable(
             model_order=self._order,
             model_penetrances=self._penetrances,
@@ -255,16 +313,16 @@ class Model:
         mafs : list[float]
             Array of floats representing the MAF of each locus.
         h : float
-            Heritability of thr table.
+            Heritability of the table.
 
         Returns
         -------
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
-        c2 = self._max_penetrance() - sympy.Integer(1)
-        return self._solve(constraints=[c1, c2])
+        eq1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
+        eq2 = self._max_penetrance() - sympy.Integer(1)
+        return self._solve(eq_system=[eq1, eq2])
 
     def find_max_heritability(
         self, mafs: list[float], p: float
@@ -284,6 +342,6 @@ class Model:
         pytoxo.ptable.PTable
             Penetrance table obtained within a `PTable` object.
         """
-        c1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
-        c2 = self._max_penetrance() - sympy.Integer(1)
-        return self._solve(constraints=[c1, c2])
+        eq1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
+        eq2 = self._max_penetrance() - sympy.Integer(1)
+        return self._solve(eq_system=[eq1, eq2])

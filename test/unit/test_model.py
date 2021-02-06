@@ -135,7 +135,7 @@ class ModelUnitTestSuite(unittest.TestCase):
             # Test bad formed files raise
             for bad_formed_models_path in bad_formed_models_paths:
                 self.assertRaises(
-                    pytoxo.errors.ModelCSVParsingError,
+                    pytoxo.errors.ModelCSVParseError,
                     lambda: pytoxo.model.Model(bad_formed_models_path),
                 )
 
