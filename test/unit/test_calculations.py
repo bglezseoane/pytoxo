@@ -12,7 +12,7 @@
 ###########################################################
 
 """PyToxo calculations unit test suite."""
-
+import random
 import unittest
 
 import sympy
@@ -918,7 +918,11 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         functions work equal with a given configuration. In Toxo,
         this function is the method `p = prevalence(obj, mafs, gp)` of the
         `PTable` class; in PyToxo it has been refactored to an independent
-        function."""
+        function.
+
+        To compare the equations to be equivalent, run a substitution of the
+        variables with random numbers.
+        """
         input_penetrances_str = [
             "x",
             "x",
@@ -982,15 +986,25 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         """Output expression as string, from Toxo's `p = prevalence(obj, mafs, 
         gp)` function for `input_penetrances` and `input_gp` input. Forced in a
         Matlab debugging session"""
-        expected_output = sympy.sympify(
+        expected_output_eq = sympy.sympify(
             "(993141*x)/1000000 + (243*x*(y + 1)^2)/250000 + "
             + "(27*x*(y + 1)^4)/500000 + (x*(y + 1)^8)/1000000 + "
             + "(729*x*(y + 1))/125000"
         )
 
-        output = pytoxo.calculations.compute_prevalence(input_penetrances, gp=input_gp)
+        output_eq = pytoxo.calculations.compute_prevalence(
+            input_penetrances, gp=input_gp
+        )
 
-        self.assertEqual(expected_output, output)
+        # Run variable substitution with random numbers to compare equations
+        sx, sy = sympy.symbols("x y")
+        vx = random.random()
+        vy = random.random()
+        substitution = {sx: vx, sy: vy}
+        expected_output = expected_output_eq.subs(substitution)
+        output = output_eq.subs(substitution)
+
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
     def test_compute_prevalence_num_1(self):
         """Test numerically that PyToxo and Toxo `compute_prevalence`
@@ -1152,7 +1166,10 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         """Test symbolically that PyToxo and Toxo `compute_heritability`
         functions work equal with a given configuration. In Toxo, this function
         is the method `h = heritability(obj, mafs)` of the `PTable` class; in
-        PyToxo it has been refactored to an independent function."""
+        PyToxo it has been refactored to an independent function.
+
+        To compare the equations to be equivalent, run a substitution of the
+        variables with random numbers."""
         input_penetrances_str = [
             "x",
             "x",
@@ -1221,7 +1238,7 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         """Output expression as string, from Toxo's `h = heritability(mafs)`
         function for `input_penetrances` and `input_mafs` input. Forced in a 
         Matlab debugging session"""
-        expected_output = sympy.sympify(
+        expected_output_eq = sympy.sympify(
             "-((993141*((243*x*(y + 1)^2)/250000 - (6859*x)/1000000 + (27*x*("
             + "y + 1)^4)/500000 + (x*(y + 1)^8)/1000000 + (729*x*(y + "
             + "1))/125000)^2)/1000000 + (729*((993141*x)/1000000 + (243*x*(y + "
@@ -1241,13 +1258,19 @@ class CalculationsUnitTestSuite(unittest.TestCase):
             + "1)) "
         )
 
-        output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
+        output_eq = pytoxo.calculations.compute_heritability(
+            input_penetrances, input_mafs
+        )
 
-        # Simplification necessary to compare
-        expected_output = sympy.simplify(expected_output)
-        output = sympy.simplify(output)
+        # Run variable substitution with random numbers to compare equations
+        sx, sy = sympy.symbols("x y")
+        vx = random.random()
+        vy = random.random()
+        substitution = {sx: vx, sy: vy}
+        expected_output = expected_output_eq.subs(substitution)
+        output = output_eq.subs(substitution)
 
-        self.assertEqual(expected_output, output)
+        self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
 
     def test_compute_heritability_num_1(self):
         """Test numerically that PyToxo and Toxo `compute_heritability`
