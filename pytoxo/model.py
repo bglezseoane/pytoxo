@@ -230,10 +230,10 @@ class Model:
 
     def _solve(
         self, eq_system: list[sympy.Eq], solve_timeout: int = 20
-    ) -> pytoxo.ptable.PTable:
+    ) -> dict[sympy.Symbol : float]:
         """Assumes the responsibility of solving the system of equations that
         will define the values of the variables for the generation of the
-        penetrance table and is in charge of its construction.
+        penetrance table.
 
         `find_max_prevalence` and `find_max_heritability` delegates here
         after conform their equations systems.
@@ -249,8 +249,8 @@ class Model:
 
         Returns
         -------
-        pytoxo.ptable.PTable
-            The equation solution.
+        dict[sympy.Symbol: float]
+            The equation solution for the two model variables as a dict.
 
         Raises
         ------
@@ -298,11 +298,33 @@ class Model:
             raise ValueError("PyToxo can not solve this model.")
 
         # Return the final achieved solution as peenetrance table object
-        return pytoxo.ptable.PTable(
-            model_order=self._order,
-            model_penetrances=self._penetrances,
-            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
+        return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
+
+    def _build_max_prevalence_system(
+        self, mafs: list[float], h: float
+    ) -> list[sympy.Eq]:
+        """Builds the system of equations for this model, for a maximum
+        prevalence, for the given MAFs and heritability.
+
+        Parameters
+        ----------
+        mafs : list[float]
+            Array of floats representing the MAF of each locus.
+        h : float
+            Heritability of the table.
+
+        Returns
+        -------
+        list[sympy.Eq]
+            System of equations to solve this model for a maximum
+            prevalence, for the given MAFs and heritability.
+
+        """
+        eq1 = sympy.Eq(
+            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
         )
+        eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
+        return [eq1, eq2]  # System as a list with the equations
 
     def find_max_prevalence_table(
         self, mafs: list[float], h: float, solve_timeout: int = None
@@ -330,14 +352,48 @@ class Model:
         pytoxo.errors.ResolutionError
             If PyToxo is not able to solve the model.
         """
-        eq1 = pytoxo.calculations.compute_heritability(self._penetrances, mafs) - h
-        eq2 = self._max_penetrance() - sympy.Integer(1)
+        eq_system = self._build_max_prevalence_system(mafs, h)
 
         # Delegates to the solve method, passing timeout if the user specifies it
         if not solve_timeout:
-            return self._solve(eq_system=[eq1, eq2])
+            sol = self._solve(eq_system=eq_system)
         else:
-            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+            sol = self._solve(eq_system=eq_system, solve_timeout=solve_timeout)
+
+        # Return the final achieved solution as penetrance table object
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_penetrances=self._penetrances,
+            values={
+                self._variables[0]: sol[self._variables[0]],
+                self._variables[1]: sol[self._variables[1]],
+            },
+        )
+
+    def _build_max_heritability_system(
+        self, mafs: list[float], p: float
+    ) -> list[sympy.Eq]:
+        """Builds the system of equations for this model, for a maximum
+        heritability, for the given MAFs and prevalence.
+
+        Parameters
+        ----------
+        mafs : list[float]
+            Array of floats representing the MAF of each locus.
+        p : float
+            Prevalence of the table.
+
+        Returns
+        -------
+        list[sympy.Eq]
+            System of equations to solve this model for a maximum
+            heritability, for the given MAFs and prevalence.
+        """
+        eq1 = sympy.Eq(
+            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
+        )
+        eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
+        return [eq1, eq2]  # System as a list with the equations
 
     def find_max_heritability_table(
         self, mafs: list[float], p: float, solve_timeout: int = None
@@ -365,11 +421,20 @@ class Model:
         pytoxo.errors.ResolutionError
             If PyToxo is not able to solve the model.
         """
-        eq1 = pytoxo.calculations.compute_prevalence(self._penetrances, mafs) - p
-        eq2 = self._max_penetrance() - sympy.Integer(1)
+        eq_system = self._build_max_heritability_system(mafs, p)
 
         # Delegates to the solve method, passing timeout if the user specifies it
         if not solve_timeout:
-            return self._solve(eq_system=[eq1, eq2])
+            sol = self._solve(eq_system=eq_system)
         else:
-            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+            sol = self._solve(eq_system=eq_system, solve_timeout=solve_timeout)
+
+        # Return the final achieved solution as penetrance table object
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_penetrances=self._penetrances,
+            values={
+                self._variables[0]: sol[self._variables[0]],
+                self._variables[1]: sol[self._variables[1]],
+            },
+        )
