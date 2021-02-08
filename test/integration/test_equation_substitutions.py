@@ -32,7 +32,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
     Tests for PyToxo penetrance table calculations at integration level.
     """
 
-    def test_equation_substitutions_penetrances_additive_2(self):
+    def test_equation_substitutions_additive_2(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -54,7 +54,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_3(self):
+    def test_equation_substitutions_additive_3(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -76,7 +76,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_4(self):
+    def test_equation_substitutions_additive_4(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -98,7 +98,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_5(self):
+    def test_equation_substitutions_additive_5(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -120,7 +120,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_6(self):
+    def test_equation_substitutions_additive_6(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -142,7 +142,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_7(self):
+    def test_equation_substitutions_additive_7(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -164,7 +164,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_additive_8(self):
+    def test_equation_substitutions_additive_8(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -186,7 +186,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_2(self):
+    def test_equation_substitutions_multiplicative_2(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -208,7 +208,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_3(self):
+    def test_equation_substitutions_multiplicative_3(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -230,7 +230,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_4(self):
+    def test_equation_substitutions_multiplicative_4(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -252,7 +252,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_5(self):
+    def test_equation_substitutions_multiplicative_5(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -274,7 +274,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_6(self):
+    def test_equation_substitutions_multiplicative_6(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -296,7 +296,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_7(self):
+    def test_equation_substitutions_multiplicative_7(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -318,7 +318,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_multiplicative_8(self):
+    def test_equation_substitutions_multiplicative_8(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -340,7 +340,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_2(self):
+    def test_equation_substitutions_threshold_2(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -362,7 +362,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_3(self):
+    def test_equation_substitutions_threshold_3(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -384,7 +384,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_4(self):
+    def test_equation_substitutions_threshold_4(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -406,7 +406,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_5(self):
+    def test_equation_substitutions_threshold_5(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -428,7 +428,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_6(self):
+    def test_equation_substitutions_threshold_6(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -450,7 +450,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_7(self):
+    def test_equation_substitutions_threshold_7(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
@@ -472,7 +472,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_penetrances_threshold_8(self):
+    def test_equation_substitutions_threshold_8(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, instead of using the Toxo contrast,
         replace the values of the variables in the initial equation again.
