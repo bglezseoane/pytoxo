@@ -302,7 +302,7 @@ class Model:
 
     def _build_max_prevalence_system(
         self, mafs: list[float], h: float
-    ) -> list[sympy.Expr]:
+    ) -> list[sympy.Eq]:
         """Builds the system of equations for this model, for a maximum
         prevalence, for the given MAFs and heritability.
 
@@ -315,7 +315,7 @@ class Model:
 
         Returns
         -------
-        list[sympy.Expr]
+        list[sympy.Eq]
             System of equations to solve this model for a maximum
             prevalence, for the given MAFs and heritability.
 
@@ -372,7 +372,7 @@ class Model:
 
     def _build_max_heritability_system(
         self, mafs: list[float], p: float
-    ) -> list[sympy.Expr]:
+    ) -> list[sympy.Eq]:
         """Builds the system of equations for this model, for a maximum
         heritability, for the given MAFs and prevalence.
 
@@ -385,7 +385,7 @@ class Model:
 
         Returns
         -------
-        list[sympy.Expr]
+        list[sympy.Eq]
             System of equations to solve this model for a maximum
             heritability, for the given MAFs and prevalence.
         """
