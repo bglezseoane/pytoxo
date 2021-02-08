@@ -328,7 +328,10 @@ class Model:
 
         """
         eq1 = sympy.Eq(
-            pytoxo.calculations.compute_heritability(self._penetrances, mafs), h
+            pytoxo.calculations.compute_heritability(
+                self._penetrances, mafs, model_order=self._order
+            ),
+            h,
         )
         eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
         return [eq1, eq2]  # System as a list with the equations
@@ -395,7 +398,10 @@ class Model:
             heritability, for the given MAFs and prevalence.
         """
         eq1 = sympy.Eq(
-            pytoxo.calculations.compute_prevalence(self._penetrances, mafs), p
+            pytoxo.calculations.compute_prevalence(
+                self._penetrances, mafs, model_order=self._order
+            ),
+            p,
         )
         eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
         return [eq1, eq2]  # System as a list with the equations

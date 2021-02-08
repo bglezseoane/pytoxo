@@ -27,7 +27,7 @@ from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify, simplify
 
 
 def genotype_probabilities(
-    mafs: typing.Union[list[Rational], list[float]]
+    mafs: typing.Union[list[Rational], list[float]], model_order: int = None
 ) -> typing.Union[list[Rational], list[Expr]]:
     """Computes the probabilities associated with all genotype combinations
     given each MAF (minor allele frequency).
@@ -50,6 +50,10 @@ def genotype_probabilities(
     ----------
     mafs : typing.Union[list[Rational], list[float]]
         Minor allele frequencies array. Accept rationals and floats.
+    model_order : int, optional
+        The order of the implicated model. This optional parameter is used to
+        optimize the computation. Default is `None` and supposes a generalist
+        optimization strategy, less optimal.
 
     Returns
     -------
@@ -88,6 +92,7 @@ def compute_prevalence(
     penetrances: typing.Union[list[Expr], list[Rational], list[float]],
     mafs: typing.Union[list[Rational], list[float]] = None,
     gp: typing.Union[list[Rational], list[float]] = None,
+    model_order: int = None,
 ) -> typing.Union[Rational, Expr]:
     """Tries to compute the prevalence for a given penetrance list.
 
@@ -101,6 +106,10 @@ def compute_prevalence(
         Minor allele frequencies array. Ignored if `gp` is used.
     gp : typing.Union[list[Rational], list[float]], optional
         Genotype probabilities array.
+    model_order : int, optional
+        The order of the implicated model. This optional parameter is used to
+        optimize the computation. Default is `None` and supposes a generalist
+        optimization strategy, less optimal.
 
     Returns
     -------
@@ -132,12 +141,15 @@ def compute_prevalence(
 
     addition = Add(*prods)  # Addition of all the elements of the product array
 
-    return _try_to_simplify(addition)  # Return simplified to optimize next steps
+    return _try_to_simplify(
+        addition, model_order
+    )  # Return simplified to optimize next steps
 
 
 def compute_heritability(
     penetrances: typing.Union[list[Expr], list[Rational], list[float]],
     mafs: typing.Union[list[Rational], list[float]],
+    model_order: int = None,
 ) -> typing.Union[Rational, Expr]:
     """Tries to compute the heritability for a given penetrance table
     defined by its values.
@@ -148,6 +160,10 @@ def compute_heritability(
         Penetrance values array.
     mafs : typing.Union[list[Rational], list[float]], optional
         Minor allele frequencies array.
+    model_order : int, optional
+        The order of the implicated model. This optional parameter is used to
+        optimize the computation. Default is `None` and supposes a generalist
+        optimization strategy, less optimal.
 
     Returns
     -------
@@ -164,22 +180,24 @@ def compute_heritability(
     prods = []
     for pen, prob in zip(penetrances, gp):
         prods.append(
-            _try_to_simplify(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
+            _try_to_simplify(
+                Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob), model_order
+            )
         )
 
     # Denominator of the final expression
     denom = _try_to_simplify(
-        Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
+        Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1), model_order)
     )
 
     # `prods / denom`, because `denom` is a negative pow
     mult = Mul(Add(*prods), denom)
 
-    a = _try_to_simplify(mult)  # Return simplified to optimize next steps
+    a = _try_to_simplify(mult, model_order)  # Return simplified to optimize next steps
     return a
 
 
-def _try_to_simplify(expr: Expr, timeout: int = 30):
+def _try_to_simplify(expr: Expr, timeout: int = 60, model_order: int = None):
     """Help function which encapsulate the a call to an attempt to simplify an
     expression with a maximum timeout. If the expression could not be simplified
     in that time, it returns it as it was at the beginning, else return it
@@ -194,13 +212,20 @@ def _try_to_simplify(expr: Expr, timeout: int = 30):
         Expression to simplify.
     timeout : int, optional (default 60)
         Maximum timeout for the try, as seconds. Default 1 minute as 60 seconds.
+        If the `model_order` parameter is used, a better value for this is
+        also achieved. Use `None` to don't use a timeout.
+    model_order : int, optional
+        The order of the implicated model. This optional parameter is used to
+        optimize the computation. Default is `None` and supposes a generalist
+        optimization strategy, less optimal.
 
     Returns
     -------
     Expr
         The input expression, simplified or not.
-
     """
+    if model_order:
+        timeout = model_order * 60  # Seconds
 
     @timeout_decorator.timeout_decorator.timeout(
         timeout, timeout_exception=StopIteration
