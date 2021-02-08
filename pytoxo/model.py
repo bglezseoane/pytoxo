@@ -230,7 +230,7 @@ class Model:
 
     def _solve(
         self, eq_system: list[sympy.Eq], solve_timeout: int = 20
-    ) -> pytoxo.ptable.PTable:
+    ) -> dict[sympy.Symbol : float]:
         """Assumes the responsibility of solving the system of equations that
         will define the values of the variables for the generation of the
         penetrance table and is in charge of its construction.
@@ -249,8 +249,8 @@ class Model:
 
         Returns
         -------
-        pytoxo.ptable.PTable
-            The equation solution.
+        dict[sympy.Symbol: float]
+            The equation solution for the two model variables as a dict.
 
         Raises
         ------
@@ -298,11 +298,7 @@ class Model:
             raise ValueError("PyToxo can not solve this model.")
 
         # Return the final achieved solution as peenetrance table object
-        return pytoxo.ptable.PTable(
-            model_order=self._order,
-            model_penetrances=self._penetrances,
-            values={self._variables[0]: sol[0], self._variables[1]: sol[1]},
-        )
+        return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
 
     def find_max_prevalence_table(
         self, mafs: list[float], h: float, solve_timeout: int = None
@@ -335,9 +331,19 @@ class Model:
 
         # Delegates to the solve method, passing timeout if the user specifies it
         if not solve_timeout:
-            return self._solve(eq_system=[eq1, eq2])
+            sol = self._solve(eq_system=[eq1, eq2])
         else:
-            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+            sol = self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+
+        # Return the final achieved solution as peenetrance table object
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_penetrances=self._penetrances,
+            values={
+                self._variables[0]: sol[self._variables[0]],
+                self._variables[1]: sol[self._variables[1]],
+            },
+        )
 
     def find_max_heritability_table(
         self, mafs: list[float], p: float, solve_timeout: int = None
@@ -370,6 +376,16 @@ class Model:
 
         # Delegates to the solve method, passing timeout if the user specifies it
         if not solve_timeout:
-            return self._solve(eq_system=[eq1, eq2])
+            sol = self._solve(eq_system=[eq1, eq2])
         else:
-            return self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+            sol = self._solve(eq_system=[eq1, eq2], solve_timeout=solve_timeout)
+
+        # Return the final achieved solution as peenetrance table object
+        return pytoxo.ptable.PTable(
+            model_order=self._order,
+            model_penetrances=self._penetrances,
+            values={
+                self._variables[0]: sol[self._variables[0]],
+                self._variables[1]: sol[self._variables[1]],
+            },
+        )
