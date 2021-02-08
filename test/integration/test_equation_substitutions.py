@@ -34,8 +34,8 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
 
     def test_equation_substitutions_additive_2(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -54,142 +54,10 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_additive_3(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_3"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_additive_4(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_4"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_additive_5(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_5"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_additive_6(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_6"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_additive_7(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_7"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_additive_8(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "additive_8"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
     def test_equation_substitutions_multiplicative_2(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -208,142 +76,10 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
-    def test_equation_substitutions_multiplicative_3(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_3"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_multiplicative_4(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_4"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_multiplicative_5(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_5"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_multiplicative_6(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_6"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_multiplicative_7(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_7"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
-    def test_equation_substitutions_multiplicative_8(self):
-        """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
-
-        The test check both heritability and prevalence maximizations.
-
-        This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
-        """
-        model = "multiplicative_8"
-        order = int(model.split("_")[1])
-
-        # Run within the helper function
-        self._helper_test_equation_substitutions(
-            test=self,
-            model_file=f"models/{model}.csv",
-            order=order,
-            accuracy_places=sys.float_info.dig - order,
-        )
-
     def test_equation_substitutions_threshold_2(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -362,10 +98,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_3(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_3"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_3(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_3"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_3(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -384,10 +164,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_4(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_4"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_4(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_4"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_4(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -406,10 +230,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_5(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_5"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_5(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_5"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_5(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -428,10 +296,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_6(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_6"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_6(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_6"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_6(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -450,10 +362,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_7(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_7"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_7(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_7"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_7(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
@@ -472,10 +428,54 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    def test_equation_substitutions_additive_8(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "additive_8"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
+    def test_equation_substitutions_multiplicative_8(self):
+        """Test the calculation of the values of the variables used in a model
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
+
+        The test check both heritability and prevalence maximizations.
+
+        This test is for the `additive_2` model. MAF, heritability and
+        prevalence values are generated randomly to cover a greater range in
+        testing.
+        """
+        model = "multiplicative_8"
+        order = int(model.split("_")[1])
+
+        # Run within the helper function
+        self._helper_test_equation_substitutions(
+            test=self,
+            model_file=f"models/{model}.csv",
+            order=order,
+            accuracy_places=sys.float_info.dig - order,
+        )
+
     def test_equation_substitutions_threshold_8(self):
         """Test the calculation of the values of the variables used in a model
-        after its solution. To do this, instead of using the Toxo contrast,
-        replace the values of the variables in the initial equation again.
+        after its solution. To do this, replace the values of the variables
+        in the initial equation again.
 
         The test check both heritability and prevalence maximizations.
 
