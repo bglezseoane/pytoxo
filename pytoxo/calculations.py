@@ -168,6 +168,6 @@ def compute_heritability(
     denom = Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
 
     # `prods / denom`, because `denom` is a negative pow
-    mult = Mul(Add(*prods), denom).simplify()
+    mult = Mul(Add(*prods), denom)
 
     return mult.simplify()  # Return simplified to optimize next steps
