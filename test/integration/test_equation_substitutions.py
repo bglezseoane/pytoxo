@@ -11,7 +11,7 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""PyToxo integration test suite."""
+"""Part of PyToxo integration test suite."""
 
 import random
 import sys
@@ -24,15 +24,12 @@ import pytoxo.model
 
 
 class EquationSubstitutionsTestSuite(unittest.TestCase):
-    """Test suite which simulates the same penetrance tables generation in
-    PyToxo and in Toxo, and compare the outputs of the two programs to be
-    equivalent.
+    """Test suite which checks the calculation of the values of the variables
+    used in a model after its solution. To do this, instead of using the Toxo
+    contrast, like in other suites of PyToxo, replace the values of the
+    variables in the initial equation again.
 
-    At the beginning this tests suite was conformed by the same cases used in
-    Toxo's `example/calculate_tables.m`, but then more proves were added.
-
-    Tests for PyToxo penetrance table generation process at integration
-    level.
+    Tests for PyToxo penetrance table calculations at integration level.
     """
 
     def test_equation_substitutions_penetrances_additive_2(self):

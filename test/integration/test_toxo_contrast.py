@@ -11,7 +11,7 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""PyToxo integration test suite."""
+"""Part of PyToxo integration test suite."""
 
 import os
 import tempfile
