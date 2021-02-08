@@ -556,7 +556,3 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             expected_sol_eq2 = sympy.Integer(1)
             test.assertAlmostEqual(expected_sol_eq1, sol_eq1, accuracy_places)
             test.assertAlmostEqual(expected_sol_eq2, sol_eq2, accuracy_places)
-
-
-if __name__ == "__main__":
-    unittest.main()

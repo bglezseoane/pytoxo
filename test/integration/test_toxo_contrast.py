@@ -1276,7 +1276,3 @@ class ToxoContrastTestSuite(unittest.TestCase):
                 # Calculate delta between the two penetrances
                 penetrance_delta = abs(expected_penetrance - penetrance)
                 test.assertLess(penetrance_delta, accuracy_delta)
-
-
-if __name__ == "__main__":
-    unittest.main()

@@ -193,7 +193,3 @@ class ModelUnitTestSuite(unittest.TestCase):
             output = m._max_penetrance()
 
             self.assertEqual(expected_output, output)
-
-
-if __name__ == "__main__":
-    unittest.main()

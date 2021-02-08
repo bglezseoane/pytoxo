@@ -1395,7 +1395,3 @@ class CalculationsUnitTestSuite(unittest.TestCase):
         output = pytoxo.calculations.compute_heritability(input_penetrances, input_mafs)
 
         self.assertAlmostEqual(expected_output, output)  # Default precision 7 decimals
-
-
-if __name__ == "__main__":
-    unittest.main()
