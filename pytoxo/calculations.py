@@ -22,7 +22,8 @@ import functools
 import itertools
 import typing
 
-from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify
+import timeout_decorator
+from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify, simplify
 
 
 def genotype_probabilities(
@@ -131,7 +132,7 @@ def compute_prevalence(
 
     addition = Add(*prods)  # Addition of all the elements of the product array
 
-    return addition.simplify()  # Return simplified to optimize next steps
+    return _try_to_simplify(addition)  # Return simplified to optimize next steps
 
 
 def compute_heritability(
@@ -162,12 +163,52 @@ def compute_heritability(
     # `(penetrances - p).^2 .* gp`
     prods = []
     for pen, prob in zip(penetrances, gp):
-        prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
+        prods.append(
+            _try_to_simplify(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
+        )
 
     # Denominator of the final expression
-    denom = Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
+    denom = _try_to_simplify(
+        Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1))
+    )
 
     # `prods / denom`, because `denom` is a negative pow
     mult = Mul(Add(*prods), denom)
 
-    return mult.simplify()  # Return simplified to optimize next steps
+    a = _try_to_simplify(mult)  # Return simplified to optimize next steps
+    return a
+
+
+def _try_to_simplify(expr: Expr, timeout: int = 30):
+    """Help function which encapsulate the a call to an attempt to simplify an
+    expression with a maximum timeout. If the expression could not be simplified
+    in that time, it returns it as it was at the beginning, else return it
+    simplified. In this way it is ensured that the simplifications of this
+    module help the efficiency of the program and not the opposite. It also
+    prevents the program from seemingly stuck trying to simplify overly
+    complex expressions.
+
+    Parameters
+    ----------
+    expr : Expr
+        Expression to simplify.
+    timeout : int, optional (default 60)
+        Maximum timeout for the try, as seconds. Default 1 minute as 60 seconds.
+
+    Returns
+    -------
+    Expr
+        The input expression, simplified or not.
+
+    """
+
+    @timeout_decorator.timeout_decorator.timeout(
+        timeout, timeout_exception=StopIteration
+    )
+    def simplify_call():
+        return simplify(expr)
+
+    try:
+        return simplify_call()
+    except StopIteration:
+        return expr
