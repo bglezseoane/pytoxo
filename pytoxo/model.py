@@ -233,7 +233,7 @@ class Model:
     ) -> dict[sympy.Symbol : float]:
         """Assumes the responsibility of solving the system of equations that
         will define the values of the variables for the generation of the
-        penetrance table and is in charge of its construction.
+        penetrance table.
 
         `find_max_prevalence` and `find_max_heritability` delegates here
         after conform their equations systems.
