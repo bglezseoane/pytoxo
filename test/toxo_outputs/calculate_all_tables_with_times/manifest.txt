@@ -1,0 +1,3 @@
+Data imported since Toxo's repository after the execution of the script 'calculate_all_tables_with_times.m'. Model configurations are explicit in the file titles.
+
+The time files will be renamed (as 'timesN.txt') after several executions in order to calculate an average and thus obtain a better reference.
