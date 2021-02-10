@@ -532,13 +532,13 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             vars_sol = model._solve(eq_system=eq_system)
 
             # Now substitute them in the system equations
-            substituted_eq1_left_side = eq1_lhs.subs(
+            substituted_eq1_lhs = eq1_lhs.subs(
                 {
                     model.variables[0]: vars_sol[model.variables[0]],
                     model.variables[1]: vars_sol[model.variables[1]],
                 }
             )
-            substituted_eq2_left_side = eq2_lhs.subs(
+            substituted_eq2_lhs = eq2_lhs.subs(
                 {
                     model.variables[0]: vars_sol[model.variables[0]],
                     model.variables[1]: vars_sol[model.variables[1]],
@@ -546,8 +546,8 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             )
 
             # Get solutions of substitutions
-            sol_eq1 = substituted_eq1_left_side.evalf()
-            sol_eq2 = substituted_eq2_left_side.evalf()
+            sol_eq1 = substituted_eq1_lhs.evalf()
+            sol_eq2 = substituted_eq2_lhs.evalf()
 
             # Compare with exact expected values
             expected_sol_eq1 = her_or_prev
