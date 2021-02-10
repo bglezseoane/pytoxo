@@ -141,6 +141,11 @@ def compute_prevalence(
 
     addition = Add(*prods)  # Addition of all the elements of the product array
 
+    """Try to solve. Innocuous if the expression is still symbolic and saves a
+    lot of time if we are dealing with an expression that is already reducible 
+    to a numeric value"""
+    addition = addition.evalf().nsimplify()
+
     return _try_to_simplify(
         addition, model_order
     )  # Return simplified to optimize next steps
@@ -192,6 +197,11 @@ def compute_heritability(
 
     # `prods / denom`, because `denom` is a negative pow
     mult = Mul(Add(*prods), denom)
+
+    """Try to solve. Innocuous if the expression is still symbolic and saves a
+    lot of time if we are dealing with an expression that is already reducible 
+    to a numeric value"""
+    mult = mult.evalf().nsimplify()
 
     return _try_to_simplify(
         mult, model_order
