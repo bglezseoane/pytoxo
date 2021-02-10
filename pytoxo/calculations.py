@@ -193,8 +193,9 @@ def compute_heritability(
     # `prods / denom`, because `denom` is a negative pow
     mult = Mul(Add(*prods), denom)
 
-    a = _try_to_simplify(mult, model_order)  # Return simplified to optimize next steps
-    return a
+    return _try_to_simplify(
+        mult, model_order
+    )  # Return simplified to optimize next steps
 
 
 def _try_to_simplify(expr: Expr, timeout: int = 60, model_order: int = None):
