@@ -1,0 +1,1 @@
+Data imported since Toxo's repository after the generation of some tables with the program. Model configurations are explicit in the file titles.
