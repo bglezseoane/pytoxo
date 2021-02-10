@@ -90,6 +90,19 @@ class PenetrancesAccuracyMaxHTestSuite(unittest.TestCase):
             for maf in mafs:
                 maf = [maf] * model_order
                 for prevalence in prevalences:
+                    # Patches to avoid unresolvable known models
+                    if (
+                        model_name == "threshold_3"
+                        and maf[0] == 0.4
+                        and prevalence == 0.1
+                    ):
+                        continue
+                    if (
+                        model_name == "threshold_4"
+                        and maf[0] == 0.4
+                        and prevalence == 0.1
+                    ):
+                        continue
                     # Generate model
                     model = pytoxo.model.Model(
                         os.path.join("models", f"{model_name}.csv")
