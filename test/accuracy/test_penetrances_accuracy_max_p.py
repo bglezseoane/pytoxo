@@ -26,12 +26,13 @@ import platform
 import time
 import unittest
 
+import git
 import psutil
+import tabulate
 
 import pytoxo
 import pytoxo.calculations
 import pytoxo.model
-import tabulate
 
 _TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
 _TEST_REPETITIONS = 1  # To confirm computation times with an average
@@ -160,6 +161,9 @@ class PenetrancesAccuracyMaxPTestSuite(unittest.TestCase):
             f"{psutil.cpu_count(logical=False)} physical core, "
             f"{psutil.cpu_freq().max:.2f} MHz max freq."
         )
+        """Retrieve current repository commit reference to locate the report 
+        in the history"""
+        git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
         # Some Latex patches
         test_name_tex = test_name.replace("_", "\\_")
         module_name_tex = module_name.replace("_", "\\_")
@@ -185,7 +189,8 @@ class PenetrancesAccuracyMaxPTestSuite(unittest.TestCase):
                 "tables}\n"
                 "\\end{figure}\n"
                 f"Datetime: {now_tex}\n\n"
-                f"Machine: \\texttt{{{machine_info_tex}}}\n"
+                f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
+                f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
                 "\\end{document}"
             )
 
