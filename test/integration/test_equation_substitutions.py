@@ -13,6 +13,7 @@
 
 """Part of PyToxo integration test suite."""
 
+import os
 import random
 import sys
 import unittest
@@ -49,7 +50,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -71,7 +72,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -93,7 +94,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -115,7 +116,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -137,7 +138,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -159,7 +160,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -181,7 +182,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -203,7 +204,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -225,7 +226,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -247,7 +248,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -269,7 +270,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -291,7 +292,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -313,7 +314,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -335,7 +336,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -357,7 +358,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -379,7 +380,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -401,7 +402,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -423,7 +424,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -445,7 +446,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -467,7 +468,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )
@@ -489,7 +490,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         # Run within the helper function
         self._helper_test_equation_substitutions(
             test=self,
-            model_file=f"models/{model}.csv",
+            model_file=os.path.join("models", f"{model}.csv"),
             order=order,
             accuracy_places=sys.float_info.dig - order,
         )

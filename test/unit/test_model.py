@@ -35,7 +35,7 @@ class ModelUnitTestSuite(unittest.TestCase):
 
     def test_file_parsing_1(self):
         """Test model files parsing."""
-        m = pytoxo.model.Model("models/multiplicative_2.csv")
+        m = pytoxo.model.Model(os.path.join("models", "multiplicative_2.csv"))
 
         # Name
         self.assertEqual("multiplicative_2", m._name)
@@ -67,7 +67,7 @@ class ModelUnitTestSuite(unittest.TestCase):
 
     def test_file_parsing_2(self):
         """Test model files parsing."""
-        m = pytoxo.model.Model("models/additive_2.csv")
+        m = pytoxo.model.Model(os.path.join("models", "additive_2.csv"))
 
         # Name
         self.assertEqual("additive_2", m._name)
@@ -107,7 +107,7 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertRaises(OSError, lambda: pytoxo.model.Model("nonexistent_file.csv"))
 
         # Read a well formed sample model to corrupt it and assert error raises
-        with open("models/additive_2.csv", "r") as f:
+        with open(os.path.join("models", "additive_2.csv"), "r") as f:
             well_formed_file_content = f.readlines()
 
         with tempfile.TemporaryDirectory() as mock_bad_formed_models_dir:
@@ -141,7 +141,7 @@ class ModelUnitTestSuite(unittest.TestCase):
 
     def test_max_penetrance_1(self):
         """Test model `max_penetrance` method."""
-        m = pytoxo.model.Model("models/additive_3.csv")
+        m = pytoxo.model.Model(os.path.join("models", "additive_3.csv"))
 
         """Output from Toxo's `m = max_penetrance(obj)` private method for 
         the given model, adapted to a Sympy object"""
@@ -153,7 +153,7 @@ class ModelUnitTestSuite(unittest.TestCase):
 
     def test_max_penetrance_2(self):
         """Test model `max_penetrance` method."""
-        m = pytoxo.model.Model("models/multiplicative_4.csv")
+        m = pytoxo.model.Model(os.path.join("models", "multiplicative_4.csv"))
 
         """Output from Toxo's `m = max_penetrance(obj)` private method for 
         the given model, adapted to a Sympy object"""
