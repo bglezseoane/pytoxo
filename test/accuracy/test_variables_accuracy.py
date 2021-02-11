@@ -148,7 +148,10 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
         # Calculate file name based in current test name and datetime
         test_name = str(self).split(" ")[0]
         module_name = str(self.__module__)
-        now = f"{now.year}-{now.month}-{now.day}_{now.hour}:{now.minute}:{now.second}"
+        now = (
+            f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
+            f":{now.minute:02}:{now.second:02}"
+        )
         filename = os.path.join(
             "test",
             "accuracy",

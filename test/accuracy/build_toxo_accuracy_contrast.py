@@ -54,6 +54,12 @@ recalc_method = pytoxo.calculations.compute_heritability
 prev_or_her_letter = "p"
 # prev_or_her_letter = "h"
 # #########################################################
+
+# Calculate some necessary opposites
+if prev_or_her_str == "Prevalence":
+    prev_or_her_str_op = "Heritability"
+else:
+    prev_or_her_str_op = "Prevalence"
 if prev_or_her_letter == "p":
     prev_or_her_letter_op = "h"
 else:
@@ -145,14 +151,17 @@ table_headers = [
     "Model",
     "Order",
     "MAF",
-    f"{prev_or_her_str}",
+    f"{prev_or_her_str_op}",
     "Error",
     f"Time (s) avg.",
 ]
 now = datetime.datetime.now()
 # Calculate file name based in current test name and datetime
 script_name = str(os.path.basename(__file__)).split(".")[0]
-now = f"{now.year}-{now.month}-{now.day}_{now.hour}:{now.minute}:{now.second}"
+now = (
+    f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
+    f":{now.minute:02}:{now.second:02}"
+)
 filename = os.path.join(
     "test",
     "accuracy",
