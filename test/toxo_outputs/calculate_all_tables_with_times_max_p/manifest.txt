@@ -4,6 +4,6 @@ configurations are explicit in the file titles.
 
 Data generated maximizing the prevalence.
 
-The time files will be renamed (as 'timesN.txt') after several
-executions in order to calculate an average and thus obtain a
+The time files will be appended to 'times.txt' after several 
+executions in order to calculate an average and thus obtain a 
 better reference.
