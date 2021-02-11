@@ -17,7 +17,9 @@
 
 Script to build a contrast table with the imported Toxo outputs collection.
 
-This test maximizes heritability.
+This test is generalized to easily edit some values and achieve different
+reports. It is possible to maximize both prevalence and heritability. Revise
+`EDIT HERE` section of the code.
 """
 
 import datetime
@@ -29,6 +31,7 @@ import git
 import psutil
 import tabulate
 
+# Workaround to run script inside a project using project
 sys.path.insert(0, "../..")
 try:
     import pytoxo
@@ -42,9 +45,25 @@ if os.path.basename(os.getcwd()) == "test":
 elif os.path.basename(os.getcwd()) == "accuracy":
     os.chdir(os.path.join(os.pardir, os.pardir))
 
+# ####################### EDIT HERE #######################
+# Comment or uncomment firsts or seconds of each pair
+prev_or_her_str = "Prevalence"
+# prev_or_her_str = "Heritability"
+recalc_method = pytoxo.calculations.compute_heritability
+# recalc_method = pytoxo.calculations.compute_prevalence
+prev_or_her_letter = "p"
+# prev_or_her_letter = "h"
+# #########################################################
+if prev_or_her_letter == "p":
+    prev_or_her_letter_op = "h"
+else:
+    prev_or_her_letter_op = "p"
+
 
 # Read outputs folder
-path = os.path.join("test", "toxo_outputs", "calculate_all_tables_with_times_max_h")
+path = os.path.join(
+    "test", "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
+)
 files = os.listdir(path)
 times_file = "times.txt"
 models = sorted([f for f in files if f.endswith(".csv")])
@@ -58,8 +77,8 @@ for model_filename in models:
     model_name = "_".join(model_filename.split("_")[:2])
     model_order = int(model_filename.split("_")[1])
     maf = [float(model_filename.split("_")[2])] * model_order
-    prevalence = float(
-        model_filename.split("_")[3].replace("p", "").replace(".csv", "")
+    prev_or_her = float(
+        model_filename.split("_")[3].replace(prev_or_her_letter, "").replace(".csv", "")
     )
 
     # Calculate computation time average
@@ -70,7 +89,11 @@ for model_filename in models:
     try:
         times_file_content = [l for l in times_file_content if l.startswith(model_name)]
         times_file_content = [l for l in times_file_content if f"_{maf[0]}_" in l]
-        times_file_content = [l for l in times_file_content if f"_p{prevalence}" in l]
+        times_file_content = [
+            l
+            for l in times_file_content
+            if f"_{prev_or_her_letter_op}{prev_or_her}" in l
+        ]
     except IndexError:
         times_file_content = []
     # Filter time values
@@ -92,15 +115,13 @@ for model_filename in models:
     """Use the Toxo penetrance values to run a second
     calculation of the left hand side of the first equation
     of the equation system generated in PyToxo's
-    `find_max_prevalence_table`. This time, the input is
-    formed by numerical values, so the final solution will be
-    numerical and not symbolic."""
-    recalculated_prevalence = pytoxo.calculations.compute_prevalence(
-        penetrances, maf, model_order=model.order
-    )
+    `find_max_heritability_table`. or `find_max_prevalence_table`.
+    This time, the input is formed by numerical values, 
+    so the final solution will be numerical and not symbolic."""
+    recalculated_prev_or_her = recalc_method(penetrances, maf, model_order=model.order)
 
-    # Compare recalculated and initial prevalences
-    delta = prevalence - recalculated_prevalence
+    # Compare recalculated and initial heritabilitys
+    delta = prev_or_her - recalculated_prev_or_her
 
     # Append to delta list for the automatic checks
     deltas.append(delta)
@@ -111,7 +132,7 @@ for model_filename in models:
             model_filename.split("_")[0].capitalize(),
             model_order,
             maf[0],
-            prevalence,
+            prev_or_her,
             delta,
             f"{round(computation_time_av, 4)}",
         ]
@@ -122,7 +143,7 @@ table_headers = [
     "Model",
     "Order",
     "MAF",
-    "Prevalence",
+    f"{prev_or_her_str}",
     "Error",
     f"Time (s) avg.",
 ]
@@ -168,7 +189,7 @@ with open(filename, "x") as f:
         f"{final_table}"
         "\n"
         "\\caption{Accuracies of the the calculated values for the "
-        "\\penetrances by Toxo. Maximizing heritability}\n"
+        f"\\penetrances by Toxo. Maximizing {prev_or_her_str.lower()}}}\n"
         "\\end{figure}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
