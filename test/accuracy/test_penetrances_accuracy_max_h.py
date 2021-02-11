@@ -35,7 +35,7 @@ import pytoxo.calculations
 import pytoxo.model
 
 _TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
-_TEST_REPETITIONS = 1  # To confirm computation times with an average
+_TEST_REPETITIONS = 5  # To confirm computation times with an average
 
 
 class PenetrancesAccuracyMaxHTestSuite(unittest.TestCase):
@@ -196,8 +196,7 @@ class PenetrancesAccuracyMaxHTestSuite(unittest.TestCase):
                 f"{final_table}"
                 "\n"
                 "\\caption{Accuracies of the the calculated values for the "
-                "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                "tables}\n"
+                "\\penetrances. Maximizing heritability}\n"
                 "\\end{figure}\n"
                 f"Datetime: {now_tex}\n\n"
                 f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
