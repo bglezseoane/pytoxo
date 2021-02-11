@@ -78,7 +78,9 @@ for model_filename in models:
     model_order = int(model_filename.split("_")[1])
     maf = [float(model_filename.split("_")[2])] * model_order
     prev_or_her = float(
-        model_filename.split("_")[3].replace(prev_or_her_letter, "").replace(".csv", "")
+        model_filename.split("_")[3]
+        .replace(prev_or_her_letter_op, "")
+        .replace(".csv", "")
     )
 
     # Calculate computation time average
