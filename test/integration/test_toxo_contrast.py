@@ -20,6 +20,13 @@ import unittest
 import pytoxo.calculations
 import pytoxo.model
 
+_TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER = os.path.join(
+    "test", "toxo_outputs", "max_heritability"
+)
+_TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER = os.path.join(
+    "test", "toxo_outputs", "max_prevalence"
+)
+
 
 class ToxoContrastTestSuite(unittest.TestCase):
     """Test suite which simulates the same penetrance tables generation in
@@ -45,7 +52,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -70,7 +79,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -95,7 +106,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -120,7 +133,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -145,7 +160,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -170,7 +187,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -195,7 +214,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -220,7 +241,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -245,7 +268,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -271,7 +296,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -296,7 +323,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -321,7 +350,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -346,7 +377,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -371,7 +404,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -396,7 +431,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -421,7 +458,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -446,7 +485,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -471,7 +512,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.1
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -496,7 +539,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -521,7 +566,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -546,7 +593,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -571,7 +620,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -596,7 +647,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -621,7 +674,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         heritability = 0.8
-        expected_output_file = f"test/integration/toxo_contrasts/max_prevalence/{model}_{maf}_h{heritability}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER, f"{model}_{maf}_h{heritability}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -644,7 +699,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -669,7 +726,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -692,7 +751,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -715,7 +776,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -740,7 +803,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -763,7 +828,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -786,7 +853,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -811,7 +880,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -834,7 +905,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -857,7 +930,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -882,7 +957,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -905,7 +982,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.1
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -928,7 +1007,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -953,7 +1034,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -978,7 +1061,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1001,7 +1086,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1026,7 +1113,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1049,7 +1138,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.2
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1072,7 +1163,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1097,7 +1190,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1120,7 +1215,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1143,7 +1240,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1168,7 +1267,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1191,7 +1292,9 @@ class ToxoContrastTestSuite(unittest.TestCase):
         order = int(model.split("_")[1])
         maf = 0.4
         prevalence = 0.6
-        expected_output_file = f"test/integration/toxo_contrasts/max_heritability/{model}_{maf}_p{prevalence}.txt"
+        expected_output_file = os.path.join(
+            _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER, f"{model}_{maf}_p{prevalence}.csv"
+        )
 
         # Run within the helper function
         self._helper_toxo_contrast_find_tables(
@@ -1240,7 +1343,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
             # Save table to a file to compare then with the Toxo equivalent
             output_file = os.path.join(
                 output_root,
-                f"{os.path.basename(model_file)}_{maf}_{her_or_prev_key}{her_or_prev}.txt",
+                f"{os.path.basename(model_file)}_{maf}_{her_or_prev_key}{her_or_prev}.csv",
             )
             ptable.write_to_file(output_file)
 
