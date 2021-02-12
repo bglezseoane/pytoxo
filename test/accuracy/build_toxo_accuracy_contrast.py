@@ -183,6 +183,11 @@ git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
 # Some Latex patches
 script_name_tex = script_name.replace("_", "\\_")
 now_tex = now.replace("_", "\\_")
+final_table_tex = (
+    final_table.replace("tabular", "longtable")
+    .replace("\\begin{longtable}", "\\begin{longtable}[H]")
+    .replace("\\end{longtable}", "")
+)
 machine_info_tex = machine_info.replace("_", "\\_")
 with open(filename, "x") as f:
     """Paste the table inside a basic document template to can easily
@@ -190,18 +195,17 @@ with open(filename, "x") as f:
     f.write(
         "\\documentclass{article}\n"
         "\\usepackage{float}\n"
+        "\\usepackage{longtable}\n"
         "\\begin{document}\n"
         "\\section*{PyToxo Test Suite Report}\n"
-        f"\\subsection*{{\\texttt{{{script_name}}}}}\n"
+        f"\\subsection*{{\\texttt{{{script_name_tex}}}}}\n"
         f"Generated report:\n"
-        "\\begin{figure}[H]\n"
-        "\\centering\n"
         "\n"
-        f"{final_table}"
+        f"{final_table_tex}"
         "\n"
         "\\caption{Accuracies of the the calculated values for the "
-        f"\\penetrances by Toxo. Maximizing {prev_or_her_str.lower()}}}\n"
-        "\\end{figure}\n"
+        f"penetrances by Toxo. Maximizing {prev_or_her_str.lower()}}}\n"
+        "\\end{longtable}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
         f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
