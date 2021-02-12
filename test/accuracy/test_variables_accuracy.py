@@ -150,7 +150,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
         module_name = str(self.__module__)
         now = (
             f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
-            f":{now.minute:02}:{now.second:02}"
+            f"-{now.minute:02}-{now.second:02}"
         )
         filename = os.path.join(
             "test",

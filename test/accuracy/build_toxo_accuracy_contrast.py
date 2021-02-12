@@ -160,7 +160,7 @@ now = datetime.datetime.now()
 script_name = str(os.path.basename(__file__)).split(".")[0]
 now = (
     f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
-    f":{now.minute:02}:{now.second:02}"
+    f"-{now.minute:02}-{now.second:02}"
 )
 filename = os.path.join(
     "test",
