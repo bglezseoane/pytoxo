@@ -331,7 +331,7 @@ class Model:
             pytoxo.calculations.compute_heritability(
                 self._penetrances, mafs, model_order=self._order
             ),
-            h,
+            h,  # It does not be casted to rational because the solver doesn't end
         )
         eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
         return [eq1, eq2]  # System as a list with the equations
@@ -401,7 +401,7 @@ class Model:
             pytoxo.calculations.compute_prevalence(
                 self._penetrances, mafs, model_order=self._order
             ),
-            p,
+            p,  # It does not be casted to rational because the solver doesn't end
         )
         eq2 = sympy.Eq(self._max_penetrance(), sympy.Integer(1))
         return [eq1, eq2]  # System as a list with the equations
