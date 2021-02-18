@@ -184,11 +184,7 @@ def compute_heritability(
     # `(penetrances - p).^2 .* gp`
     prods = []
     for pen, prob in zip(penetrances, gp):
-        prods.append(
-            _try_to_simplify(
-                Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob), model_order
-            )
-        )
+        prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
 
     # Denominator of the final expression
     denom = _try_to_simplify(
