@@ -245,8 +245,9 @@ class Model:
         solve_timeout : typing.Union[int, bool], optional (default `True`)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
-            (passed as 'True') is assumed like the double of the model order.
-            Pass as 'False' or 'None' to do not use timeout.
+            (passed as 'True') is assumed since an heuristic method related
+            to the model order. Pass as 'False' or 'None' to do not use
+            timeout.
 
         Returns
         -------
@@ -262,7 +263,7 @@ class Model:
         if not solve_timeout:
             solve_timeout = None  # `timeout_decorator` requires exactly `None`
         elif solve_timeout == True:
-            solve_timeout = self._order * 2 * 60  # Seconds
+            solve_timeout = (self._order + 1) ** 2 * 60  # Seconds
 
         # TODO: Consider add assumptions to vars real and greather than 0
 
@@ -351,8 +352,8 @@ class Model:
         solve_timeout : typing.Union[int, bool], optional (default `True`)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
-            (passed as 'True') is assumed like the double of the model order.
-            Pass as 'False' or 'None' to do not use timeout.
+            (passed as 'True') is assumed heuristically. Pass as 'False' or
+            'None' to do not use timeout.
         Returns
         -------
         pytoxo.ptable.PTable
@@ -421,8 +422,8 @@ class Model:
         solve_timeout : typing.Union[int, bool], optional (default `True`)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
-            (passed as 'True') is assumed like the double of the model order.
-            Pass as 'False' or 'None' to do not use timeout.
+            (passed as 'True') is assumed heuristically. Pass as 'False' or
+            'None' to do not use timeout.
 
         Returns
         -------
