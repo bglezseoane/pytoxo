@@ -41,8 +41,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_2"
         order = int(model.split("_")[1])
@@ -63,8 +62,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_2"
         order = int(model.split("_")[1])
@@ -85,8 +83,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_2"
         order = int(model.split("_")[1])
@@ -107,8 +104,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_3"
         order = int(model.split("_")[1])
@@ -129,8 +125,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_3"
         order = int(model.split("_")[1])
@@ -151,8 +146,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_3"
         order = int(model.split("_")[1])
@@ -173,8 +167,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_4"
         order = int(model.split("_")[1])
@@ -195,8 +188,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_4"
         order = int(model.split("_")[1])
@@ -217,8 +209,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_4"
         order = int(model.split("_")[1])
@@ -239,8 +230,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_5"
         order = int(model.split("_")[1])
@@ -261,8 +251,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_5"
         order = int(model.split("_")[1])
@@ -283,8 +272,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_5"
         order = int(model.split("_")[1])
@@ -305,8 +293,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_6"
         order = int(model.split("_")[1])
@@ -327,8 +314,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_6"
         order = int(model.split("_")[1])
@@ -349,8 +335,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_6"
         order = int(model.split("_")[1])
@@ -371,8 +356,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_7"
         order = int(model.split("_")[1])
@@ -393,8 +377,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_7"
         order = int(model.split("_")[1])
@@ -415,8 +398,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_7"
         order = int(model.split("_")[1])
@@ -437,8 +419,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "additive_8"
         order = int(model.split("_")[1])
@@ -459,8 +440,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "multiplicative_8"
         order = int(model.split("_")[1])
@@ -481,8 +461,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         The test check both heritability and prevalence maximizations.
 
         This test is for the `additive_2` model. MAF, heritability and
-        prevalence values are generated randomly to cover a greater range in
-        testing.
+        prevalence values are equal for all tests.
         """
         model = "threshold_8"
         order = int(model.split("_")[1])
@@ -506,12 +485,11 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
         solution of a model solutions of the `EquationSubstitutionsTestSuite`
         test suite.
         """
-        # Calculate random stuff
         mafs = []
         for _ in range(order):
-            mafs.append(random.uniform(0, 1))
-        prevalence = random.uniform(0, 1)
-        heritability = random.uniform(0, 1)
+            mafs.append(0.1)
+        prevalence = 0.1
+        heritability = 0.1
 
         # Generate the model
         model = pytoxo.model.Model(model_file)
