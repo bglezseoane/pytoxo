@@ -243,6 +243,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    @unittest.skip
     def test_equation_substitutions_multiplicative_5(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, replace the values of the variables
@@ -306,6 +307,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    @unittest.skip
     def test_equation_substitutions_multiplicative_6(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, replace the values of the variables
@@ -369,6 +371,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    @unittest.skip
     def test_equation_substitutions_multiplicative_7(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, replace the values of the variables
@@ -432,6 +435,7 @@ class EquationSubstitutionsTestSuite(unittest.TestCase):
             accuracy_places=sys.float_info.dig - order,
         )
 
+    @unittest.skip
     def test_equation_substitutions_multiplicative_8(self):
         """Test the calculation of the values of the variables used in a model
         after its solution. To do this, replace the values of the variables
