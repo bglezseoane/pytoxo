@@ -100,6 +100,55 @@ class ModelUnitTestSuite(unittest.TestCase):
         # Variables
         self.assertEqual([sympy.abc.x, sympy.abc.y], m._variables)
 
+    def test_file_parsing_different_var_names(self):
+        """Test model files parsing. This version uses unusual names for the
+        variables and not typical `x` and `y` to assert function."""
+        with tempfile.TemporaryDirectory() as tmp_root:
+            # Use a real model as base to the test
+            with open(os.path.join("models", "additive_2.csv"), "r") as f:
+                additive_2_model_content = f.read()
+            # Substitute original model `x` and `y` with `g` and `w`, respectively
+            additive_2_model_content = additive_2_model_content.replace("x", "g")
+            additive_2_model_content = additive_2_model_content.replace("y", "w")
+            # Save to a temp file
+            tmp_file = os.path.join(tmp_root, "additive_2.csv")
+            with open(tmp_file, "x") as f:
+                f.write(additive_2_model_content)
+
+            # Read the modified model and go on with the test...
+            m = pytoxo.model.Model(tmp_file)
+
+            # Name
+            self.assertEqual("additive_2", m._name)
+
+            # Order
+            self.assertEqual(2, m._order)
+
+            # Penetrances
+            """The following expressions are those of the file 
+            `models/additive_2.csv`, but corrected with small modifications
+            that the library Sympy does when normalizing them. And with 
+            the modifications `x` and `y` to `g` and `w`, respectively"""
+            self.assertEqual("g", str(m._penetrances[0]))
+            self.assertEqual("g*(w + 1)", str(m._penetrances[1]))
+            self.assertEqual("g*(w + 1)**2", str(m._penetrances[2]))
+            self.assertEqual("g*(w + 1)", str(m._penetrances[3]))
+            self.assertEqual("g*(w + 1)**2", str(m._penetrances[4]))
+            self.assertEqual("g*(w + 1)**3", str(m._penetrances[5]))
+            self.assertEqual("g*(w + 1)**2", str(m._penetrances[6]))
+            self.assertEqual("g*(w + 1)**3", str(m._penetrances[7]))
+            self.assertEqual("g*(w + 1)**4", str(m._penetrances[8]))
+            # Some type checks
+            self.assertEqual(sympy.Symbol, type(m._penetrances[0]))
+            self.assertEqual(sympy.Mul, type(m._penetrances[1]))
+            self.assertEqual(sympy.Mul, type(m._penetrances[2]))
+            self.assertEqual(sympy.Mul, type(m._penetrances[3]))
+            self.assertEqual(sympy.Mul, type(m._penetrances[4]))
+            self.assertEqual(sympy.Mul, type(m._penetrances[5]))
+
+            # Variables
+            self.assertEqual([sympy.abc.g, sympy.abc.w], m._variables)
+
     def test_file_parsing_error_detection(self):
         """Test error handling during model files parsing."""
 

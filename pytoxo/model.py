@@ -166,7 +166,6 @@ class Model:
                 order must be preserved"""
                 if variable not in different_variables:
                     different_variables.append(variable)
-                    # TODO: Test with other variable names to assert...
 
             # Check support: only 2 different variables are supported by PyToxo
             if not 0 < len(different_variables) <= 2:
