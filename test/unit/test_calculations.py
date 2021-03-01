@@ -12,6 +12,7 @@
 ###########################################################
 
 """PyToxo calculations unit test suite."""
+
 import random
 import unittest
 
