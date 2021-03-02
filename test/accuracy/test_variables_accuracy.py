@@ -98,11 +98,21 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     # Generate equation system
                     eq_system = model._build_max_prevalence_system(maf, heritability)
 
-                    # Run the computation configured times, saving consumed times
+                    # Get the equation system PyToxo solution
+                    vars_sol = model._solve(eq_system)
+
+                    """Build the table a specified number of 
+                    repetitions, to time the calculation time. This step is 
+                    useful only to measure the time of the complete process of 
+                    solving the equations and to construct the final table, with 
+                    final substitution solution. To measure the precision use 
+                    `vars_sol` above, which is not so suitable for measuring 
+                    times because it is only one of the isolated steps of the 
+                    full process"""
                     computation_times = []
                     for _ in range(_TEST_REPETITIONS):
                         t0 = time.time()
-                        vars_sol = model._solve(eq_system)
+                        _ = model.find_max_prevalence_table(maf, heritability)
                         tf = time.time()
                         computation_times.append(tf - t0)
 
