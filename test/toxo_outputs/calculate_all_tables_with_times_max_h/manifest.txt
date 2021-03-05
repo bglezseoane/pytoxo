@@ -1,8 +1,17 @@
 Data imported since Toxo's repository after the execution
-of the script 'calculate_all_tables_with_times_max_h.m'. Model
-configurations are explicit in the file titles.
+of an adaptation of the script 'calculate_all_tables_with_times_max_h.m'. 
+Model configurations are explicit in the file titles.
 
-Data generated maximizing the heritability.
+The adaptation consists in the use of the following parameter
+arrays:
+
+- maf = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+- p = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+So all possible models with the combination of these parameters have
+been generated. I.e. a very general sample of all the possible models.
+
+Data generated maximizing the heritability. Using MATLAB default 32 digits.
 
 The time files will be appended to 'times.txt' after several 
 executions in order to calculate an average and thus obtain a 
