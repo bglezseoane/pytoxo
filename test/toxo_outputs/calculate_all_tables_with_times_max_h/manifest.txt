@@ -13,6 +13,8 @@ been generated. I.e. a very general sample of all the possible models.
 
 Data generated maximizing the heritability. Using MATLAB default 32 digits.
 
+The file 'errors.txt' contains the Toxo error messages during the execution of the full experiment.
+
 The time files will be appended to 'times.txt' after several 
 executions in order to calculate an average and thus obtain a 
 better reference.
