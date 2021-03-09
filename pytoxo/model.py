@@ -260,6 +260,8 @@ class Model:
         ------
         pytoxo.errors.ResolutionError
             If PyToxo is not able to solve the model.
+        pytoxo.errors.UnsolvableModelError
+            If the model has not solution.
         """
         # Check timeout
         if not solve_timeout:
@@ -269,7 +271,7 @@ class Model:
 
         # TODO: Consider add assumptions to vars real and greather than 0
 
-        def try_to_solve(relax_dps: int = None) -> list[tuple[float]]:
+        def try_to_solve(relax_dps: int = None) -> typing.Union[tuple[float], None]:
             """Tries solve the given `eq_system` equations with Sympy and
             returns solutions, filtering unreal and negative ones. The call
             to the solver is protected with a timeout to prevent
@@ -313,7 +315,10 @@ class Model:
             try:
                 sols = solver_call()
             except StopIteration:
-                return []
+                raise pytoxo.errors.ResolutionError(
+                    cause="Exceeded timeout", equation=str(eq_system)
+                )
+
             # Re-adjust MPMath DPS
             if relax_dps:
                 mpmath.mp.dps = MPMATH_DEFAULT_DPS
@@ -321,20 +326,27 @@ class Model:
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
             # Discard negative solutions
-            return [s for s in sols if s[0] > 0 and s[1] > 0]
+            sols = [s for s in sols if s[0] > 0 and s[1] > 0]
+            # Return only one solution
+            if sols:
+                return sols[0]
+            else:
+                return None
 
         try:
-            sol = try_to_solve()[0]
-            # TODO: `solve` return check and raising
-        except mpmath.mp.NoConvergence:  # Generic drain for unchecked resolution errors
+            sol = try_to_solve()
+            if not sol:
+                raise pytoxo.errors.UnsolvableModelError(equation=str(eq_system))
+        except mpmath.mp.NoConvergence:
+            # Try a second time relaxing error tolerance
             try:
-                sol = try_to_solve(relax_dps=10)[0]
-            except:
-                raise pytoxo.errors.ResolutionError(
-                    f"PyToxo can not solve this model. Model "
-                    f"name: "
-                    f"'{self._name}'."
-                )
+                sol = try_to_solve(relax_dps=10)
+                if not sol:
+                    raise pytoxo.errors.UnsolvableModelError(equation=str(eq_system))
+            except mpmath.mp.NoConvergence:
+                raise pytoxo.errors.ResolutionError(equation=str(eq_system))
+        except not pytoxo.errors.ResolutionError:  # Wildcard drain for an unchecked situation
+            raise pytoxo.errors.ResolutionError(equation=str(eq_system))
 
         # Return the final achieved solution as peenetrance table object
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
