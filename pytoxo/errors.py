@@ -59,3 +59,26 @@ class ResolutionError(Exception):
         else:
             self.message = f"ResolutionError: '{cause}'."
         super().__init__(self.message)
+
+
+class UnsolvableModelError(Exception):
+    """Representation of an unsolvable model error of PyToxo."""
+
+    def __init__(self, equation: str = None):
+        """Creates an exception of an unsolvable model.
+
+        Parameters
+        ----------
+        equation : str, optional
+            The equation that cause the resolution error, as string. Default is
+            none.
+        """
+        self.equation = equation
+        if self.equation:
+            self.message = (
+                f"UnsolvableModelError: This model has not solution. "
+                f"Equation: '{self.equation}'."
+            )
+        else:
+            self.message = f"UnsolvableModelError: This model has not solution."
+        super().__init__(self.message)
