@@ -20,13 +20,6 @@ import pytoxo.calculations
 import pytoxo.model
 import pytoxo.errors
 
-_TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER = os.path.join(
-    "test", "toxo_outputs", "max_heritability"
-)
-_TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER = os.path.join(
-    "test", "toxo_outputs", "max_prevalence"
-)
-
 
 class ModelsSolubilityTestSuite(unittest.TestCase):
     """This test focuses on verifying that PyToxo is capable of solving at
