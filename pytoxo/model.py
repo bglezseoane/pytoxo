@@ -16,12 +16,15 @@
 import os
 import typing
 
+import mpmath
 import sympy
 import timeout_decorator
 
+import pytoxo.calculations
 import pytoxo.errors
 import pytoxo.ptable
-import pytoxo.calculations
+
+MPMATH_DEFAULT_DPS = 15
 
 
 class Model:
@@ -266,11 +269,26 @@ class Model:
 
         # TODO: Consider add assumptions to vars real and greather than 0
 
-        def try_to_solve() -> list[tuple[float]]:
+        def try_to_solve(relax_dps: int = None) -> list[tuple[float]]:
             """Tries solve the given `eq_system` equations with Sympy and
             returns solutions, filtering unreal and negative ones. The call
             to the solver is protected with a timeout to prevent
-            non-termination issues of unsolvable models."""
+            non-termination issues of unsolvable models.
+
+            Parameters
+            ----------
+            relax_dps : int (default None)
+                This parameter contains the decimal digits of precision (DPS) to
+                use in the internal operations delegated to MPMath library. By
+                default, this library uses 15 digits. To use this value you
+                could pass a 15, but better simply leave this value as a `None`
+                as default. If this function does not work for you and you
+                think that the model is solvable, then you could try 10 or 7,
+                which have proven to be values with which the library manages
+                to solve certain of the most complex models. Keep in mind that
+                if you go overboard with downgrading the precision, the
+                calculations could get corrupted.
+            """
 
             @timeout_decorator.timeout_decorator.timeout(
                 solve_timeout, timeout_exception=StopIteration
@@ -287,11 +305,18 @@ class Model:
                     rational=False,
                 )
 
+            # If applies, relax MPMath DPS to error tolerance
+            if relax_dps:
+                mpmath.mp.dps = relax_dps
+
             # Try to solve the system within the setting timeout
             try:
                 sols = solver_call()
             except StopIteration:
                 return []
+            # Re-adjust MPMath DPS
+            if relax_dps:
+                mpmath.mp.dps = MPMATH_DEFAULT_DPS
 
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
@@ -301,8 +326,15 @@ class Model:
         try:
             sol = try_to_solve()[0]
             # TODO: `solve` return check and raising
-        except:  # Generic drain for unchecked resolution errors
-            raise ValueError("PyToxo can not solve this model.")
+        except mpmath.mp.NoConvergence:  # Generic drain for unchecked resolution errors
+            try:
+                sol = try_to_solve(relax_dps=10)[0]
+            except:
+                raise pytoxo.errors.ResolutionError(
+                    f"PyToxo can not solve this model. Model "
+                    f"name: "
+                    f"'{self._name}'."
+                )
 
         # Return the final achieved solution as peenetrance table object
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
