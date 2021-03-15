@@ -414,7 +414,11 @@ class Model:
         return [eq1, eq2]  # System as a list with the equations
 
     def find_max_prevalence_table(
-        self, mafs: list[float], h: float, solve_timeout: typing.Union[int, bool] = True
+        self,
+        mafs: list[float],
+        h: float,
+        solve_timeout: typing.Union[int, bool] = True,
+        check: bool = True,
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
         and heritability, and returns it within a `PTable` object.
@@ -425,11 +429,15 @@ class Model:
             Array of floats representing the MAF of each locus.
         h : float
             Heritability of the table.
-        solve_timeout : typing.Union[int, bool], optional (default `True`)
+        solve_timeout : typing.Union[int, bool], optional (default True)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed heuristically. Pass as 'False' or
             'None' to do not use timeout.
+        check: bool (default True)
+            Flag to control when check the solution before return it. Default
+            `True`.
+
         Returns
         -------
         pytoxo.ptable.PTable
@@ -444,6 +452,13 @@ class Model:
 
         # Delegates to the solve method
         sol = self._solve(eq_system, solve_timeout)
+
+        # Check the solution before return the tables
+        if check:
+            if not self._check_solution(eq_system, sol):
+                raise pytoxo.errors.ResolutionError(
+                    "The calculated solution is not correct"
+                )
 
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
@@ -484,7 +499,11 @@ class Model:
         return [eq1, eq2]  # System as a list with the equations
 
     def find_max_heritability_table(
-        self, mafs: list[float], p: float, solve_timeout: typing.Union[int, bool] = True
+        self,
+        mafs: list[float],
+        p: float,
+        solve_timeout: typing.Union[int, bool] = True,
+        check: bool = True,
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose heritability is maximum for the given MAFs
         and prevalence, and returns it within a `PTable` object.
@@ -495,11 +514,14 @@ class Model:
             Array of floats representing the MAF of each locus.
         p : float
             Prevalence of the table.
-        solve_timeout : typing.Union[int, bool], optional (default `True`)
+        solve_timeout : typing.Union[int, bool], optional (default True)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed heuristically. Pass as 'False' or
             'None' to do not use timeout.
+        check: bool (default True)
+            Flag to control when check the solution before return it. Default
+            `True`.
 
         Returns
         -------
@@ -515,6 +537,13 @@ class Model:
 
         # Delegates to the solve method
         sol = self._solve(eq_system, solve_timeout)
+
+        # Check the solution before return the tables
+        if check:
+            if not self._check_solution(eq_system, sol):
+                raise pytoxo.errors.ResolutionError(
+                    "The calculated solution is not correct"
+                )
 
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
