@@ -25,7 +25,7 @@ import pytoxo.errors
 import pytoxo.ptable
 
 _MPMATH_DEFAULT_DPS = 15
-_TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
+_TOLERABLE_SOLUTION_ERROR_DELTA = 1e-14  # Maximum error as absolute delta
 
 
 class Model:
@@ -382,7 +382,10 @@ class Model:
         delta2 = abs(eq2.rhs.evalf() - eq2_lhs_eval)
 
         # Check is deltas respect tolerance
-        return delta1 < _TOLERABLE_ACCURACY_DELTA and delta2 < _TOLERABLE_ACCURACY_DELTA
+        return (
+            delta1 < _TOLERABLE_SOLUTION_ERROR_DELTA
+            and delta2 < _TOLERABLE_SOLUTION_ERROR_DELTA
+        )
 
     def _build_max_prevalence_system(
         self, mafs: list[float], h: float
