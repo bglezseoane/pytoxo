@@ -25,6 +25,7 @@ import pytoxo.errors
 import pytoxo.ptable
 
 MPMATH_DEFAULT_DPS = 15
+_TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
 
 
 class Model:
@@ -350,6 +351,42 @@ class Model:
 
         # Return the final achieved solution as peenetrance table object
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
+
+    def _check_solution(
+        self, eq_system: list[sympy.Eq], sol: tuple[float, float]
+    ) -> bool:
+        """Check if an achieved solution is correct.
+
+        Parameters
+        ----------
+        eq_system : list[sympy.Eq]
+            Equations previously solved. Right hand sides are the values
+            against compare left hand sides substituted.
+        sol : tuple[float, float]
+            Achieved solution to check.
+
+        Returns
+        -------
+        bool
+            Verification about the solution as boolean.
+        """
+        eq1 = eq_system[0]
+        eq2 = eq_system[1]
+
+        # Substitute the solution in both equations
+        eq1_lhs_eval = eq1.lhs.subs(
+            {self.variables[0]: sol[0], self.variables[1]: sol[1]}
+        ).evalf()
+        eq2_lhs_eval = eq2.lhs.subs(
+            {self.variables[0]: sol[0], self.variables[1]: sol[1]}
+        ).evalf()
+
+        # Calculate deltas against right hand sides
+        delta1 = abs(eq1.rhs.evalf() - eq1_lhs_eval)
+        delta2 = abs(eq2.rhs.evalf() - eq2_lhs_eval)
+
+        # Check is deltas respect tolerance
+        return delta1 < _TOLERABLE_ACCURACY_DELTA and delta2 < _TOLERABLE_ACCURACY_DELTA
 
     def _build_max_prevalence_system(
         self, mafs: list[float], h: float
