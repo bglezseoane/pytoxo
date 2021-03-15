@@ -242,3 +242,25 @@ class ModelUnitTestSuite(unittest.TestCase):
             output = m._max_penetrance()
 
             self.assertEqual(expected_output, output)
+
+    def test_check_solution(self):
+        """Test model `_check_solution` method."""
+        m = pytoxo.model.Model(
+            os.path.join("models", "multiplicative_2.csv")
+        )  # The only relevant detail to this test is that variables are `x` and `y`
+
+        eqs1 = [
+            sympy.Eq(sympy.abc.x + 2, 3),
+            sympy.Eq(sympy.abc.x ** 2 + sympy.abc.x ** 2, 2),
+        ]
+        self.assertTrue(m._check_solution(eqs1, (1.0, 0)))
+
+        eqs2 = [
+            sympy.Eq(sympy.abc.x ** 2 + sympy.abc.y, 4),
+            sympy.Eq(sympy.abc.y, 0),
+        ]
+        self.assertTrue(m._check_solution(eqs2, (2.0, 0)))
+        self.assertFalse(m._check_solution(eqs2, (2.0, 1)))
+        self.assertTrue(m._check_solution(eqs2, (2.0, 1e-16)))
+        self.assertFalse(m._check_solution(eqs2, (2.0, 1e-15)))
+        self.assertFalse(m._check_solution(eqs2, (2.0 + 1e-15, 0)))
