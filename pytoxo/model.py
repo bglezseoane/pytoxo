@@ -24,7 +24,7 @@ import pytoxo.calculations
 import pytoxo.errors
 import pytoxo.ptable
 
-MPMATH_DEFAULT_DPS = 15
+_MPMATH_DEFAULT_DPS = 15
 _TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
 
 
@@ -322,7 +322,7 @@ class Model:
 
             # Re-adjust MPMath DPS
             if relax_dps:
-                mpmath.mp.dps = MPMATH_DEFAULT_DPS
+                mpmath.mp.dps = _MPMATH_DEFAULT_DPS
 
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
