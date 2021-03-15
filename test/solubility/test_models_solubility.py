@@ -11,7 +11,7 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""Part of PyToxo integration test suite."""
+"""Part of PyToxo solubility test suite."""
 
 import os
 import unittest
