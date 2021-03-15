@@ -71,7 +71,7 @@ path = os.path.join(
     "test", "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
 )
 files = os.listdir(path)
-times_file = "times.txt"
+times_file = os.path.join(path, "times.txt")
 models = sorted([f for f in files if f.endswith(".csv")])
 
 # Latex table report content
@@ -91,7 +91,7 @@ for model_filename in models:
 
     # Calculate computation time average
     computation_times = []
-    with open(os.path.join(path, times_file), "r") as f:
+    with open(times_file, "r") as f:
         times_file_content = f.read().splitlines()
     # Filter relative content
     try:
