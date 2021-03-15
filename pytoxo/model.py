@@ -353,7 +353,7 @@ class Model:
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
 
     def _check_solution(
-        self, eq_system: list[sympy.Eq], sol: tuple[float, float]
+        self, eq_system: list[sympy.Eq], sol: dict[sympy.Symbol : float]
     ) -> bool:
         """Check if an achieved solution is correct.
 
@@ -362,7 +362,7 @@ class Model:
         eq_system : list[sympy.Eq]
             Equations previously solved. Right hand sides are the values
             against compare left hand sides substituted.
-        sol : tuple[float, float]
+        sol : dict[sympy.Symbol : float]
             Achieved solution to check.
 
         Returns
@@ -374,12 +374,8 @@ class Model:
         eq2 = eq_system[1]
 
         # Substitute the solution in both equations
-        eq1_lhs_eval = eq1.lhs.subs(
-            {self.variables[0]: sol[0], self.variables[1]: sol[1]}
-        ).evalf()
-        eq2_lhs_eval = eq2.lhs.subs(
-            {self.variables[0]: sol[0], self.variables[1]: sol[1]}
-        ).evalf()
+        eq1_lhs_eval = eq1.lhs.subs(sol).evalf()
+        eq2_lhs_eval = eq2.lhs.subs(sol).evalf()
 
         # Calculate deltas against right hand sides
         delta1 = abs(eq1.rhs.evalf() - eq1_lhs_eval)
