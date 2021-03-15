@@ -30,20 +30,27 @@ import git
 import psutil
 import tabulate
 
-# Workaround to run script inside a project using project
-sys.path.insert(0, "../..")
-try:
-    import pytoxo
-    import pytoxo.calculations
-    import pytoxo.model
-    import pytoxo.errors
-except ImportError as e:
-    raise e
 # Assert project home directory because sources have path since here
 if os.path.basename(os.getcwd()) == "test":
     os.chdir(os.pardir)
 elif os.path.basename(os.getcwd()) == "solubility":
     os.chdir(os.path.join(os.pardir, os.pardir))
+
+# Workaround to run script inside a project using project
+try:
+    import pytoxo
+    import pytoxo.calculations
+    import pytoxo.errors
+    import pytoxo.model
+except ImportError or ModuleNotFoundError:
+    try:
+        sys.path.insert(0, os.getcwd())  # Already updated to project root in above step
+        import pytoxo
+        import pytoxo.calculations
+        import pytoxo.errors
+        import pytoxo.model
+    except ImportError or ModuleNotFoundError as e:
+        raise e
 
 # ####################### EDIT HERE #######################
 # Comment or uncomment firsts or seconds of each pair
