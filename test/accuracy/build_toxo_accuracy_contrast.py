@@ -129,7 +129,7 @@ for model_filename in models:
     recalculated_prev_or_her = recalc_method(penetrances, maf, model_order=model.order)
 
     # Compare recalculated and initial heritabilitys
-    delta = prev_or_her - recalculated_prev_or_her
+    delta = abs(prev_or_her - recalculated_prev_or_her)
 
     # Append to delta list for the automatic checks
     deltas.append(delta)

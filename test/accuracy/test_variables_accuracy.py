@@ -136,7 +136,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     sol_eq1 = substituted_eq1_lhs.evalf()
 
                     # Compare with exact expected values calculating a delta
-                    delta = heritability - sol_eq1
+                    delta = abs(heritability - sol_eq1)
 
                     # Append to delta list for the automatic checks
                     deltas.append(delta)

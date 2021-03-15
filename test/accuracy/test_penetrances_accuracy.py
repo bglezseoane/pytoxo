@@ -140,7 +140,7 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                     )
 
                     # Compare recalculated and initial prevalence or heritability
-                    delta = prev_or_her - recalculated_prev_or_her
+                    delta = abs(prev_or_her - recalculated_prev_or_her)
 
                     # Append to delta list for the automatic checks
                     deltas.append(delta)
