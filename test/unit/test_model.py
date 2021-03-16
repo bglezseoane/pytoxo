@@ -253,20 +253,50 @@ class ModelUnitTestSuite(unittest.TestCase):
             sympy.Eq(sympy.abc.x + 2, 3),
             sympy.Eq(sympy.abc.x ** 2 + sympy.abc.x ** 2, 2),
         ]
-        self.assertTrue(m._check_solution(eqs1, ({sympy.abc.x: 1.0, sympy.abc.y: 0})))
+        self.assertTrue(
+            m._check_solution(eqs1, ({sympy.abc.x: 1.0, sympy.abc.y: 0}))[0]
+        )
 
         eqs2 = [
             sympy.Eq(sympy.abc.x ** 2 + sympy.abc.y, 4),
             sympy.Eq(sympy.abc.y, 0),
         ]
-        self.assertTrue(m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 0})))
-        self.assertFalse(m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 1})))
         self.assertTrue(
-            m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 1e-16}))
+            m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 0}))[0]
         )
         self.assertFalse(
-            m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 1e-15}))
+            m._check_solution(eqs2, ({sympy.abc.x: 2.0, sympy.abc.y: 1}))[0]
+        )
+        self.assertTrue(
+            m._check_solution(
+                eqs2,
+                (
+                    {
+                        sympy.abc.x: 2.0,
+                        sympy.abc.y: pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA / 10,
+                    }
+                ),
+            )[0]
         )
         self.assertFalse(
-            m._check_solution(eqs2, ({sympy.abc.x: 2.0 + 1e-15, sympy.abc.y: 0}))
+            m._check_solution(
+                eqs2,
+                (
+                    {
+                        sympy.abc.x: 2.0,
+                        sympy.abc.y: pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA,
+                    }
+                ),
+            )[0]
+        )
+        self.assertFalse(
+            m._check_solution(
+                eqs2,
+                (
+                    {
+                        sympy.abc.x: 2.0 + pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA,
+                        sympy.abc.y: 0,
+                    }
+                ),
+            )[0]
         )

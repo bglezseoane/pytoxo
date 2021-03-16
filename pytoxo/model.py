@@ -354,7 +354,7 @@ class Model:
 
     def _check_solution(
         self, eq_system: list[sympy.Eq], sol: dict[sympy.Symbol : float]
-    ) -> bool:
+    ) -> tuple[bool, float]:
         """Check if an achieved solution is correct.
 
         Parameters
@@ -367,8 +367,9 @@ class Model:
 
         Returns
         -------
-        bool
-            Verification about the solution as boolean.
+        tuple[bool, float]
+            Verification about the solution as boolean and delta desviation
+            if applies.
         """
         eq1 = eq_system[0]
         eq2 = eq_system[1]
@@ -382,10 +383,13 @@ class Model:
         delta2 = abs(eq2.rhs.evalf() - eq2_lhs_eval)
 
         # Check is deltas respect tolerance
-        return (
-            delta1 < _TOLERABLE_SOLUTION_ERROR_DELTA
-            and delta2 < _TOLERABLE_SOLUTION_ERROR_DELTA
-        )
+        if (
+            delta1 > _TOLERABLE_SOLUTION_ERROR_DELTA
+            or delta2 > _TOLERABLE_SOLUTION_ERROR_DELTA
+        ):
+            return False, max(delta1, delta2)
+        else:
+            return True, 0
 
     def _build_max_prevalence_system(
         self, mafs: list[float], h: float
@@ -458,9 +462,10 @@ class Model:
 
         # Check the solution before return the tables
         if check:
-            if not self._check_solution(eq_system, sol):
+            ok, delta = self._check_solution(eq_system, sol)
+            if not ok:
                 raise pytoxo.errors.ResolutionError(
-                    "The calculated solution is not correct"
+                    f"The calculated solution is not correct. Difference of {delta}"
                 )
 
         # Return the final achieved solution as penetrance table object
@@ -543,9 +548,10 @@ class Model:
 
         # Check the solution before return the tables
         if check:
-            if not self._check_solution(eq_system, sol):
+            ok, delta = self._check_solution(eq_system, sol)
+            if not ok:
                 raise pytoxo.errors.ResolutionError(
-                    "The calculated solution is not correct"
+                    f"The calculated solution is not correct. Difference of {delta}"
                 )
 
         # Return the final achieved solution as penetrance table object
