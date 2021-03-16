@@ -25,7 +25,7 @@ import pytoxo.errors
 import pytoxo.ptable
 
 _MPMATH_DEFAULT_DPS = 15
-_TOLERABLE_SOLUTION_ERROR_DELTA = 1e-14  # Maximum error as absolute delta
+_TOLERABLE_SOLUTION_ERROR_DELTA = 1e-13  # Maximum error as absolute delta  TODO
 
 
 class Model:
