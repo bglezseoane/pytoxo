@@ -17,8 +17,8 @@
 
 Script to build a contrast table with the imported Toxo outputs collection.
 
-Analyze which cases are insolvable by Toxo and are solvable by PyToxo and
-compose a table.
+Get the Toxo detected errors and analyze which cases are solvable by
+PyToxo, composing a table.
 """
 
 import datetime
@@ -193,7 +193,8 @@ with open(filename, "x") as f:
         "\n"
         f"{final_table_tex}"
         "\n"
-        "\\caption{List of models that Toxo cannot solve but PyToxo yes}}\n"
+        "\\caption{List of models that Toxo cannot solve (detecting error) but "
+        "PyToxo yes}}\n"
         "\\end{longtable}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
