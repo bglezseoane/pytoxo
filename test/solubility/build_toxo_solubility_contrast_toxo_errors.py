@@ -193,7 +193,7 @@ with open(filename, "x") as f:
         f"{final_table_tex}"
         "\n"
         "\\caption{List of models that Toxo cannot solve (detecting error) but "
-        "PyToxo yes}}\n"
+        f"PyToxo yes. Maximizing {prev_or_her_str.lower()}}}\n"
         "\\end{longtable}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
