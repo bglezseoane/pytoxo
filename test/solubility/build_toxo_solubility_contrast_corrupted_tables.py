@@ -81,14 +81,14 @@ files = os.listdir(path)
 outputs = sorted([f for f in files if f.endswith(".csv")])
 
 # Filter models: get only models bad computed by Toxo (corrupted penetrances)
-outputs_to_check = []
+cases_to_check = []
 for output in outputs:
     with open(os.path.join(path, output), "r") as f:
         output_content = f.readlines()
     output_penetrances = [l.split(",")[1] for l in output_content]
     for output_penetrance in output_penetrances:
         if float(output_penetrance) > 1 or float(output_penetrance) < 0:
-            outputs_to_check.append(output)
+            cases_to_check.append(output)
 
 # Latex table report content
 table_content = []
@@ -96,12 +96,12 @@ table_content = []
 deltas = []  # Delta list for automatic checks
 
 try:
-    for output in outputs_to_check:
-        model_name = "_".join(output.split("_")[:2])
-        model_order = int(output.split("_")[1])
-        maf = [float(output.split("_")[2])] * model_order
+    for case in cases_to_check:
+        model_name = "_".join(case.split("_")[:2])
+        model_order = int(case.split("_")[1])
+        maf = [float(case.split("_")[2])] * model_order
         prev_or_her = float(
-            output.split("_")[3].replace(prev_or_her_letter_op, "").replace(".csv", "")
+            case.split("_")[3].replace(prev_or_her_letter_op, "").replace(".csv", "")
         )
 
         # Generate PyToxo model
