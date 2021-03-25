@@ -24,6 +24,7 @@ PyToxo, composing a table.
 import datetime
 import os
 import platform
+import random
 import sys
 
 import git
@@ -107,6 +108,14 @@ table_content = []
 deltas = []  # Delta list for automatic checks
 
 try:
+    # ####################### EDIT HERE #######################
+    """There are too many cases to check due to this repository contains
+    archived a lot of Toxo outputs. The following lines serve to select a
+    limited set of them to run this script. Edit the following lines to use a
+    different collection of cases."""
+    cases_to_check = random.choices(cases_to_check, k=20)  # Select `k` cases randomly
+    cases_to_check = sorted(cases_to_check)  # Reorder after selection
+    # #########################################################
     for model_name, maf, prev_or_her in cases_to_check:
         model_order = int(model_name.split("_")[1])
         maf = [maf] * model_order
