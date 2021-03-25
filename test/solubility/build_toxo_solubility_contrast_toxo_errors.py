@@ -113,7 +113,8 @@ try:
     archived a lot of Toxo outputs. The following lines serve to select a
     limited set of them to run this script. Edit the following lines to use a
     different collection of cases."""
-    cases_to_check = random.choices(cases_to_check, k=20)  # Select `k` cases randomly
+    n_cases = 20
+    cases_to_check = random.choices(cases_to_check, k=n_cases)  # Select `k` cases randomly
     cases_to_check = sorted(cases_to_check)  # Reorder after selection
     # #########################################################
     for model_name, maf, prev_or_her in cases_to_check:
@@ -202,7 +203,10 @@ with open(filename, "x") as f:
         f"{final_table_tex}"
         "\n"
         "\\caption{List with some models that Toxo cannot solve (detecting error) but "
-        f"PyToxo yes. Maximizing {prev_or_her_str.lower()}}}\n"
+        f"PyToxo yes. This experiment was "
+        f"executed using an initial population of {n_cases} Toxo cases "
+        f"which finished with an error. "
+        f"Maximizing {prev_or_her_str.lower()}}}\n"
         "\\end{longtable}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
