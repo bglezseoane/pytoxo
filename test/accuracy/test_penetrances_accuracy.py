@@ -33,7 +33,9 @@ import pytoxo
 import pytoxo.calculations
 import pytoxo.model
 
-_TOLERABLE_ACCURACY_DELTA = 1e-15  # Maximum error
+_TOLERABLE_ACCURACY_DELTA = (
+    pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA
+)  # Maximum error
 _TEST_REPETITIONS = 5  # To confirm computation times with an average
 
 
