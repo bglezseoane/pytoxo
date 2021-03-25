@@ -96,44 +96,41 @@ table_content = []
 
 deltas = []  # Delta list for automatic checks
 
-try:
-    # ####################### EDIT HERE #######################
-    """There are too many cases to check due to this repository contains
-    archived a lot of Toxo outputs. The following lines serve to select a
-    limited set of them to run this script. Edit the following lines to use a
-    different collection of cases."""
-    n_cases = 20
-    cases_to_check = random.choices(cases_to_check, k=n_cases)  # Select `k` cases randomly
-    cases_to_check = sorted(cases_to_check)  # Reorder after selection
-    # #########################################################
-    for case in cases_to_check:
-        model_name = "_".join(case.split("_")[:2])
-        model_order = int(case.split("_")[1])
-        maf = [float(case.split("_")[2])] * model_order
-        prev_or_her = float(
-            case.split("_")[3].replace(prev_or_her_letter_op, "").replace(".csv", "")
+# ####################### EDIT HERE #######################
+"""There are too many cases to check due to this repository contains
+archived a lot of Toxo outputs. The following lines serve to select a
+limited set of them to run this script. Edit the following lines to use a
+different collection of cases."""
+n_cases = 20
+cases_to_check = random.choices(cases_to_check, k=n_cases)  # Select `k` cases randomly
+cases_to_check = sorted(cases_to_check)  # Reorder after selection
+# #########################################################
+for case in cases_to_check:
+    model_name = "_".join(case.split("_")[:2])
+    model_order = int(case.split("_")[1])
+    maf = [float(case.split("_")[2])] * model_order
+    prev_or_her = float(
+        case.split("_")[3].replace(prev_or_her_letter_op, "").replace(".csv", "")
+    )
+
+    # Generate PyToxo model
+    model = pytoxo.model.Model(os.path.join("models", f"{model_name}.csv"))
+
+    # Try to solve with PyToxo and annotate
+    try:
+        pt = calc_method(model, maf, prev_or_her, check=True)
+
+        # Append results to the table if PyToxo finish on success the attempt
+        table_content.append(
+            [
+                model_name.capitalize(),
+                model_order,
+                maf[0],
+                prev_or_her,
+            ]
         )
-
-        # Generate PyToxo model
-        model = pytoxo.model.Model(os.path.join("models", f"{model_name}.csv"))
-
-        # Try to solve with PyToxo and annotate
-        try:
-            pt = calc_method(model, maf, prev_or_her, check=True)
-
-            # Append results to the table if PyToxo finish on success the attempt
-            table_content.append(
-                [
-                    model_name.capitalize(),
-                    model_order,
-                    maf[0],
-                    prev_or_her,
-                ]
-            )
-        except pytoxo.errors.ResolutionError or pytoxo.errors.UnsolvableModelError:
-            continue  # Next case...
-except KeyboardInterrupt:
-    pass  # Continue to save a report with the already calculated data
+    except pytoxo.errors.ResolutionError or pytoxo.errors.UnsolvableModelError:
+        continue  # Next case...
 
 # Check if there at least a case to list
 if not table_content:
