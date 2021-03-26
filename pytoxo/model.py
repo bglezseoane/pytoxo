@@ -25,7 +25,7 @@ import pytoxo.errors
 import pytoxo.ptable
 
 _MPMATH_DEFAULT_DPS = 15
-_TOLERABLE_SOLUTION_ERROR_DELTA = 1e-13  # Maximum error as absolute delta  TODO
+_TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-17  # It is fitted then to model's order
 
 
 class Model:
@@ -69,6 +69,7 @@ class Model:
             []
         )  # List of symbolic expressions representing the epistatic model
         self._variables = []  # List of symbolic variables used throughout the model
+        self._tolerable_solution_error_delta = None
 
         # Delegates parse to the `parse` method
         self._parse(filename)
@@ -179,12 +180,29 @@ class Model:
                 )
             else:
                 self._variables = different_variables
+
+            # Calculate tolerable solution error delta
+            self._tolerable_solution_error_delta = (
+                self.calculate_tolerable_solution_error_delta()
+            )
+
         except IOError as e:
             raise e
         except pytoxo.errors.ModelCSVParseError as e:
             raise e
         except:  # Generic drain for unchecked parsing errors
             raise pytoxo.errors.ModelCSVParseError(filename)
+
+    def calculate_tolerable_solution_error_delta(self) -> float:
+        """Calculates the error delta to tolerate during model resolution,
+        fitted to the current model order.
+
+        Returns
+        -------
+        float
+            The calculated solution error delta to tolerate.
+        """
+        return _TOLERABLE_SOLUTION_ERROR_BASE_DELTA * pow(10, self._order)
 
     ########################################
     # Getters and setters for properties
@@ -208,6 +226,10 @@ class Model:
     @property
     def variables(self) -> list[sympy.Symbol]:
         return self._variables
+
+    @property
+    def tolerable_solution_error_delta(self) -> float:
+        return self._tolerable_solution_error_delta
 
     ########################################
 
@@ -384,8 +406,8 @@ class Model:
 
         # Check is deltas respect tolerance
         if (
-            delta1 > _TOLERABLE_SOLUTION_ERROR_DELTA
-            or delta2 > _TOLERABLE_SOLUTION_ERROR_DELTA
+            delta1 > self._tolerable_solution_error_delta
+            or delta2 > self._tolerable_solution_error_delta
         ):
             return False, max(delta1, delta2)
         else:
