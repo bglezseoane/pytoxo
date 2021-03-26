@@ -33,9 +33,6 @@ import pytoxo
 import pytoxo.calculations
 import pytoxo.model
 
-_TOLERABLE_ACCURACY_DELTA = (
-    pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA
-)  # Maximum error
 _TEST_REPETITIONS = 5  # To confirm computation times with an average
 
 
@@ -105,7 +102,7 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
         ]
         table_content = [table_headers]
 
-        deltas = []  # Delta list for automatic checks
+        deltas = []  # `(tolerable_delta, delta)` list for automatic checks
 
         for model_name in models:
             model_order = int(model_name.split("_")[1])
@@ -122,7 +119,7 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                     for _ in range(_TEST_REPETITIONS):
                         t0 = time.time()
                         # Full penetrance table process since model generation
-                        ptable_sol = table_method(model, maf, prev_or_her)
+                        ptable_sol = table_method(model, maf, prev_or_her, check=False)
                         tf = time.time()
                         computation_times.append(tf - t0)
 
@@ -144,8 +141,11 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                     # Compare recalculated and initial prevalence or heritability
                     delta = abs(prev_or_her - recalculated_prev_or_her)
 
-                    # Append to delta list for the automatic checks
-                    deltas.append(delta)
+                    """Append to the list the tolerable delta for the current 
+                    model and the achieved delta"""
+                    deltas.append(
+                        (model.calculate_tolerable_solution_error_delta(), delta)
+                    )
 
                     # Append results to the table
                     table_content.append(
@@ -216,5 +216,5 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
             )
 
         # Automatic checks against configured tolerable delta
-        for delta in deltas:
-            self.assertGreaterEqual(_TOLERABLE_ACCURACY_DELTA, delta)
+        for tolerable_delta, delta in deltas:
+            self.assertGreaterEqual(tolerable_delta, delta)
