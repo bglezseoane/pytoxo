@@ -31,6 +31,7 @@ import psutil
 import tabulate
 
 import pytoxo
+import pytoxo.errors
 import pytoxo.model
 
 _TEST_REPETITIONS = 5  # To confirm computation times with an average
@@ -109,13 +110,19 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     times because it is only one of the isolated steps of the 
                     full process"""
                     computation_times = []
-                    for _ in range(_TEST_REPETITIONS):
-                        t0 = time.time()
-                        _ = model.find_max_prevalence_table(
-                            maf, heritability, check=False
-                        )
-                        tf = time.time()
-                        computation_times.append(tf - t0)
+                    try:
+                        for _ in range(_TEST_REPETITIONS):
+                            t0 = time.time()
+                            _ = model.find_max_prevalence_table(
+                                maf, heritability, check=False
+                            )
+                            tf = time.time()
+                            computation_times.append(tf - t0)
+                    except pytoxo.errors.UnsolvableModelError or pytoxo.errors.ResolutionError:
+                        """If resolution tentative fails, simple go to next
+                        case. This test has not the responsibility to check
+                        model solubility, only accuracy."""
+                        continue
 
                     # Calculate computation time average
                     computation_time_av = sum(computation_times) / len(
