@@ -341,10 +341,10 @@ class Model:
                 raise pytoxo.errors.ResolutionError(
                     cause="Exceeded timeout", equation=str(eq_system)
                 )
-
-            # Re-adjust MPMath DPS
-            if relax_dps:
-                mpmath.mp.dps = _MPMATH_DEFAULT_DPS
+            finally:
+                # Re-adjust MPMath DPS
+                if relax_dps:
+                    mpmath.mp.dps = _MPMATH_DEFAULT_DPS
 
             # Discard unreal solutions
             sols = [s for s in sols if s[0].is_real and s[1].is_real]
@@ -368,7 +368,9 @@ class Model:
                     raise pytoxo.errors.UnsolvableModelError(equation=str(eq_system))
             except mpmath.mp.NoConvergence:
                 raise pytoxo.errors.ResolutionError(equation=str(eq_system))
-        except not pytoxo.errors.ResolutionError:  # Wildcard drain for an unchecked situation
+        except pytoxo.errors.ResolutionError as e:
+            raise e
+        except:  # Wildcard drain for an unchecked situation
             raise pytoxo.errors.ResolutionError(equation=str(eq_system))
 
         # Return the final achieved solution as peenetrance table object
