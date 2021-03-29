@@ -339,7 +339,9 @@ class Model:
                 sols = solver_call()
             except StopIteration:
                 raise pytoxo.errors.ResolutionError(
-                    cause="Exceeded timeout", equation=str(eq_system)
+                    cause="Exceeded timeout",
+                    model_name=self.name,
+                    equation=str(eq_system),
                 )
             finally:
                 # Re-adjust MPMath DPS
@@ -359,19 +361,27 @@ class Model:
         try:
             sol = try_to_solve()
             if not sol:
-                raise pytoxo.errors.UnsolvableModelError(equation=str(eq_system))
+                raise pytoxo.errors.UnsolvableModelError(
+                    model_name=self.name, equation=str(eq_system)
+                )
         except mpmath.mp.NoConvergence:
             # Try a second time relaxing error tolerance
             try:
                 sol = try_to_solve(relax_dps=10)
                 if not sol:
-                    raise pytoxo.errors.UnsolvableModelError(equation=str(eq_system))
+                    raise pytoxo.errors.UnsolvableModelError(
+                        model_name=self.name, equation=str(eq_system)
+                    )
             except mpmath.mp.NoConvergence:
-                raise pytoxo.errors.ResolutionError(equation=str(eq_system))
+                raise pytoxo.errors.ResolutionError(
+                    model_name=self.name, equation=str(eq_system)
+                )
         except pytoxo.errors.ResolutionError as e:
             raise e
         except:  # Wildcard drain for an unchecked situation
-            raise pytoxo.errors.ResolutionError(equation=str(eq_system))
+            raise pytoxo.errors.ResolutionError(
+                model_name=self.name, equation=str(eq_system)
+            )
 
         # Return the final achieved solution as peenetrance table object
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
