@@ -25,7 +25,7 @@ import pytoxo.errors
 import pytoxo.ptable
 
 _MPMATH_DEFAULT_DPS = 15
-_TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-17  # It is fitted then to model's order
+_TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-16  # It is fitted then to model's order
 
 
 class Model:
