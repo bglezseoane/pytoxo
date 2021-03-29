@@ -123,6 +123,12 @@ for model_filename in models:
         model_file_content = f.read().splitlines()
     penetrances = [float(l.split(",")[1]) for l in model_file_content]
 
+    """Check if the penetrances are correct. If not, discard this case, 
+    because Toxo cannot calculate it"""
+    for penetrance in penetrances:
+        if penetrance > 1 or penetrance < 0:
+            continue
+
     # Generate PyToxo model
     model = pytoxo.model.Model(os.path.join("models", f"{model_name}.csv"))
 
@@ -210,7 +216,8 @@ with open(filename, "x") as f:
         f"{final_table_tex}"
         "\n"
         "\\caption{Accuracies of the the calculated values for the "
-        f"penetrances by Toxo. Maximizing {prev_or_her_str.lower()}}}\n"
+        f"penetrances by Toxo. Corrupted tables are discarded. Maximizing"
+        f" {prev_or_her_str.lower()}}}\n"
         "\\end{longtable}\n"
         f"Datetime: {now_tex}\n\n"
         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
