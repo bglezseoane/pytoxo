@@ -273,7 +273,7 @@ class ModelUnitTestSuite(unittest.TestCase):
                 (
                     {
                         sympy.abc.x: 2.0,
-                        sympy.abc.y: pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA / 10,
+                        sympy.abc.y: m.calculate_tolerable_solution_error_delta(),
                     }
                 ),
             )[0]
@@ -284,7 +284,7 @@ class ModelUnitTestSuite(unittest.TestCase):
                 (
                     {
                         sympy.abc.x: 2.0,
-                        sympy.abc.y: pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA,
+                        sympy.abc.y: m.calculate_tolerable_solution_error_delta() * 10,
                     }
                 ),
             )[0]
@@ -294,7 +294,7 @@ class ModelUnitTestSuite(unittest.TestCase):
                 eqs2,
                 (
                     {
-                        sympy.abc.x: 2.0 + pytoxo.model._TOLERABLE_SOLUTION_ERROR_DELTA,
+                        sympy.abc.x: 2.0 + m.calculate_tolerable_solution_error_delta(),
                         sympy.abc.y: 0,
                     }
                 ),
