@@ -376,9 +376,15 @@ class Model:
                 raise pytoxo.errors.ResolutionError(
                     model_name=self.name, equation=str(eq_system)
                 )
+
+        # Errors 'UnsolvableModelError' and 'ResolutionError' are raised directly
+        except pytoxo.errors.UnsolvableModelError as e:
+            raise e
         except pytoxo.errors.ResolutionError as e:
             raise e
-        except:  # Wildcard drain for an unchecked situation
+
+        # Wildcard drain for an unchecked situation
+        except:
             raise pytoxo.errors.ResolutionError(
                 model_name=self.name, equation=str(eq_system)
             )
@@ -488,6 +494,8 @@ class Model:
         ------
         pytoxo.errors.ResolutionError
             If PyToxo is not able to solve the model.
+        pytoxo.errors.UnsolvableModelError
+            If the model has not solution.
         """
         eq_system = self._build_max_prevalence_system(mafs, h)
 
@@ -574,6 +582,8 @@ class Model:
         ------
         pytoxo.errors.ResolutionError
             If PyToxo is not able to solve the model.
+        pytoxo.errors.UnsolvableModelError
+            If the model has not solution.
         """
         eq_system = self._build_max_heritability_system(mafs, p)
 
