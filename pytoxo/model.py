@@ -207,13 +207,13 @@ class Model:
     ########################################
     # Getters and setters for properties
 
-    def get_name(self) -> str:
+    def _get_name(self) -> str:
         return self._name
 
-    def set_name(self, name: str) -> None:
+    def _set_name(self, name: str) -> None:
         self._name = name
 
-    name = property(get_name, set_name)
+    name = property(_get_name, _set_name)
 
     @property
     def order(self) -> int:
