@@ -34,7 +34,7 @@ import pytoxo
 import pytoxo.errors
 import pytoxo.model
 
-_TEST_REPETITIONS = 5  # To confirm computation times with an average
+_TEST_REPETITIONS = 3  # To confirm computation times with an average
 
 
 class VariablesAccuracyTestSuite(unittest.TestCase):
@@ -70,7 +70,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "threshold_8",
         ]  # Uncomment ones to use in the test
         mafs = [0.1, 0.4]
-        heritabilities = [0.1, 0.8]
+        heritabilities = [0.1, 0.4]
 
         # Latex table report content
         table_headers = [

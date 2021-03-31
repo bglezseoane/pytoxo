@@ -34,7 +34,7 @@ import pytoxo.calculations
 import pytoxo.errors
 import pytoxo.model
 
-_TEST_REPETITIONS = 5  # To confirm computation times with an average
+_TEST_REPETITIONS = 3  # To confirm computation times with an average
 
 
 class PenetrancesAccuracyTestSuite(unittest.TestCase):
@@ -73,7 +73,7 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
             "threshold_8",
         ]  # Uncomment ones to use in the test
         mafs = [0.1, 0.4]
-        prevs_or_hers = [0.1, 0.8]  # Prevalences or heritabilities
+        prevs_or_hers = [0.1, 0.4]  # Prevalences or heritabilities
 
         # Comment or uncomment firsts or seconds of each pair
         prev_or_her_str = "Prevalence"
