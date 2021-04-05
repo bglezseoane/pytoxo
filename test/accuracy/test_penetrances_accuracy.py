@@ -118,7 +118,14 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                     # Run the computation configured times, saving consumed times
                     computation_times = []
                     try:
-                        for _ in range(_TEST_REPETITIONS):
+                        """Large models do not need this correction because they
+                        take a long time, so specific phenomena distort the
+                        measurement little"""
+                        if model.order >= 5:
+                            final_test_repetitions = 1
+                        else:
+                            final_test_repetitions = _TEST_REPETITIONS
+                        for _ in range(final_test_repetitions):
                             t0 = time.time()
                             # Full penetrance table process since model generation
                             ptable_sol = table_method(
@@ -216,7 +223,9 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                 f"{final_table}"
                 "\n"
                 "\\caption{Accuracies of the the calculated values for the "
-                f"\\penetrances. Maximizing {prev_or_her_str.lower()}}}\n"
+                f"\\penetrances. Maximizing {prev_or_her_str.lower()}. Large "
+                f"models (order 5 and more) do not correct times"
+                f"repeating measurements}}\n"
                 "\\end{figure}\n"
                 f"Datetime: {now_tex}\n\n"
                 f"Machine: \\texttt{{{machine_info_tex}}}\n\n"

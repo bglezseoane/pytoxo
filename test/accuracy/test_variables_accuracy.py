@@ -111,7 +111,14 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     full process"""
                     computation_times = []
                     try:
-                        for _ in range(_TEST_REPETITIONS):
+                        """Large models do not need this correction because they
+                        take a long time, so specific phenomena distort the
+                        measurement little"""
+                        if model.order >= 5:
+                            final_test_repetitions = 1
+                        else:
+                            final_test_repetitions = _TEST_REPETITIONS
+                        for _ in range(final_test_repetitions):
                             t0 = time.time()
                             _ = model.find_max_prevalence_table(
                                 maf, heritability, check=False
@@ -213,7 +220,8 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                 "\n"
                 "\\caption{Accuracies of the the calculated values for the "
                 "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                "tables}\n"
+                "tables. Large models (order 5 and more) do not correct times"
+                "repeating measurements}\n"
                 "\\end{figure}\n"
                 f"Datetime: {now_tex}\n\n"
                 f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
