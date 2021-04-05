@@ -70,7 +70,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "threshold_8",
         ]  # Uncomment ones to use in the test
         mafs = [0.1, 0.4]
-        heritabilities = [0.1, 0.4]
+        heritabilities = [0.1, 0.8]   # Prevalences or heritabilities
 
         # Latex table report content
         table_headers = [
