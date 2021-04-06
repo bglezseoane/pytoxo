@@ -70,7 +70,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "threshold_8",
         ]  # Uncomment ones to use in the test
         mafs = [0.1, 0.4]
-        heritabilities = [0.1, 0.8]   # Prevalences or heritabilities
+        heritabilities = [0.1, 0.8]  # Prevalences or heritabilities
 
         # Latex table report content
         table_headers = [
@@ -99,7 +99,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     eq_system = model._build_max_prevalence_system(maf, heritability)
 
                     # Get the equation system PyToxo solution
-                    vars_sol = model._solve(eq_system)
+                    vars_sol = model._solve(eq_system, solve_timeout=False)
 
                     """Build the table a specified number of 
                     repetitions, to time the calculation time. This step is 
@@ -121,7 +121,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         for _ in range(final_test_repetitions):
                             t0 = time.time()
                             _ = model.find_max_prevalence_table(
-                                maf, heritability, check=False
+                                maf, heritability, check=False, solve_timeout=False
                             )
                             tf = time.time()
                             computation_times.append(tf - t0)

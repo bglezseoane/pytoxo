@@ -129,7 +129,11 @@ class PenetrancesAccuracyTestSuite(unittest.TestCase):
                             t0 = time.time()
                             # Full penetrance table process since model generation
                             ptable_sol = table_method(
-                                model, maf, prev_or_her, check=False
+                                model,
+                                maf,
+                                prev_or_her,
+                                check=False,
+                                solve_timeout=False,
                             )
                             tf = time.time()
                             computation_times.append(tf - t0)
