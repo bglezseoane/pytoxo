@@ -87,9 +87,6 @@ class Model:
         parameter and let `filename` as default `None`.
 
 
-        TODO: Declare genotype sort necessity.
-
-
         Parameters
         ----------
         filename : str, optional
@@ -299,10 +296,17 @@ class Model:
         # Save the order
         self._order = len_genotype // 2
 
+        """Sort probabilities attending to alphabetical sort of associated 
+        genotypes. This is necessary to assert the association between 
+        genotype definitions and probabilities during the calculus process 
+        and in the final penetrance table"""
+        genotypes_probabilities = [(g, p) for g in genotypes for p in probabilities]
+        genotypes_probabilities.sort(key=lambda i: i[0])  # Sort attending to genotypes
+        probabilities_sorted = [p for (_, p) in genotypes_probabilities]
         # Save the penetrances as symbolic expressions
         try:
             self._penetrances = [
-                sympy.sympify(probabilities) for probabilities in probabilities
+                sympy.sympify(probability) for probability in probabilities_sorted
             ]
         except sympy.SympifyError:
             raise exception_to_raise(
@@ -311,10 +315,8 @@ class Model:
 
         # Save the variables of the used expressions
         all_variables = []
-        for probabilities in probabilities:
-            all_variables.append(
-                sympy.symbols([i for i in probabilities if i.isalpha()])
-            )
+        for probability in probabilities_sorted:
+            all_variables.append(sympy.symbols([i for i in probability if i.isalpha()]))
 
         # Reduce the variables to avoid replication
         all_variables = [item for subl in all_variables for item in subl]  # Flat list
