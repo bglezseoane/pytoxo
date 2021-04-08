@@ -287,13 +287,13 @@ class Model:
         # Assert all the first members have the same length
         for genotype in genotypes:
             if len(genotype) != len_genotype:
-                raise exception_to_raise.__init__(
+                raise exception_to_raise(
                     exception_object_to_raise,
                     "All the genotypes should have the same order.",
                 )
         # Assert first members length is odd
         if len_genotype % 2 != 0:
-            raise exception_to_raise.__init__(
+            raise exception_to_raise(
                 exception_object_to_raise, "Bad genotype specification."
             )
         # Save the order
@@ -305,7 +305,7 @@ class Model:
                 sympy.sympify(probabilities) for probabilities in probabilities
             ]
         except sympy.SympifyError:
-            raise exception_to_raise.__init__(
+            raise exception_to_raise(
                 exception_object_to_raise, "Bad penetrance specification."
             )
 
@@ -328,7 +328,7 @@ class Model:
 
         # Check support: only 2 different variables are supported by PyToxo
         if not 0 < len(different_variables) <= 2:
-            raise exception_to_raise.__init__(
+            raise exception_to_raise(
                 exception_object_to_raise,
                 "Only two variables are supported at most.",
             )
