@@ -26,6 +26,7 @@ import pytoxo.ptable
 
 _MPMATH_DEFAULT_DPS = 15
 _TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-16  # It is fitted then to model's order
+_TOLERABLE_SOLUTION_ERROR_MAX_DELTA = 1e-8
 
 
 class Model:
@@ -195,14 +196,22 @@ class Model:
 
     def calculate_tolerable_solution_error_delta(self) -> float:
         """Calculates the error delta to tolerate during model resolution,
-        fitted to the current model order.
+        fitted to the current model order. If the fitted delta is greater
+        than the max delta, return the max delta. This last avoid absurd error
+        delta for very big models.
+
+        Uses the constants: `_TOLERABLE_SOLUTION_ERROR_BASE_DELTA` and
+        `_TOLERABLE_SOLUTION_ERROR_MAX_DELTA` to calculate the fitted delta.
 
         Returns
         -------
         float
             The calculated solution error delta to tolerate.
         """
-        return _TOLERABLE_SOLUTION_ERROR_BASE_DELTA * pow(10, self._order)
+        return min(
+            _TOLERABLE_SOLUTION_ERROR_BASE_DELTA * pow(10, self._order),
+            _TOLERABLE_SOLUTION_ERROR_MAX_DELTA,
+        )
 
     ########################################
     # Getters and setters for properties
