@@ -100,6 +100,89 @@ class ModelUnitTestSuite(unittest.TestCase):
         # Variables
         self.assertEqual([sympy.abc.x, sympy.abc.y], m._variables)
 
+    def test_dict_parsing(self):
+        """Test model genotypes dictionary parsing."""
+        m = pytoxo.model.Model(
+            genotypes_dict={
+                "AABBCC": "x",
+                "AABBCc": "x*(1+y)",
+                "AABBcc": "x*(1+y)^2",
+                "AABbCC": "x*(1+y)",
+                "AABbCc": "x*(1+y)^2",
+                "AABbcc": "x*(1+y)^3",
+                "AAbbCC": "x*(1+y)^2",
+                "AAbbCc": "x*(1+y)^3",
+                "AAbbcc": "x*(1+y)^4",
+                "AaBBCC": "x*(1+y)",
+                "AaBBCc": "x*(1+y)^2",
+                "AaBBcc": "x*(1+y)^3",
+                "AaBbCC": "x*(1+y)^2",
+                "AaBbCc": "x*(1+y)^3",
+                "AaBbcc": "x*(1+y)^4",
+                "AabbCC": "x*(1+y)^3",
+                "AabbCc": "x*(1+y)^4",
+                "Aabbcc": "x*(1+y)^5",
+                "aaBBCC": "x*(1+y)^2",
+                "aaBBCc": "x*(1+y)^3",
+                "aaBBcc": "x*(1+y)^4",
+                "aaBbCC": "x*(1+y)^3",
+                "aaBbCc": "x*(1+y)^4",
+                "aaBbcc": "x*(1+y)^5",
+                "aabbCC": "x*(1+y)^4",
+                "aabbCc": "x*(1+y)^5",
+                "aabbcc": "x*(1+y)^6",
+            }  # Based in `additive_3` model
+        )
+
+        # Name
+        self.assertEqual("unnamed", m._name)
+
+        # Order
+        self.assertEqual(3, m._order)
+
+        # Penetrances
+        """The following expressions are those of the file
+        `models/additive_3.csv`, but corrected with small modifications
+        that the library Sympy does when normalizing them. E.g .: symbol `**`
+        instead of `^`, spaces around additions, etc."""
+        self.assertEqual("x", str(m._penetrances[0]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[1]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[2]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[3]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[4]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[5]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[6]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[7]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[8]))
+        self.assertEqual("x*(y + 1)", str(m._penetrances[9]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[10]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[11]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[12]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[13]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[14]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[15]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[16]))
+        self.assertEqual("x*(y + 1)**5", str(m._penetrances[17]))
+        self.assertEqual("x*(y + 1)**2", str(m._penetrances[18]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[19]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[20]))
+        self.assertEqual("x*(y + 1)**3", str(m._penetrances[21]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[22]))
+        self.assertEqual("x*(y + 1)**5", str(m._penetrances[23]))
+        self.assertEqual("x*(y + 1)**4", str(m._penetrances[24]))
+        self.assertEqual("x*(y + 1)**5", str(m._penetrances[25]))
+        self.assertEqual("x*(y + 1)**6", str(m._penetrances[26]))
+        # Some type checks
+        self.assertEqual(sympy.Symbol, type(m._penetrances[0]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[5]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[6]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[8]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[12]))
+        self.assertEqual(sympy.Mul, type(m._penetrances[26]))
+
+        # Variables
+        self.assertEqual([sympy.abc.x, sympy.abc.y], m._variables)
+
     def test_file_parsing_different_var_names(self):
         """Test model files parsing. This version uses unusual names for the
         variables and not typical `x` and `y` to assert function."""
