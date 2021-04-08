@@ -1126,6 +1126,33 @@ class ModelUnitTestSuite(unittest.TestCase):
                     lambda: pytoxo.model.Model(bad_formed_models_path),
                 )
 
+    def test_bad_init_param_use_raising(self):
+        """Test raising during `Model` init, due to a bad use of the
+        parameters."""
+        with self.assertRaises(ValueError):
+            _ = pytoxo.Model(definitions=["AABb", "AABB"])
+        with self.assertRaises(ValueError):
+            _ = pytoxo.Model(probabilities=["x", "y"])
+        with self.assertRaises(ValueError):
+            _ = pytoxo.Model(
+                filename=os.path.join("models", "multiplicative_4.csv"),
+                model_name="error",
+                definitions=["AABb", "AABB"],
+            )
+        with self.assertRaises(ValueError):
+            _ = pytoxo.Model(
+                filename=os.path.join("models", "multiplicative_4.csv"),
+                model_name="error",
+                probabilities=["x", "y"],
+            )
+        with self.assertRaises(ValueError):
+            _ = pytoxo.Model(
+                filename=os.path.join("models", "multiplicative_4.csv"),
+                model_name="error",
+                probabilities=["x", "y"],
+                definitions=["AABb", "AABB"],
+            )
+
     def test_max_penetrance_1(self):
         """Test model `max_penetrance` method."""
         m = pytoxo.model.Model(os.path.join("models", "additive_3.csv"))
