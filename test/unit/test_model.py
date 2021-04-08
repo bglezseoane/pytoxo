@@ -695,3 +695,63 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertNotEqual(m1, m3)
         self.assertNotEqual(m3, m4)
         self.assertEqual(m4, m4)
+
+    def test_probabilities_sort(self):
+        """Test that the probability expressions are sorted attending to
+        genotype definitions alphabetical sort. This is necessary to assert the association between
+        genotype definitions and probabilities during the calculus process
+        and in the final penetrance table."""
+        m1 = pytoxo.model.Model(
+            genotypes_dict={
+                "AaBbcc": "x*(1+y)^4",
+                "AabbCC": "x*(1+y)^3",
+                "AabbCc": "x*(1+y)^4",
+                "Aabbcc": "x*(1+y)^5",
+                "aaBBCC": "x*(1+y)^2",
+                "aaBBCc": "x*(1+y)^3",
+                "aaBBcc": "x*(1+y)^4",
+                "AABbCC": "x*(1+y)",
+                "AABbCc": "x*(1+y)^2",
+                "AABbcc": "x*(1+y)^3",
+                "AAbbCC": "x*(1+y)^2",
+                "AAbbCc": "x*(1+y)^3",
+                "AAbbcc": "x*(1+y)^4",
+                "aaBbCC": "x*(1+y)^3",
+                "aaBbCc": "x*(1+y)^4",
+                "aaBbcc": "x*(1+y)^5",
+                "aabbCC": "x*(1+y)^4",
+                "aabbCc": "x*(1+y)^5",
+                "aabbcc": "x*(1+y)^6",
+                "AABBCC": "x",
+                "AABBCc": "x*(1+y)",
+                "AABBcc": "x*(1+y)^2",
+                "AaBBCC": "x*(1+y)",
+                "AaBBCc": "x*(1+y)^2",
+                "AaBBcc": "x*(1+y)^3",
+                "AaBbCC": "x*(1+y)^2",
+                "AaBbCc": "x*(1+y)^3",
+            },
+            model_name="additive_3",  # Based in `additive_3` model, unsorted
+        )
+
+        m2 = pytoxo.model.Model(
+            filename=os.path.join("models", "additive_3.csv")
+        )  # This one is already sorted
+
+        self.assertEqual(m1, m2)
+
+        # Also check some probability expressions manually
+        self.assertEqual("x", m1._penetrances[0])
+        self.assertEqual("x*(1+y)", m1._penetrances[1])
+        self.assertEqual("x*(1+y)^2", m2._penetrances[2])
+        self.assertEqual("x*(1+y)", m2._penetrances[3])
+        self.assertEqual("x*(1+y)^2", m2._penetrances[4])
+        self.assertEqual("x*(1+y)^3", m2._penetrances[5])
+        self.assertEqual("x*(1+y)^2", m2._penetrances[12])
+        self.assertEqual("x*(1+y)^3", m2._penetrances[13])
+        self.assertEqual("x*(1+y)^4", m2._penetrances[14])
+        self.assertEqual("x*(1+y)^3", m2._penetrances[15])
+        self.assertEqual("x*(1+y)^3", m2._penetrances[19])
+        self.assertEqual("x*(1+y)^4", m2._penetrances[20])
+        self.assertEqual("x*(1+y)^3", m2._penetrances[21])
+        self.assertEqual("x*(1+y)^6", m2._penetrances[26])
