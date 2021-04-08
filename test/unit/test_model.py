@@ -679,3 +679,19 @@ class ModelUnitTestSuite(unittest.TestCase):
                 ),
             )[0]
         )
+
+    def test_model_comparison(self):
+        """Equality criteria between model objects."""
+        m1 = pytoxo.model.Model(filename=os.path.join("models", "multiplicative_2.csv"))
+        m2 = pytoxo.model.Model(filename=os.path.join("models", "multiplicative_2.csv"))
+        m3 = pytoxo.model.Model(filename=os.path.join("models", "multiplicative_3.csv"))
+        m4 = pytoxo.model.Model(
+            filename=os.path.join("models", "multiplicative_3.csv"),
+            model_name="other_name",
+        )
+        self.assertEqual(m1, m1)
+        self.assertEqual(m1, m2)
+        self.assertNotEqual(m2, m3)
+        self.assertNotEqual(m1, m3)
+        self.assertNotEqual(m3, m4)
+        self.assertEqual(m4, m4)
