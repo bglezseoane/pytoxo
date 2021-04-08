@@ -80,11 +80,9 @@ class ModelsSolubilityTestSuite(unittest.TestCase):
 
         # Filter corrupted tables
         for toxo_case_path in toxo_cases:
-            try:
-                with open(toxo_case_path, "r") as f:
-                    toxo_output_content = f.readlines()
-            except:
-                a = 4
+            with open(toxo_case_path, "r") as f:
+                toxo_output_content = f.readlines()
+
             toxo_output_penetrances = [l.split(",")[1] for l in toxo_output_content]
             for toxo_output_penetrance in toxo_output_penetrances:
                 if (
