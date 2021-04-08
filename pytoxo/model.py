@@ -306,7 +306,7 @@ class Model:
             ]
         except sympy.SympifyError:
             raise exception_to_raise(
-                exception_object_to_raise, "Bad penetrance specification."
+                exception_object_to_raise, "Bad probability expression syntax."
             )
 
         # Save the variables of the used expressions
