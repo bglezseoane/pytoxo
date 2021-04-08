@@ -31,8 +31,23 @@ _TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-16  # It is fitted then to model's ord
 class Model:
     """Representation of an epistasis model."""
 
-    def __init__(self, filename: str):
-        """Init the object.
+    def __init__(
+        self,
+        filename: str = None,
+        genotypes_dict: dict[str, str] = None,
+        model_name: str = None,
+    ):
+        """Initializes a model object.
+
+        This constructor can be used in two ways:
+
+        - Generating the model object from its representation as a CSV file.
+        - Generating the model object from a dictionary with the genotype
+            definitions and the expressions of the probabilities of the
+            genotypes (`genotypes_dict`).
+
+        Generating from its representation as a CSV file
+        ------------------------------------------------
 
         Uses the model from its text representation in `filename` file and
         inits an object with its data.
@@ -46,35 +61,84 @@ class Model:
         as alphabetical characters. Only two variables are supported at most.
         Any pair of alphabetic characters can be used to represent these
         variables, but they must be the same two names for the entire model
-        file.
+        file. Math syntax should be the used by Sympy.
 
         Empty lines, as well as lines starting with '#' will be ignored.
 
+        To use this constructor method, use the `filename` parameter and let
+        `genotypes_dict` as default `None`.
+
+
+        Generating from a dictionary of genotype definitions and probabilities
+        ----------------------------------------------------------------------
+
+        Uses a Python dictionary, `genotypes_dict`, with the genotypes
+        definitions and its associated probabilities, both as strings. E.g.
+        of a member of the dict: `"AABBCc": "x*(1+y)"`.
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file. Math syntax should be the used by Sympy, but PyToxo is capable
+        to fix some common errors and do its job.
+
+        To use this constructor method, use the `genotypes_dict`
+        parameter and let `filename` as default `None`.
+
+
+        TODO: Declare genotype sort necessity.
+
+
         Parameters
         ----------
-        filename : str
+        filename : str, optional
             The path of the text file with the model.
+        genotypes_dict : dict[str, str], optional
+            Dict with genotypes definitions and its associated probabilities.
+        model_name: str, optional
+            The name to identify the model. Optional. Using the `filename`
+            can be automatically deduced attending to the file name, if this
+            parameter is not used. Using the `genotypes_dict` constructor and
+            letting this parameter unused the result name would be "unnamed".
 
         Raises
         ------
         pytoxo.errors.ModelCSVParseError
             If the parse tentative fails due to the file is not well formed.
+        pytoxo.errors.BadFormedModelGenotypesDictError
+            If the input genotypes dict is bad-formed.
+        ValueError
+            Bad parameters combination.
         IOError
            If the input file is not found or the reading tentative fails due
            to other unexpected operative system level cause.
         """
-        self._name = None  # Name of the model
-        self._order = None  # Number of locus defined in the model
+        if filename and genotypes_dict:
+            raise ValueError("Bad parameters combination.")
+
+        # Basic skeleton
+        self._name = None
+        self._order = None  # Number of loci defined in the model
         self._penetrances = (
             []
         )  # List of symbolic expressions representing the epistatic model
-        self._variables = []  # List of symbolic variables used throughout the model
+        self._variables = (
+            []
+        )  # List of symbolic variable names used throughout the model
         self._tolerable_solution_error_delta = None
 
-        # Delegates parse to the `parse` method
-        self._parse(filename)
+        # Check custom model name
+        if model_name:
+            self._name = str(model_name)
 
-    def _parse(self, filename: str) -> None:
+        # Delegates object composition attending to the used constructor way
+        if filename:
+            self._parse_model_file(filename)
+        elif genotypes_dict:
+            self._parse_genotypes_dict(genotypes_dict)
+
+    def _parse_model_file(self, filename: str) -> None:
         """Takes the responsibility of the initializer to parse the model file.
 
         Reads the model from its text representation in `filename` file and
@@ -89,7 +153,7 @@ class Model:
         as alphabetical characters. Only two variables are supported at most.
         Any pair of alphabetic characters can be used to represent these
         variables, but they must be the same two names for the entire model
-        file.
+        file. Math syntax should be the used by Sympy.
 
         Empty lines, as well as lines starting with '#' will be ignored.
 
@@ -124,66 +188,16 @@ class Model:
             fst_members = [line.split(",")[0].strip() for line in lines]
             snd_members = [line.split(",")[1].strip() for line in lines]
 
-            # Save the name of the model
-            self._name = os.path.basename(filename).split(".")[0]
+            # Save the name of the model, if a custom one is not used
+            if not self._name:
+                self._name = os.path.basename(filename).split(".")[0]
 
-            # Catch the order of the model
-            len_fst_member = len(fst_members[0])
-            # Assert all the first members have the same length
-            for fst_member in fst_members:
-                if len(fst_member) != len_fst_member:
-                    raise pytoxo.errors.ModelCSVParseError(
-                        filename, "All the genotypes should have the same order."
-                    )
-            # Assert first members length is odd
-            if len_fst_member % 2 != 0:
-                raise pytoxo.errors.ModelCSVParseError(
-                    filename, "Bad genotype specification."
-                )
-            # Save the order
-            self._order = len_fst_member // 2
-
-            # Save the penetrances as symbolic expressions
-            try:
-                self._penetrances = [
-                    sympy.sympify(snd_member) for snd_member in snd_members
-                ]
-            except sympy.SympifyError:
-                raise pytoxo.errors.ModelCSVParseError(
-                    filename, "Bad penetrance specification."
-                )
-
-            # Save the variables of the used expressions
-            all_variables = []
-            for snd_member in snd_members:
-                all_variables.append(
-                    sympy.symbols([i for i in snd_member if i.isalpha()])
-                )
-
-            # Reduce the variables to avoid replication
-            all_variables = [
-                item for subl in all_variables for item in subl
-            ]  # Flat list
-            different_variables = []
-            for variable in all_variables:
-                """Not use other more direct method like
-                `list(set(all_variables))` because the variable apparition
-                order must be preserved"""
-                if variable not in different_variables:
-                    different_variables.append(variable)
-
-            # Check support: only 2 different variables are supported by PyToxo
-            if not 0 < len(different_variables) <= 2:
-                raise pytoxo.errors.ModelCSVParseError(
-                    filename,
-                    "Only two variables are supported at most.",
-                )
-            else:
-                self._variables = different_variables
-
-            # Calculate tolerable solution error delta
-            self._tolerable_solution_error_delta = (
-                self.calculate_tolerable_solution_error_delta()
+            # Delegate to the helper
+            self._parse_helper(
+                genotypes=fst_members,
+                probabilities=snd_members,
+                exception_to_raise=pytoxo.errors.ModelCSVParseError,
+                exception_object_to_raise=filename,
             )
 
         except IOError as e:
@@ -192,6 +206,139 @@ class Model:
             raise e
         except:  # Generic drain for unchecked parsing errors
             raise pytoxo.errors.ModelCSVParseError(filename)
+
+    def _parse_genotypes_dict(self, genotypes_dict: dict[str, str]) -> None:
+        """Takes the responsibility of the initializer to parse the
+        genotypes dict.
+
+        Uses a Python dictionary, `genotypes_dict`, with the genotypes
+        definitions and its associated probabilities, both as strings. E.g.
+        of a member of the dict: `"AABBCc": "x*(1+y)"`.
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file. Math syntax should be the used by Sympy.
+
+        Parameters
+        ----------
+        genotypes_dict : dict[str, str], optional
+            Dict with genotypes definitions and its associated probabilities.
+
+        Raises
+        ------
+        pytoxo.errors.BadFormedModelGenotypesDictError
+            If the input genotypes dict is bad-formed.
+        """
+        try:
+            # Delegate to the helper
+            self._parse_helper(
+                genotypes=list(genotypes_dict.keys()),
+                probabilities=list(genotypes_dict.values()),
+                exception_to_raise=pytoxo.errors.BadFormedModelGenotypesDictError,
+                exception_object_to_raise=genotypes_dict,
+            )
+
+            # Revise unnamed models
+            if not self._name:
+                self._name = "unnamed"
+
+        except pytoxo.errors.BadFormedModelGenotypesDictError as e:
+            raise e
+        except:  # Generic drain for unchecked parsing errors
+            raise pytoxo.errors.BadFormedModelGenotypesDictError(genotypes_dict)
+
+    def _parse_helper(
+        self,
+        genotypes: list[str],
+        probabilities: list[str],
+        exception_to_raise: typing.Union[
+            typing.Type[pytoxo.errors.ModelCSVParseError],
+            typing.Type[pytoxo.errors.BadFormedModelGenotypesDictError],
+        ],
+        exception_object_to_raise: typing.Union[str, dict[str, str]],
+    ) -> None:
+        """Complete the parse process doing the needed checks and
+        transformations.
+
+        Parameters
+        ----------
+        genotypes: list[str]
+            List with the genotype definitions as strings.
+        probabilities: list[str]
+            List with the genotype associated probability expressions as strings.
+        exception_to_raise: typing.Union[typing.Type[pytoxo.errors.ModelCSVParseError], typing.Type[pytoxo.errors.BadFormedModelGenotypesDictError]]
+            Exception class to raise on any error.
+        exception_object_to_raise: typing.Union[str, dict[str, str]]
+            Object to add to the exception body.
+
+        Raises
+        ------
+        pytoxo.errors.ModelCSVParseError
+            On any fail, raises the `exception_to_raise` parameter exception
+            with the `exception_object_to_raise` in the exception body.
+        pytoxo.errors.BadFormedModelGenotypesDictError
+            On any fail, raises the `exception_to_raise` parameter exception
+            with the `exception_object_to_raise` in the exception body.
+        """
+        # Catch the order of the model
+        len_genotype = len(genotypes[0])
+        # Assert all the first members have the same length
+        for genotype in genotypes:
+            if len(genotype) != len_genotype:
+                raise exception_to_raise.__init__(
+                    exception_object_to_raise,
+                    "All the genotypes should have the same order.",
+                )
+        # Assert first members length is odd
+        if len_genotype % 2 != 0:
+            raise exception_to_raise.__init__(
+                exception_object_to_raise, "Bad genotype specification."
+            )
+        # Save the order
+        self._order = len_genotype // 2
+
+        # Save the penetrances as symbolic expressions
+        try:
+            self._penetrances = [
+                sympy.sympify(probabilities) for probabilities in probabilities
+            ]
+        except sympy.SympifyError:
+            raise exception_to_raise.__init__(
+                exception_object_to_raise, "Bad penetrance specification."
+            )
+
+        # Save the variables of the used expressions
+        all_variables = []
+        for probabilities in probabilities:
+            all_variables.append(
+                sympy.symbols([i for i in probabilities if i.isalpha()])
+            )
+
+        # Reduce the variables to avoid replication
+        all_variables = [item for subl in all_variables for item in subl]  # Flat list
+        different_variables = []
+        for variable in all_variables:
+            """Not use other more direct method like
+            `list(set(all_variables))` because the variable apparition
+            order must be preserved"""
+            if variable not in different_variables:
+                different_variables.append(variable)
+
+        # Check support: only 2 different variables are supported by PyToxo
+        if not 0 < len(different_variables) <= 2:
+            raise exception_to_raise.__init__(
+                exception_object_to_raise,
+                "Only two variables are supported at most.",
+            )
+        else:
+            self._variables = different_variables
+
+        # Calculate tolerable solution error delta
+        self._tolerable_solution_error_delta = (
+            self.calculate_tolerable_solution_error_delta()
+        )
 
     def calculate_tolerable_solution_error_delta(self) -> float:
         """Calculates the error delta to tolerate during model resolution,
