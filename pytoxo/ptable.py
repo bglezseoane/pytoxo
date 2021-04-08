@@ -49,6 +49,38 @@ class PTable:
             p.subs(values) for p in model_penetrances
         ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
 
+    def _compound_table_as_text(self) -> str:
+        """Compound the penetrance table as text, to print it ot save into a
+        file it.
+
+        Returns
+        -------
+        str
+            The penetrance table formatted as a text string.
+        """
+        # Generate genotypes column with genotype names
+        # Deduce alleles attending to the table order
+        # TODO: Is `len(ascii_lowercase) < self._order` possible?
+        letters = list(string.ascii_lowercase[: self._order])
+        alleles = []
+        for letter in letters:
+            lower = letter
+            upper = letter.upper()
+            alleles.append([f"{upper}{upper}", f"{upper}{lower}", f"{lower}{lower}"])
+        # Generate genotypes tracing the alleles cartesian product
+        genotypes = list(itertools.product(*alleles))
+
+        # Generate lines of the file with genotypes and its penetrances
+        lines = ""
+        for genotype, penetrance in zip(genotypes, self._penetrance_values):
+            lines += f"{''.join(genotype)},{penetrance}\n"
+
+        return lines
+
+    def print_table(self) -> None:
+        """Print the penetrance as raw text."""
+        print(self._compound_table_as_text())
+
     def write_to_file(
         self, filename: str, overwrite: bool = False, format: str = "csv"
     ) -> None:
@@ -88,23 +120,6 @@ class PTable:
         if os.path.exists(filename) and not os.path.isfile(filename):
             raise IsADirectoryError(filename)
 
-        # Generate genotypes column with genotype names
-        # Deduce alleles attending to the table order
-        # TODO: Is `len(ascii_lowercase) < self._order` possible?
-        letters = list(string.ascii_lowercase[: self._order])
-        alleles = []
-        for letter in letters:
-            lower = letter
-            upper = letter.upper()
-            alleles.append([f"{upper}{upper}", f"{upper}{lower}", f"{lower}{lower}"])
-        # Generate genotypes tracing the alleles cartesian product
-        genotypes = list(itertools.product(*alleles))
-
-        # Generate lines of the file with genotypes and its penetrances
-        lines = []
-        for genotype, penetrance in zip(genotypes, self._penetrance_values):
-            lines.append(f"{''.join(genotype)},{penetrance}\n")
-
         # Write file
         with open(filename, "x") as f:
-            f.writelines(lines)
+            f.write(self._compound_table_as_text())

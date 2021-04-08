@@ -10,3 +10,8 @@
 #
 # Contact: borja.gseoane@udc.es
 ###########################################################
+
+from pytoxo.model import Model
+
+# Package PyToxo exports only the `Model` class
+__all__ = ["Model"]

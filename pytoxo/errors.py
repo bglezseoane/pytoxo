@@ -33,6 +33,32 @@ class ModelCSVParseError(Exception):
         super().__init__(self.message)
 
 
+class BadFormedModelGenotypesDictError(Exception):
+    """Representation of a parse error with a model genotypes dict."""
+
+    def __init__(
+        self,
+        genotypes_dict: dict[str, str],
+        cause: str = "Bad formed model genotypes dict",
+    ):
+        """Creates an exception of a parse error with a model genotypes dict.
+
+        Parameters
+        ----------
+        genotypes_dict : dict[str, str], optional
+            Dict with genotypes definitions and its associated probabilities.
+        cause : str, optional
+            The error cause during parsing process (default "Bad formed file").
+        """
+        self.genotypes_dict = genotypes_dict
+        self.cause = cause
+        self.message = (
+            f"BadFormedModelGenotypesDictError with dict "
+            f"'{genotypes_dict}' due to: '{cause}'"
+        )
+        super().__init__(self.message)
+
+
 class ResolutionError(Exception):
     """Representation of a resolution error of PyToxo."""
 
