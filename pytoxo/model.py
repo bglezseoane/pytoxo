@@ -380,6 +380,17 @@ class Model:
 
     ########################################
 
+    def __hash__(self):
+        return hash(
+            hash(self._name)
+            + hash(self._order)
+            + hash(str(self._variables))
+            + hash(str(self._variables))
+        )
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+
     def _max_penetrance(self) -> sympy.Expr:
         """Returns the largest of all penetrance expressions, for any real
         and positive value of the two variables and attending to the
