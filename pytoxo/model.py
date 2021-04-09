@@ -398,9 +398,9 @@ class Model:
         self._order = len_genotype // 2
 
         """Sort probabilities attending to alphabetical sort of associated 
-        genotypes. This is necessary to assert the association between 
-        genotype definitions and probabilities during the calculus process 
-        and in the final penetrance table"""
+        genotypes. Capital letters first. This is necessary to assert the 
+        association between genotype definitions and probabilities during the 
+        calculus process and in the final penetrance table"""
         genotypes_probabilities = [(g, p) for g, p in zip(genotypes, probabilities)]
         genotypes_probabilities.sort(key=lambda i: i[0])  # Sort attending to genotypes
         probabilities_sorted = [p for (_, p) in genotypes_probabilities]
