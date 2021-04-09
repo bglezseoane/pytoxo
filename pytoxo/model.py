@@ -495,8 +495,9 @@ class Model:
         return hash(
             hash(self._name)
             + hash(self._order)
+            + hash(str(self._penetrances))
             + hash(str(self._variables))
-            + hash(str(self._variables))
+            + hash(str(self._tolerable_solution_error_delta))
         )
 
     def __eq__(self, other):
