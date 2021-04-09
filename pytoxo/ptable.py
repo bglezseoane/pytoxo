@@ -16,7 +16,6 @@
 import itertools
 import os
 import string
-import typing
 
 import numpy
 import sympy
@@ -51,7 +50,7 @@ class PTable:
             to identify it easily.
         """
         self._order = model_order
-        self._genotypes = self._calculate_genotypes()
+        self._calculate_genotypes()
         self._penetrance_values = [
             p.subs(values) for p in model_penetrances
         ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
@@ -62,6 +61,7 @@ class PTable:
         the model order.
 
         Uses default alphabetical sort like in the `Model` constructors.
+        Capital letters first.
         """
         # Deduce alleles attending to the table order
         # TODO: Is `len(ascii_lowercase) < self._order` possible?
@@ -72,7 +72,7 @@ class PTable:
             upper = letter.upper()
             alleles.append([f"{upper}{upper}", f"{upper}{lower}", f"{lower}{lower}"])
         # Generate genotypes tracing the alleles cartesian product
-        self._genotypes = list(itertools.product(*alleles))
+        self._genotypes = [str("".join(p)) for p in list(itertools.product(*alleles))]
 
     ########################################
     # Getters and setters for properties
@@ -90,22 +90,20 @@ class PTable:
         return self._order
 
     @property
-    def genotypes(
-        self, numpy_output: bool = False
-    ) -> typing.Union[list[str], numpy.array]:
-        if not numpy_output:
-            return self._genotypes
-        else:
-            return numpy.array(self._genotypes)
+    def genotypes(self) -> list[str]:
+        return self._genotypes
 
     @property
-    def penetrance_values(
-        self, numpy_output: bool = False
-    ) -> typing.Union[list[float], numpy.array]:
-        if not numpy_output:
-            return self._penetrance_values
-        else:
-            return numpy.array(self._penetrance_values)
+    def genotypes_as_numpy(self) -> numpy.array:
+        return numpy.array(self._genotypes)
+
+    @property
+    def penetrance_values(self) -> list[float]:
+        return self._penetrance_values
+
+    @property
+    def penetrance_values_as_numpy(self) -> numpy.array:
+        return numpy.array(self._penetrance_values)
 
     ########################################
 
