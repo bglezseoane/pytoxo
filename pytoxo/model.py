@@ -17,6 +17,7 @@ import os
 import typing
 
 import mpmath
+import numpy
 import sympy
 import timeout_decorator
 
@@ -36,16 +37,21 @@ class Model:
         self,
         filename: str = None,
         genotypes_dict: dict[str, str] = None,
+        definitions: typing.Union[list[str], numpy.array] = None,
+        probabilities: typing.Union[list[str], numpy.array] = None,
         model_name: str = None,
     ):
         """Initializes a model object.
 
-        This constructor can be used in two ways:
+        This constructor can be used in three modes:
 
-        - Generating the model object from its representation as a CSV file.
-        - Generating the model object from a dictionary with the genotype
+        1. Generating the model object from its representation as a CSV file.
+        2. Generating the model object from a dictionary with the genotype
             definitions and the expressions of the probabilities of the
             genotypes (`genotypes_dict`).
+        3. Generating the model object from two separated lists or Numpy
+            arrays with the genotype definitions and the expressions of the
+            probabilities of the genotypes (`definitions` and `probabilities`).
 
         Generating from its representation as a CSV file
         ------------------------------------------------
@@ -66,8 +72,8 @@ class Model:
 
         Empty lines, as well as lines starting with '#' will be ignored.
 
-        To use this constructor method, use the `filename` parameter and let
-        `genotypes_dict` as default `None`.
+        To use this constructor method, use the `filename` parameter
+        and let others as default `None` but optional `model_name`.
 
 
         Generating from a dictionary of genotype definitions and probabilities
@@ -81,11 +87,30 @@ class Model:
         as alphabetical characters. Only two variables are supported at most.
         Any pair of alphabetic characters can be used to represent these
         variables, but they must be the same two names for the entire model
-        file. Math syntax should be the used by Sympy, but PyToxo is capable
-        to fix some common errors and do its job.
+        file. Math syntax should be the used by Sympy.
 
-        To use this constructor method, use the `genotypes_dict`
-        parameter and let `filename` as default `None`.
+        To use this constructor method, use the `genotypes_dict` parameter
+        and let others as default `None` but optional `model_name`.
+
+
+        Generating from two separated Python lists or Numpy arrays
+        ----------------------------------------------------------
+
+        Uses two separated Python lists or Numpy arrays, `definitions` and
+        `probabilities`, with the genotypes definitions and its associated
+        probabilities, respectively, both as strings. The link between the
+        members of both sets is determined by the order. Examples of the two
+        sets, respectively: "AABBCc" and "x*(1+y)".
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file. Math syntax should be the used by Sympy.
+
+        To use this constructor method, use the `definitions` and
+        `probabilities` parameters and let others as default `None` but
+        optional `model_name`.
 
 
         Parameters
@@ -94,6 +119,12 @@ class Model:
             The path of the text file with the model.
         genotypes_dict : dict[str, str], optional
             Dict with genotypes definitions and its associated probabilities.
+        definitions: typing.Union[list[str], numpy.array], optional
+            List ot Numpy array with the genotype definitions as strings.
+            Should be used with `probabilities` parameter.
+        probabilities: typing.Union[list[str], numpy.array], optional
+            List ot Numpy array with the genotype probabilities as strings.
+            Should be used with `definitions` parameter.
         model_name: str, optional
             The name to identify the model. Optional. Using the `filename`
             can be automatically deduced attending to the file name, if this
@@ -102,18 +133,35 @@ class Model:
 
         Raises
         ------
-        pytoxo.errors.ModelCSVParseError
+        pytoxo.errors.BadFormedModelError
             If the parse tentative fails due to the file is not well formed.
-        pytoxo.errors.BadFormedModelGenotypesDictError
-            If the input genotypes dict is bad-formed.
         ValueError
             Bad parameters combination.
         IOError
            If the input file is not found or the reading tentative fails due
            to other unexpected operative system level cause.
         """
-        if filename and genotypes_dict:
-            raise ValueError("Bad parameters combination.")
+        # Parse parameters use to determine constructor way to use. Ignore
+        # for now `model_name`
+        exclusive_set_params = [
+            True
+            for p in [filename, genotypes_dict, definitions, probabilities]
+            if p is not None
+        ]
+        if len(exclusive_set_params) == 1 and filename:
+            constructor_mode = 1
+        elif len(exclusive_set_params) == 1 and genotypes_dict:
+            constructor_mode = 2
+        elif (
+            len(exclusive_set_params) == 2
+            and definitions
+            is not None  # Need to be explicit because could be Numpy array
+            and probabilities
+            is not None  # Need to be explicit because could be Numpy array
+        ):
+            constructor_mode = 3
+        else:
+            raise ValueError("Bad parameters use. Revise documentation.")
 
         # Basic skeleton
         self._name = None
@@ -131,10 +179,12 @@ class Model:
             self._name = str(model_name)
 
         # Delegates object composition attending to the used constructor way
-        if filename:
+        if constructor_mode == 1:
             self._parse_model_file(filename)
-        elif genotypes_dict:
+        elif constructor_mode == 2:
             self._parse_genotypes_dict(genotypes_dict)
+        elif constructor_mode == 3:
+            self._parse_genotypes_sets(definitions, probabilities)
 
     def _parse_model_file(self, filename: str) -> None:
         """Takes the responsibility of the initializer to parse the model file.
@@ -162,7 +212,7 @@ class Model:
 
         Raises
         ------
-        pytoxo.errors.ModelCSVParseError
+        pytoxo.errors.BadFormedModelError
             If the parse tentative fails due to the file is not well formed.
         IOError
            If the input file is not found or the reading tentative fails due
@@ -178,7 +228,7 @@ class Model:
 
             # Check not empty file
             if not lines:
-                raise pytoxo.errors.ModelCSVParseError(
+                raise pytoxo.errors.BadFormedModelError(
                     filename, "File without content."
                 )
 
@@ -194,16 +244,15 @@ class Model:
             self._parse_helper(
                 genotypes=fst_members,
                 probabilities=snd_members,
-                exception_to_raise=pytoxo.errors.ModelCSVParseError,
                 exception_object_to_raise=filename,
             )
 
         except IOError as e:
             raise e
-        except pytoxo.errors.ModelCSVParseError as e:
+        except pytoxo.errors.BadFormedModelError as e:
             raise e
         except:  # Generic drain for unchecked parsing errors
-            raise pytoxo.errors.ModelCSVParseError(filename)
+            raise pytoxo.errors.BadFormedModelError(filename)
 
     def _parse_genotypes_dict(self, genotypes_dict: dict[str, str]) -> None:
         """Takes the responsibility of the initializer to parse the
@@ -221,12 +270,12 @@ class Model:
 
         Parameters
         ----------
-        genotypes_dict : dict[str, str], optional
+        genotypes_dict : dict[str, str]
             Dict with genotypes definitions and its associated probabilities.
 
         Raises
         ------
-        pytoxo.errors.BadFormedModelGenotypesDictError
+        pytoxo.errors.BadFormedModelError
             If the input genotypes dict is bad-formed.
         """
         try:
@@ -234,7 +283,6 @@ class Model:
             self._parse_helper(
                 genotypes=list(genotypes_dict.keys()),
                 probabilities=list(genotypes_dict.values()),
-                exception_to_raise=pytoxo.errors.BadFormedModelGenotypesDictError,
                 exception_object_to_raise=genotypes_dict,
             )
 
@@ -242,20 +290,78 @@ class Model:
             if not self._name:
                 self._name = "unnamed"
 
-        except pytoxo.errors.BadFormedModelGenotypesDictError as e:
+        except pytoxo.errors.BadFormedModelError as e:
             raise e
         except:  # Generic drain for unchecked parsing errors
-            raise pytoxo.errors.BadFormedModelGenotypesDictError(genotypes_dict)
+            raise pytoxo.errors.BadFormedModelError(genotypes_dict)
+
+    def _parse_genotypes_sets(
+        self,
+        definitions: typing.Union[list[str], numpy.array],
+        probabilities: typing.Union[list[str], numpy.array],
+    ) -> None:
+        """Takes the responsibility of the initializer to parse the
+        two sets with genotype definitions and probabilities.
+
+        Uses two separated Python lists or Numpy arrays, `definitions` and
+        `probabilities`, with the genotypes definitions and its associated
+        probabilities, respectively, both as strings. The link between the
+        members of both sets is determined by the order. Examples of the two
+        sets, respectively: "AABBCc" and "x*(1+y)".
+
+        Probability is expressed as a function of two variables, represented
+        as alphabetical characters. Only two variables are supported at most.
+        Any pair of alphabetic characters can be used to represent these
+        variables, but they must be the same two names for the entire model
+        file. Math syntax should be the used by Sympy.
+
+        To use this constructor method, use the `definitions` and
+        `probabilities` parameters and let others as default `None` but
+        optional `model_name`.
+
+
+        Parameters
+        ----------
+        definitions: typing.Union[list[str], numpy.array]
+            List ot Numpy array with the genotype definitions as strings.
+            Should be used with `probabilities` parameter.
+        probabilities: typing.Union[list[str], numpy.array]
+            List ot Numpy array with the genotype probabilities as strings.
+            Should be used with `definitions` parameter.
+
+        Raises
+        ------
+        pytoxo.errors.BadFormedModelError
+            If the input genotype sets are bad-formed.
+        """
+        try:
+            # Transform Numpy arrays to lists
+            if type(definitions) == numpy.array:
+                definitions = definitions.tolist()
+            if type(probabilities) == numpy.array:
+                probabilities = probabilities.tolist()
+
+            # Delegate to the helper
+            self._parse_helper(
+                genotypes=list(definitions),
+                probabilities=list(probabilities),
+                exception_object_to_raise=(definitions, probabilities),
+            )
+
+            # Revise unnamed models
+            if not self._name:
+                self._name = "unnamed"
+
+        except pytoxo.errors.BadFormedModelError as e:
+            raise e
+        except:  # Generic drain for unchecked parsing errors
+            raise pytoxo.errors.BadFormedModelError((definitions, probabilities))
 
     def _parse_helper(
         self,
         genotypes: list[str],
         probabilities: list[str],
-        exception_to_raise: typing.Union[
-            typing.Type[pytoxo.errors.ModelCSVParseError],
-            typing.Type[pytoxo.errors.BadFormedModelGenotypesDictError],
-        ],
-        exception_object_to_raise: typing.Union[str, dict[str, str]],
+        exception_object_to_raise: typing.Union[str, dict[str, str], tuple[list, list]],
     ) -> None:
         """Complete the parse process doing the needed checks and
         transformations.
@@ -266,41 +372,35 @@ class Model:
             List with the genotype definitions as strings.
         probabilities: list[str]
             List with the genotype associated probability expressions as strings.
-        exception_to_raise: typing.Union[typing.Type[pytoxo.errors.ModelCSVParseError], typing.Type[pytoxo.errors.BadFormedModelGenotypesDictError]]
-            Exception class to raise on any error.
-        exception_object_to_raise: typing.Union[str, dict[str, str]]
+        exception_object_to_raise: typing.Union[str, dict[str, str], tuple[list, list]]
             Object to add to the exception body.
 
         Raises
         ------
-        pytoxo.errors.ModelCSVParseError
-            On any fail, raises the `exception_to_raise` parameter exception
-            with the `exception_object_to_raise` in the exception body.
-        pytoxo.errors.BadFormedModelGenotypesDictError
-            On any fail, raises the `exception_to_raise` parameter exception
-            with the `exception_object_to_raise` in the exception body.
+        pytoxo.errors.BadFormedModelError
+            On any fail.
         """
         # Catch the order of the model
         len_genotype = len(genotypes[0])
         # Assert all the first members have the same length
         for genotype in genotypes:
             if len(genotype) != len_genotype:
-                raise exception_to_raise(
+                raise pytoxo.errors.BadFormedModelError(
                     exception_object_to_raise,
                     "All the genotypes should have the same order.",
                 )
         # Assert first members length is odd
         if len_genotype % 2 != 0:
-            raise exception_to_raise(
+            raise pytoxo.errors.BadFormedModelError(
                 exception_object_to_raise, "Bad genotype specification."
             )
         # Save the order
         self._order = len_genotype // 2
 
         """Sort probabilities attending to alphabetical sort of associated 
-        genotypes. This is necessary to assert the association between 
-        genotype definitions and probabilities during the calculus process 
-        and in the final penetrance table"""
+        genotypes. Capital letters first. This is necessary to assert the 
+        association between genotype definitions and probabilities during the 
+        calculus process and in the final penetrance table"""
         genotypes_probabilities = [(g, p) for g, p in zip(genotypes, probabilities)]
         genotypes_probabilities.sort(key=lambda i: i[0])  # Sort attending to genotypes
         probabilities_sorted = [p for (_, p) in genotypes_probabilities]
@@ -310,7 +410,7 @@ class Model:
                 sympy.sympify(probability) for probability in probabilities_sorted
             ]
         except sympy.SympifyError:
-            raise exception_to_raise(
+            raise pytoxo.errors.BadFormedModelError(
                 exception_object_to_raise, "Bad probability expression syntax."
             )
 
@@ -331,7 +431,7 @@ class Model:
 
         # Check support: only 2 different variables are supported by PyToxo
         if not 0 < len(different_variables) <= 2:
-            raise exception_to_raise(
+            raise pytoxo.errors.BadFormedModelError(
                 exception_object_to_raise,
                 "Only two variables are supported at most.",
             )
@@ -395,8 +495,9 @@ class Model:
         return hash(
             hash(self._name)
             + hash(self._order)
+            + hash(str(self._penetrances))
             + hash(str(self._variables))
-            + hash(str(self._variables))
+            + hash(str(self._tolerable_solution_error_delta))
         )
 
     def __eq__(self, other):

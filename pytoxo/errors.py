@@ -13,49 +13,29 @@
 
 """PyToxo error definitions."""
 
-
-class ModelCSVParseError(Exception):
-    """Representation of a parse error with a model CSV file."""
-
-    def __init__(self, filename: str, cause: str = "Bad formed file"):
-        """Creates an exception of a parse error with a model CSV file.
-
-        Parameters
-        ----------
-        filename : str
-            The path of the text file with the model CSV specification.
-        cause : str, optional
-            The error cause during parsing process (default "Bad formed file").
-        """
-        self.filename = filename
-        self.cause = cause
-        self.message = f"ModelCSVParseError with file '{filename}' due to: '{cause}'"
-        super().__init__(self.message)
+import typing
 
 
-class BadFormedModelGenotypesDictError(Exception):
-    """Representation of a parse error with a model genotypes dict."""
+class BadFormedModelError(Exception):
+    """Representation of a parse error with an epistatic model."""
 
     def __init__(
         self,
-        genotypes_dict: dict[str, str],
-        cause: str = "Bad formed model genotypes dict",
+        error_object: typing.Union[str, dict[str, str], tuple[list, list]],
+        cause: str = "Bad formed model",
     ):
-        """Creates an exception of a parse error with a model genotypes dict.
+        """Creates an exception of a parse error with an epistatic model.
 
         Parameters
         ----------
-        genotypes_dict : dict[str, str], optional
-            Dict with genotypes definitions and its associated probabilities.
+        error_object : typing.Union[str, dict[str, str], (list, list)]
+            The input model which causes the error in one of its possible forms.
         cause : str, optional
             The error cause during parsing process (default "Bad formed file").
         """
-        self.genotypes_dict = genotypes_dict
+        self.error_object = error_object
         self.cause = cause
-        self.message = (
-            f"BadFormedModelGenotypesDictError with dict "
-            f"'{genotypes_dict}' due to: '{cause}'"
-        )
+        self.message = f"Bad formed model with '{error_object}' due to: '{cause}'"
         super().__init__(self.message)
 
 
