@@ -12,6 +12,7 @@
 ###########################################################
 
 from pytoxo.model import Model
+from pytoxo.ptable import PTable
 
 # Package PyToxo exports only the `Model` class
-__all__ = ["Model"]
+__all__ = ["Model", "PTable"]
