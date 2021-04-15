@@ -767,6 +767,12 @@ class Model:
         pytoxo.errors.UnsolvableModelError
             If the model has not solution.
         """
+        # Check MAFs list length
+        if len(mafs) != self._order:
+            raise pytoxo.errors.UnsolvableModelError(
+                "The MAFs have to be as many as the order has the model"
+            )
+
         eq_system = self._build_max_prevalence_system(mafs, h)
 
         # Delegates to the solve method
@@ -855,6 +861,12 @@ class Model:
         pytoxo.errors.UnsolvableModelError
             If the model has not solution.
         """
+        # Check MAFs list length
+        if len(mafs) != self._order:
+            raise pytoxo.errors.UnsolvableModelError(
+                "The MAFs have to be as many as the order has the model"
+            )
+
         eq_system = self._build_max_heritability_system(mafs, p)
 
         # Delegates to the solve method
