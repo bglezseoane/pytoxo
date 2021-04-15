@@ -35,8 +35,7 @@ class BadFormedModelError(Exception):
         """
         self.error_object = error_object
         self.cause = cause
-        self.message = f"Bad formed model with '{error_object}' due to: '{cause}'"
-        super().__init__(self.message)
+        self.message = f"Bad formed model with '{error_object}' due to: '{cause}'."
 
 
 class ResolutionError(Exception):
@@ -47,6 +46,7 @@ class ResolutionError(Exception):
         cause: str = "PyToxo can not solve this model",
         model_name: str = None,
         equation: str = None,
+        message: str = None,
     ):
         """Creates an exception of a solving error with a PyToxo model.
 
@@ -60,28 +60,38 @@ class ResolutionError(Exception):
         equation : str, optional
             The equation that cause the resolution error, as string. Default is
             none.
+        message : str, optional
+            The message to print, directly passed here. Other arguments would be
+            ignored if this one is used.
         """
+        msg_header = "Resolution error: "
         self.model_name = model_name
         self.cause = cause
         self.equation = equation
-        if not self.model_name:
-            model_msg_text = "model"
+        self.message = message
+
+        if not self.message:
+            if not self.model_name:
+                model_msg_text = "Model"
+            else:
+                model_msg_text = f"Model '{self.model_name}'"
+            if self.equation:
+                self.message = (
+                    f"{msg_header} {model_msg_text} due to '{cause}'. "
+                    f"Problematic equation: '{self.equation}'."
+                )
+            else:
+                self.message = f"{msg_header} '{cause}'."
         else:
-            model_msg_text = f"model ('{self.model_name}')"
-        if self.equation:
-            self.message = (
-                f"ResolutionError with {model_msg_text}: '{cause}'. "
-                f"Problematic equation: '{self.equation}'."
-            )
-        else:
-            self.message = f"ResolutionError: '{cause}'."
-        super().__init__(self.message)
+            self.message = f"{msg_header} {self.message}."
 
 
 class UnsolvableModelError(Exception):
     """Representation of an unsolvable model error of PyToxo."""
 
-    def __init__(self, model_name: str = None, equation: str = None):
+    def __init__(
+        self, model_name: str = None, equation: str = None, message: str = None
+    ):
         """Creates an exception of an unsolvable model.
 
         Parameters
@@ -91,20 +101,26 @@ class UnsolvableModelError(Exception):
         equation : str, optional
             The equation that cause the resolution error, as string. Default is
             none.
+        message : str, optional
+            The message to print, directly passed here. Other arguments would be
+            ignored if this one is used.
         """
+        msg_header = "Unsolvable model:"
         self.model_name = model_name
         self.equation = equation
-        if self.model_name:
-            model_msg_text = "model"
+        self.message = message
+
+        if not self.message:
+            if self.model_name:
+                model_msg_text = "model"
+            else:
+                model_msg_text = f"model ('{self.model_name}')"
+            if self.equation:
+                self.message = (
+                    f"{msg_header} This {model_msg_text} has not solution. "
+                    f"Equation: '{self.equation}'."
+                )
+            else:
+                self.message = f"{msg_header} This {model_msg_text} has not solution."
         else:
-            model_msg_text = f"model ('{self.model_name}')"
-        if self.equation:
-            self.message = (
-                f"UnsolvableModelError: This {model_msg_text} has not solution. "
-                f"Equation: '{self.equation}'."
-            )
-        else:
-            self.message = (
-                f"UnsolvableModelError: This {model_msg_text} has not solution."
-            )
-        super().__init__(self.message)
+            self.message = f"{msg_header} {self.message}."
