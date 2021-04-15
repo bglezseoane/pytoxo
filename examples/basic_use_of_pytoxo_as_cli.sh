@@ -21,19 +21,19 @@ pytoxo --help
 
 # Example 1
 echo
-echo "Example 1: 'pytoxo models/additive_3.csv 0.4 0.4 --max_her':"
-pytoxo models/additive_3.csv 0.4 0.4 --max_her
+echo "Example 1: 'pytoxo models/additive_3.csv 0.2 0.4 0.4 0.4 --max_her':"
+pytoxo models/additive_3.csv 0.2 0.4 0.4 0.4 --max_her
 
 # Example 2
 tmp_file=$(mktemp)  # Create temporary file to save a table
 echo
-echo 'Example 2, saving the table to a temporary file: '\''pytoxo models/additive_2.csv --max_her 0.3 0.1 > "$tmp_file"'\'':'
-pytoxo models/additive_2.csv --max_her 0.3 0.1 > "$tmp_file"
+echo 'Example 2, saving the table to a temporary file: '\''pytoxo models/additive_2.csv --max_her 0.55 0.1 0.2 > "$tmp_file"'\'':'
+pytoxo models/additive_2.csv --max_her 0.55 0.1 0.2 > "$tmp_file"
 echo 'Printing the content of the temporary file with: '\''cat "$tmp_file"'\'':'
 cat "$tmp_file"
 rm "$tmp_file"  # Clean
 
 # Example 3
 echo
-echo "Example 3: 'pytoxo models/threshold_5.csv 0.45 --max_her 0.9':"
-pytoxo models/threshold_5.csv 0.45 --max_prev 0.9
+echo "Example 3: 'pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4':"
+pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4
