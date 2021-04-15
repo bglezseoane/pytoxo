@@ -43,13 +43,6 @@ def main():
         nargs=1,
         help="The path to the epistatic model CSV file.",
     )
-    parser.add_argument(
-        "maf",
-        metavar="MAF",
-        type=float,
-        nargs=1,
-        help="The MAF to use.",
-    )
     prev_or_her_flag = parser.add_mutually_exclusive_group(required=True)
     prev_or_her_flag.add_argument(
         "--max_prev",
@@ -70,6 +63,13 @@ def main():
         nargs=1,
         help="The heritability or prevalence to use, depending of the used flag.",
     )
+    parser.add_argument(
+        "mafs",
+        metavar="MAFS",
+        type=float,
+        nargs="+",
+        help="The MAFs to use. As many as the order has the model, followed.",
+    )
 
     # Try to parse
     try:
@@ -80,7 +80,7 @@ def main():
 
     # Get arguments
     model = args.model[0]
-    maf = args.maf[0]
+    mafs = args.mafs
     if args.max_prev:
         calc_target = pytoxo.Model.find_max_prevalence_table
     else:
@@ -99,7 +99,7 @@ def main():
 
     # Try to solve the model
     try:
-        ptable = calc_target(model, [maf] * model.order, prev_or_her)
+        ptable = calc_target(model, mafs, prev_or_her)
     except pytoxo.errors.ResolutionError as e:
         print(f"{error_hd} {e.message}")
         sys.exit(1)
