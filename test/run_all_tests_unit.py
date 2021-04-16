@@ -13,9 +13,9 @@
 # Contact: borja.gseoane@udc.es
 ###########################################################
 
-"""Run all unit tests helper script.
+"""Run all unit test helper script.
 
-Simple script to discover and run all tests inside the current directory
+Simple script to discover and run test inside the current directory
 with the project home directory as working directory."""
 
 import os
