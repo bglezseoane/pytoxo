@@ -559,7 +559,7 @@ class Model:
         # Check timeout
         if not solve_timeout:
             solve_timeout = None  # `timeout_decorator` requires exactly `None`
-        elif solve_timeout == True:
+        elif type(solve_timeout) == bool and solve_timeout == True:
             solve_timeout = (self._order + 1) ** 2 * 60  # Seconds
 
         # TODO: Consider add assumptions to vars real and greather than 0
