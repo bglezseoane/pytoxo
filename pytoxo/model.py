@@ -586,7 +586,7 @@ class Model:
             """
 
             @timeout_decorator.timeout_decorator.timeout(
-                solve_timeout, timeout_exception=StopIteration
+                solve_timeout, timeout_exception=TimeoutError
             )
             def solver_call():
                 """Help function which encapsulate the call to the solver
@@ -607,7 +607,7 @@ class Model:
             # Try to solve the system within the setting timeout
             try:
                 sols = solver_call()
-            except StopIteration:
+            except TimeoutError:
                 raise pytoxo.errors.ResolutionError(
                     cause="Exceeded timeout",
                     model_name=self.name,
