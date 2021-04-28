@@ -46,7 +46,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
     """
 
     # Flag to control when the generated reports should be saved
-    print_reports = True
+    print_reports = False
 
     def test_variables_accuracy(self):
         models = [
