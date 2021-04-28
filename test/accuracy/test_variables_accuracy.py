@@ -45,6 +45,9 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
     This test maximizes prevalence.
     """
 
+    # Flag to control when the generated reports should be saved
+    print_reports = True
+
     def test_variables_accuracy(self):
         models = [
             "additive_2",
@@ -162,68 +165,70 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        # Save the generated report
-        now = datetime.datetime.now()
-        # Calculate file name based in current test name and datetime
-        test_name = str(self).split(" ")[0]
-        module_name = str(self.__module__)
-        now = (
-            f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
-            f"-{now.minute:02}-{now.second:02}"
-        )
-        filename = os.path.join(
-            "test",
-            "accuracy",
-            "reports",
-            f"{test_name}_{now}.tex",
-        )
-        final_table = tabulate.tabulate(
-            table_content, headers="firstrow", tablefmt="latex"
-        )
-        machine_info = (
-            f"{platform.platform()}, "
-            f"{psutil.cpu_count(logical=True)} core, "
-            f"{psutil.cpu_count(logical=False)} physical core, "
-            f"{psutil.cpu_freq().max:.2f} MHz max freq."
-        )
-        """Retrieve current repository commit reference to locate the report 
-        in the history"""
-        git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
-        # Some Latex patches
-        test_name_tex = test_name.replace("_", "\\_")
-        module_name_tex = module_name.replace("_", "\\_")
-        now_tex = now.replace("_", "\\_")
-        machine_info_tex = machine_info.replace("_", "\\_")
-        with open(filename, "x") as f:
-            """Paste the table inside a basic document template to can easily
-            print it as PDF"""
-            f.write(
-                "\\documentclass{article}\n"
-                "\\usepackage{float}\n"
-                "\\begin{document}\n"
-                "\\section*{PyToxo Test Suite Report}\n"
-                f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
-                f"Generated report:\n"
-                "\\begin{figure}[H]\n"
-                "\\centering\n"
-                "\n"
-                f"{final_table}"
-                "\n"
-                "\\caption{Accuracies of the the calculated values for the "
-                "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                "tables. Large models (order 5 and more) do not correct times"
-                "repeating measurements}\n"
-                "\\end{figure}\n"
-                f"Datetime: {now_tex}\n\n"
-                f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
-                f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
-                "\\end{document}"
+        if self.print_reports:
+            # Save the generated report
+            now = datetime.datetime.now()
+            # Calculate file name based in current test name and datetime
+            test_name = str(self).split(" ")[0]
+            module_name = str(self.__module__)
+            now = (
+                f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
+                f"-{now.minute:02}-{now.second:02}"
             )
+            filename = os.path.join(
+                "test",
+                "accuracy",
+                "reports",
+                f"{test_name}_{now}.tex",
+            )
+            final_table = tabulate.tabulate(
+                table_content, headers="firstrow", tablefmt="latex"
+            )
+            machine_info = (
+                f"{platform.platform()}, "
+                f"{psutil.cpu_count(logical=True)} core, "
+                f"{psutil.cpu_count(logical=False)} physical core, "
+                f"{psutil.cpu_freq().max:.2f} MHz max freq."
+            )
+            """Retrieve current repository commit reference to locate the report 
+            in the history"""
+            git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
+            # Some Latex patches
+            test_name_tex = test_name.replace("_", "\\_")
+            module_name_tex = module_name.replace("_", "\\_")
+            now_tex = now.replace("_", "\\_")
+            machine_info_tex = machine_info.replace("_", "\\_")
+            with open(filename, "x") as f:
+                """Paste the table inside a basic document template to can easily
+                print it as PDF"""
+                f.write(
+                    "\\documentclass{article}\n"
+                    "\\usepackage{float}\n"
+                    "\\begin{document}\n"
+                    "\\section*{PyToxo Test Suite Report}\n"
+                    f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
+                    f"Generated report:\n"
+                    "\\begin{figure}[H]\n"
+                    "\\centering\n"
+                    "\n"
+                    f"{final_table}"
+                    "\n"
+                    "\\caption{Accuracies of the the calculated values for the "
+                    "\\texttt{x} and \\texttt{y} variables used in the penetrance "
+                    "tables. Large models (order 5 and more) do not correct times"
+                    "repeating measurements}\n"
+                    "\\end{figure}\n"
+                    f"Datetime: {now_tex}\n\n"
+                    f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
+                    f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
+                    "\\end{document}"
+                )
 
         # Automatic checks against configured tolerable delta
         for tolerable_delta, delta in deltas:
             self.assertGreaterEqual(tolerable_delta, delta)
 
+    @unittest.skip
     def test_variables_accuracy_large_models(self):
         models = [
             "additive_6",
@@ -338,63 +343,64 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        # Save the generated report
-        now = datetime.datetime.now()
-        # Calculate file name based in current test name and datetime
-        test_name = str(self).split(" ")[0]
-        module_name = str(self.__module__)
-        now = (
-            f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
-            f"-{now.minute:02}-{now.second:02}"
-        )
-        filename = os.path.join(
-            "test",
-            "accuracy",
-            "reports",
-            f"{test_name}_{now}.tex",
-        )
-        final_table = tabulate.tabulate(
-            table_content, headers="firstrow", tablefmt="latex"
-        )
-        machine_info = (
-            f"{platform.platform()}, "
-            f"{psutil.cpu_count(logical=True)} core, "
-            f"{psutil.cpu_count(logical=False)} physical core, "
-            f"{psutil.cpu_freq().max:.2f} MHz max freq."
-        )
-        """Retrieve current repository commit reference to locate the report 
-        in the history"""
-        git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
-        # Some Latex patches
-        test_name_tex = test_name.replace("_", "\\_")
-        module_name_tex = module_name.replace("_", "\\_")
-        now_tex = now.replace("_", "\\_")
-        machine_info_tex = machine_info.replace("_", "\\_")
-        with open(filename, "x") as f:
-            """Paste the table inside a basic document template to can easily
-            print it as PDF"""
-            f.write(
-                "\\documentclass{article}\n"
-                "\\usepackage{float}\n"
-                "\\begin{document}\n"
-                "\\section*{PyToxo Test Suite Report}\n"
-                f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
-                f"Generated report:\n"
-                "\\begin{figure}[H]\n"
-                "\\centering\n"
-                "\n"
-                f"{final_table}"
-                "\n"
-                "\\caption{Accuracies of the the calculated values for the "
-                "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                "tables. Large models (order 5 and more) do not correct times"
-                "repeating measurements}\n"
-                "\\end{figure}\n"
-                f"Datetime: {now_tex}\n\n"
-                f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
-                f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
-                "\\end{document}"
+        if self.print_reports:
+            # Save the generated report
+            now = datetime.datetime.now()
+            # Calculate file name based in current test name and datetime
+            test_name = str(self).split(" ")[0]
+            module_name = str(self.__module__)
+            now = (
+                f"{now.year:04}-{now.month:02}-{now.day:02}_{now.hour:02}"
+                f"-{now.minute:02}-{now.second:02}"
             )
+            filename = os.path.join(
+                "test",
+                "accuracy",
+                "reports",
+                f"{test_name}_{now}.tex",
+            )
+            final_table = tabulate.tabulate(
+                table_content, headers="firstrow", tablefmt="latex"
+            )
+            machine_info = (
+                f"{platform.platform()}, "
+                f"{psutil.cpu_count(logical=True)} core, "
+                f"{psutil.cpu_count(logical=False)} physical core, "
+                f"{psutil.cpu_freq().max:.2f} MHz max freq."
+            )
+            """Retrieve current repository commit reference to locate the report 
+            in the history"""
+            git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
+            # Some Latex patches
+            test_name_tex = test_name.replace("_", "\\_")
+            module_name_tex = module_name.replace("_", "\\_")
+            now_tex = now.replace("_", "\\_")
+            machine_info_tex = machine_info.replace("_", "\\_")
+            with open(filename, "x") as f:
+                """Paste the table inside a basic document template to can easily
+                print it as PDF"""
+                f.write(
+                    "\\documentclass{article}\n"
+                    "\\usepackage{float}\n"
+                    "\\begin{document}\n"
+                    "\\section*{PyToxo Test Suite Report}\n"
+                    f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
+                    f"Generated report:\n"
+                    "\\begin{figure}[H]\n"
+                    "\\centering\n"
+                    "\n"
+                    f"{final_table}"
+                    "\n"
+                    "\\caption{Accuracies of the the calculated values for the "
+                    "\\texttt{x} and \\texttt{y} variables used in the penetrance "
+                    "tables. Large models (order 5 and more) do not correct times"
+                    "repeating measurements}\n"
+                    "\\end{figure}\n"
+                    f"Datetime: {now_tex}\n\n"
+                    f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
+                    f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
+                    "\\end{document}"
+                )
 
         # Automatic checks against configured tolerable delta
         for tolerable_delta, delta in deltas:
