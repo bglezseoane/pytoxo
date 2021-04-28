@@ -766,12 +766,10 @@ class Model:
             If PyToxo is not able to solve the model.
         pytoxo.errors.UnsolvableModelError
             If the model has not solution.
+        ValueError
+            With a bad parameter configuration.
         """
-        # Check MAFs list length
-        if len(mafs) != self._order:
-            raise pytoxo.errors.UnsolvableModelError(
-                message="The MAFs have to be as many as the order has the model"
-            )
+        self._check_find_table_parameters(mafs, h, solve_timeout, check)
 
         eq_system = self._build_max_prevalence_system(mafs, h)
 
@@ -860,12 +858,10 @@ class Model:
             If PyToxo is not able to solve the model.
         pytoxo.errors.UnsolvableModelError
             If the model has not solution.
+        ValueError
+            With a bad parameter configuration.
         """
-        # Check MAFs list length
-        if len(mafs) != self._order:
-            raise pytoxo.errors.UnsolvableModelError(
-                message="The MAFs have to be as many as the order has the model"
-            )
+        self._check_find_table_parameters(mafs, p, solve_timeout, check)
 
         eq_system = self._build_max_heritability_system(mafs, p)
 
@@ -889,3 +885,58 @@ class Model:
                 self._variables[1]: sol[self._variables[1]],
             },
         )
+
+    def _check_find_table_parameters(
+        self,
+        mafs: list[float],
+        h_or_p: float,
+        solve_timeout: typing.Union[int, bool] = True,
+        check: bool = True,
+    ) -> None:
+        """Check the input parameters for a find table operation.
+
+        Parameters
+        ----------
+        mafs : list[float]
+            Array of floats representing the MAF of each locus.
+        h_or_p : float
+            Heritability or prevalence of the table.
+        solve_timeout : typing.Union[int, bool], optional (default True)
+            A maximum timeout, as seconds, for the solver to try to resolve the
+            model. If it is exceeded, the operation will be aborted. Default
+            (passed as 'True') is assumed heuristically. Pass as 'False' or
+            'None' to do not use timeout.
+        check: bool (default True)
+            Flag to control when check the solution before return it. Default
+            `True`.
+
+        Raises
+        ------
+        ValueError
+            With a bad parameter configuration.
+        """
+        if type(mafs) is not list:
+            raise ValueError("MAFs should be a list of floats.")
+        for maf in mafs:
+            if type(maf) is not float:
+                raise ValueError("MAFs should be a list of floats.")
+        if len(mafs) != self._order:
+            raise ValueError("The MAFs have to be as many as the order has the model.")
+        for maf in mafs:
+            if not 0 <= maf <= 0.5:
+                raise ValueError("MAFs should be a probability between 0 and 0.5.")
+
+        if type(h_or_p) is not float:
+            raise ValueError("Heritability or prevalence should be a float.")
+        if not 0 <= h_or_p <= 1:
+            raise ValueError(
+                "Heritability or prevalence should be probability. I.e. a float between 0 and 1."
+            )
+
+        if type(solve_timeout) is not int and type(solve_timeout) is not bool:
+            raise ValueError("Timeout parameter should be an integer or a boolean.")
+        if type(solve_timeout) is int and solve_timeout < 0:
+            raise ValueError("Timeout should be a positive integer.")
+
+        if type(check) is not bool:
+            raise ValueError("The check flag should be a boolean.")
