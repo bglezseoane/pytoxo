@@ -19,39 +19,21 @@ import PySimpleGUI as sg
 def main():
     # sg.theme('TanBlue')
 
-    column1 = [
-        [
-            sg.Text(
-                "Column 1",
-                background_color=sg.DEFAULT_BACKGROUND_COLOR,
-                justification="center",
-                size=(10, 1),
-            )
-        ],
-        [
-            sg.Spin(
-                values=("Spin Box 1", "2", "3"), initial_value="Spin Box 1", key="spin1"
-            )
-        ],
-        [
-            sg.Spin(
-                values=("Spin Box 1", "2", "3"), initial_value="Spin Box 2", key="spin2"
-            )
-        ],
-        [
-            sg.Spin(
-                values=("Spin Box 1", "2", "3"), initial_value="Spin Box 3", key="spin3"
-            )
-        ],
-    ]
-
     layout = [
         [
-            sg.Text(
-                "All graphic widgets in one form!", size=(30, 1), font=("Helvetica", 25)
-            )
+            sg.Combo(
+                ("Heritability", "Prevalence"),
+                key="prev_or_her_cb",
+                size=(20, 1),
+                readonly=True,
+            ),
+            sg.InputText(key="prev_or_her_in"),
+            sg.Text("MAFs (separated with commas)"),
+            sg.InputText(key="mafs_in"),
         ],
-        [sg.Text("Here is some text.... and a place to enter text")],
+        [
+            sg.Button("Calculate table"),
+        ],
         [sg.InputText("This is my text", key="in1")],
         [
             sg.CBox("Checkbox", key="cb1"),
@@ -111,7 +93,6 @@ def main():
                 default_value=10,
                 key="slide4",
             ),
-            sg.Col(column1, background_color="gray34"),
         ],
         [sg.Text("_" * 80)],
         [sg.Text("Choose A Folder", size=(35, 1))],
@@ -129,7 +110,7 @@ def main():
     ]
 
     window = sg.Window(
-        "Form Fill Demonstration",
+        "PyToxo GUI",
         layout,
         default_element_size=(40, 1),
         grab_anywhere=False,
