@@ -19,6 +19,20 @@ import PySimpleGUI as sg
 def main():
     # sg.theme('TanBlue')
 
+    # Model table components
+    headings = [
+        "Genotype",
+        "Penetrance expression",
+        "Calculated penetrance probability",
+    ]
+    header = [[sg.Text(h, size=(20, 2), pad=(0, 0)) for h in headings]]
+
+    input_rows = [
+        [sg.Input(size=(20, 1), pad=(0, 0)) for col in range(len(headings))]
+        for row in range(10)
+    ]
+
+    # Main layout
     layout = [
         [
             sg.Combo(
@@ -34,7 +48,7 @@ def main():
         [
             sg.Button("Calculate table"),
         ],
-        [sg.InputText("This is my text", key="in1")],
+        [header + input_rows],
         [
             sg.CBox("Checkbox", key="cb1"),
             sg.CBox("My second checkbox!", key="cb2", default=True),
