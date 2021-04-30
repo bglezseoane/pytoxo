@@ -17,7 +17,9 @@ import PySimpleGUI as sg
 
 
 def main():
-    # sg.theme('TanBlue')
+    # Style
+    sg.theme("DarkBlue4")
+    window_general_font = "Verdana, 20"
 
     # Model table components
     headings = [
@@ -128,6 +130,7 @@ def main():
         layout,
         default_element_size=(40, 1),
         grab_anywhere=False,
+        font=window_general_font,
     )
 
     while True:
