@@ -40,14 +40,14 @@ def main():
             sg.Combo(
                 ("Heritability", "Prevalence"),
                 key="prev_or_her_cb",
-                size=(20, 1),
+                size=(10, 1),
                 readonly=True,
             ),
-            sg.InputText(key="prev_or_her_in"),
+            sg.InputText(key="prev_or_her_in", size=(5, 1)),
         ],
         [
             sg.Text("MAFs (separated with commas)"),
-            sg.InputText(key="mafs_in"),
+            sg.InputText(key="mafs_in", size=(5, 1)),
         ],
         [
             sg.Button("Calculate table"),
