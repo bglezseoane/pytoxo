@@ -44,6 +44,8 @@ def main():
                 readonly=True,
             ),
             sg.InputText(key="prev_or_her_in"),
+        ],
+        [
             sg.Text("MAFs (separated with commas)"),
             sg.InputText(key="mafs_in"),
         ],
