@@ -55,9 +55,6 @@ configuration_frame = sg.Frame(
             # sg.InputText(key="mafs_in", size=(5, 1)),
             sg.Text("None model loaded", text_color="grey"),
         ],
-        [
-            sg.Button("Calculate table"),
-        ],
     ],
 )
 
@@ -82,6 +79,7 @@ layout = [
     [menu],
     [model_frame],
     [configuration_frame],
+    [sg.Button("Calculate table")],
 ]
 
 # Window composition
