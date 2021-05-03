@@ -71,14 +71,18 @@ def main():
     while True:
         event, values = window.read()
 
-        if event == "SaveSettings":
+        # if event == "SaveSettings":
+        #     filename = sg.popup_get_file("Save Settings", save_as=True, no_window=True)
+        #     window.SaveToDisk(filename)
+        #     # save(values)
+        # elif event == "LoadSettings":
+        #     filename = sg.popup_get_file("Load Settings", no_window=True)
+        #     window.LoadFromDisk(filename)
+        #     # load(form)
+        if event == "Resize table":
             filename = sg.popup_get_file("Save Settings", save_as=True, no_window=True)
             window.SaveToDisk(filename)
             # save(values)
-        elif event == "LoadSettings":
-            filename = sg.popup_get_file("Load Settings", no_window=True)
-            window.LoadFromDisk(filename)
-            # load(form)
         elif event in ("Exit", None):
             break
 
