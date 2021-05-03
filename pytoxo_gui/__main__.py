@@ -56,11 +56,6 @@ configuration_frame = sg.Frame(
             sg.Text("None model loaded", text_color="grey"),
         ],
         [
-            sg.Text("Interaction order"),
-            sg.InputText(key="order_in", size=(2, 1)),
-            sg.Button("Resize table"),
-        ],
-        [
             sg.Button("Calculate table"),
         ],
     ],
