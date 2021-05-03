@@ -51,8 +51,9 @@ configuration_frame = sg.Frame(
             sg.InputText(key="prev_or_her_in", size=(5, 1)),
         ],
         [
-            sg.Text("MAFs (separated with commas)"),
-            sg.InputText(key="mafs_in", size=(5, 1)),
+            sg.Text("MAFs"),
+            # sg.InputText(key="mafs_in", size=(5, 1)),
+            sg.Text("None model loaded", text_color="grey"),
         ],
         [
             sg.Text("Interaction order"),
