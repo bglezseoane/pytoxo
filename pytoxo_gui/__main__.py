@@ -37,38 +37,54 @@ headings = [
 ]
 rows = [[col + row for col in range(len(headings))] for row in range(100)]
 
+# Configuration frame
+configuration_frame = sg.Frame(
+    title="Configuration",
+    layout=[
+        [
+            sg.Combo(
+                ("Heritability", "Prevalence"),
+                key="prev_or_her_cb",
+                size=(10, 1),
+                readonly=True,
+            ),
+            sg.InputText(key="prev_or_her_in", size=(5, 1)),
+        ],
+        [
+            sg.Text("MAFs (separated with commas)"),
+            sg.InputText(key="mafs_in", size=(5, 1)),
+        ],
+        [
+            sg.Text("Interaction order"),
+            sg.InputText(key="order_in", size=(2, 1)),
+            sg.Button("Resize table"),
+        ],
+        [
+            sg.Button("Calculate table"),
+        ],
+    ],
+)
+
+# Model frame
+model_frame = sg.Frame(
+    title="Epistatic model",
+    layout=[
+        [
+            sg.Table(
+                headings=headings,
+                values=rows,
+                vertical_scroll_only=True,
+                justification="center",
+            )
+        ]
+    ],
+)
+
 # Layout composition
 layout = [
     [menu],
-    [
-        sg.Combo(
-            ("Heritability", "Prevalence"),
-            key="prev_or_her_cb",
-            size=(10, 1),
-            readonly=True,
-        ),
-        sg.InputText(key="prev_or_her_in", size=(5, 1)),
-    ],
-    [
-        sg.Text("MAFs (separated with commas)"),
-        sg.InputText(key="mafs_in", size=(5, 1)),
-    ],
-    [
-        sg.Text("Interaction order"),
-        sg.InputText(key="order_in", size=(2, 1)),
-        sg.Button("Resize table"),
-    ],
-    [
-        sg.Button("Calculate table"),
-    ],
-    [
-        sg.Table(
-            headings=headings,
-            values=rows,
-            vertical_scroll_only=True,
-            justification="center",
-        )
-    ],
+    [configuration_frame],
+    [model_frame],
 ]
 
 # Window composition
