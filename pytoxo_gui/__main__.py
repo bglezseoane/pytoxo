@@ -21,6 +21,13 @@ def main():
     sg.theme("DarkBlue4")
     window_general_font = "Verdana, 20"
 
+    # Main menu
+    menu_def = [
+        ["File", ["Open", "Save", "Exit"]],
+        ["Edit", ["Paste", "Undo"]],
+        ["Help", "About..."],
+    ]
+
     # Model table components
     headings = [
         "Genotype",
@@ -36,6 +43,7 @@ def main():
 
     # Main layout
     layout = [
+        [sg.Menu(menu_def)],
         [
             sg.Combo(
                 ("Heritability", "Prevalence"),
