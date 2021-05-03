@@ -50,6 +50,11 @@ def main():
             sg.InputText(key="mafs_in", size=(5, 1)),
         ],
         [
+            sg.Text("Interaction order"),
+            sg.InputText(key="order_in", size=(2, 1)),
+            sg.Button("Resize table"),
+        ],
+        [
             sg.Button("Calculate table"),
         ],
         [header + input_rows],
