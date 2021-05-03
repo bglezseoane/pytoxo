@@ -15,63 +15,74 @@
 
 import PySimpleGUI as sg
 
+# ####################### GUI DESIGN ######################
+# General style settings
+sg.theme("SystemDefaultForReal")
+window_general_font = "Verdana, 13"
 
-def main():
-    # Style
-    sg.theme("SystemDefaultForReal")
-    window_general_font = "Verdana, 13"
-
-    # Main menu
-    menu_def = [
+# Main menu
+menu = sg.Menu(
+    [
         ["File", ["Open", "Save", "Exit"]],
         ["Edit", ["Paste", "Undo"]],
         ["Help", "About PyToxo GUI"],
     ]
+)
 
-    # Model table components
-    headings = [
-        " Genotype definition ",
-        "Penetrance expression",
-        "Calculated penetrance",
-    ]
-    rows = [[col+row for col in range(len(headings))] for row in range(100)]
+# Epistatic model table
+headings = [
+    " Genotype definition ",
+    "Penetrance expression",
+    "Calculated penetrance",
+]
+rows = [[col + row for col in range(len(headings))] for row in range(100)]
 
-    # Main layout
-    layout = [
-        [sg.Menu(menu_def)],
-        [
-            sg.Combo(
-                ("Heritability", "Prevalence"),
-                key="prev_or_her_cb",
-                size=(10, 1),
-                readonly=True,
-            ),
-            sg.InputText(key="prev_or_her_in", size=(5, 1)),
-        ],
-        [
-            sg.Text("MAFs (separated with commas)"),
-            sg.InputText(key="mafs_in", size=(5, 1)),
-        ],
-        [
-            sg.Text("Interaction order"),
-            sg.InputText(key="order_in", size=(2, 1)),
-            sg.Button("Resize table"),
-        ],
-        [
-            sg.Button("Calculate table"),
-        ],
-        [sg.Table(headings=headings, values=rows, vertical_scroll_only=True,
-                  justification="center")],
-    ]
+# Layout composition
+layout = [
+    [menu],
+    [
+        sg.Combo(
+            ("Heritability", "Prevalence"),
+            key="prev_or_her_cb",
+            size=(10, 1),
+            readonly=True,
+        ),
+        sg.InputText(key="prev_or_her_in", size=(5, 1)),
+    ],
+    [
+        sg.Text("MAFs (separated with commas)"),
+        sg.InputText(key="mafs_in", size=(5, 1)),
+    ],
+    [
+        sg.Text("Interaction order"),
+        sg.InputText(key="order_in", size=(2, 1)),
+        sg.Button("Resize table"),
+    ],
+    [
+        sg.Button("Calculate table"),
+    ],
+    [
+        sg.Table(
+            headings=headings,
+            values=rows,
+            vertical_scroll_only=True,
+            justification="center",
+        )
+    ],
+]
 
-    window = sg.Window(
-        "PyToxo GUI",
-        layout,
-        default_element_size=(40, 1),
-        grab_anywhere=False,
-        font=window_general_font,
-    )
+# Window composition
+window = sg.Window(
+    "PyToxo GUI",
+    layout,
+    default_element_size=(40, 1),
+    grab_anywhere=False,
+    font=window_general_font,
+)
+# #########################################################
 
+# GUI event loop
+def main():
     while True:
         event, values = window.read()
 
