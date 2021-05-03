@@ -85,8 +85,8 @@ model_frame = sg.Frame(
 # Layout composition
 layout = [
     [menu],
-    [configuration_frame],
     [model_frame],
+    [configuration_frame],
 ]
 
 # Window composition
