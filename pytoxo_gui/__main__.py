@@ -25,7 +25,7 @@ def main():
     menu_def = [
         ["File", ["Open", "Save", "Exit"]],
         ["Edit", ["Paste", "Undo"]],
-        ["Help", "About..."],
+        ["Help", "About PyToxo GUI"],
     ]
 
     # Model table components
