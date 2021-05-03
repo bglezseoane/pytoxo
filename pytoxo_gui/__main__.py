@@ -49,13 +49,12 @@ configuration_frame = sg.Frame(
                 readonly=True,
             ),
             sg.InputText(key="prev_or_her_in", size=(5, 1)),
-        ],
-        [
             sg.Text("MAFs"),
             # sg.InputText(key="mafs_in", size=(5, 1)),
             sg.Text("None model loaded", text_color="grey"),
         ],
     ],
+    element_justification="left",
 )
 
 # Model frame
@@ -72,6 +71,7 @@ model_frame = sg.Frame(
         # ]
         [sg.Text("None model loaded", text_color="grey")]
     ],
+    element_justification="center",
 )
 
 # Layout composition
@@ -86,9 +86,11 @@ layout = [
 window = sg.Window(
     "PyToxo GUI",
     layout,
-    default_element_size=(40, 1),
-    grab_anywhere=False,
     font=window_general_font,
+    element_justification="center",
+    grab_anywhere=False,
+    size=(600, 600),
+    # background_color="#eeeeee",
 )
 # #########################################################
 
