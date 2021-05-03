@@ -69,14 +69,15 @@ configuration_frame = sg.Frame(
 model_frame = sg.Frame(
     title="Epistatic model",
     layout=[
-        [
-            sg.Table(
-                headings=headings,
-                values=rows,
-                vertical_scroll_only=True,
-                justification="center",
-            )
-        ]
+        # [
+        #     sg.Table(
+        #         headings=headings,
+        #         values=rows,
+        #         vertical_scroll_only=True,
+        #         justification="center",
+        #     )
+        # ]
+        [sg.Text("None model loaded", text_color="grey")]
     ],
 )
 
