@@ -18,8 +18,8 @@ import PySimpleGUI as sg
 
 def main():
     # Style
-    sg.theme("DarkBlue4")
-    window_general_font = "Verdana, 20"
+    sg.theme("SystemDefaultForReal")
+    window_general_font = "Verdana, 13"
 
     # Main menu
     menu_def = [
