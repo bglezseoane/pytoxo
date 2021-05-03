@@ -30,16 +30,11 @@ def main():
 
     # Model table components
     headings = [
-        "Genotype",
+        " Genotype definition ",
         "Penetrance expression",
-        "Calculated penetrance probability",
+        "Calculated penetrance",
     ]
-    header = [[sg.Text(h, size=(20, 2), pad=(0, 0)) for h in headings]]
-
-    input_rows = [
-        [sg.Input(size=(20, 1), pad=(0, 0)) for col in range(len(headings))]
-        for row in range(10)
-    ]
+    rows = [[col+row for col in range(len(headings))] for row in range(100)]
 
     # Main layout
     layout = [
@@ -65,7 +60,8 @@ def main():
         [
             sg.Button("Calculate table"),
         ],
-        [header + input_rows],
+        [sg.Table(headings=headings, values=rows, vertical_scroll_only=True,
+                  justification="center")],
     ]
 
     window = sg.Window(
