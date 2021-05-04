@@ -92,6 +92,7 @@ layout = [
     [
         sg.Button(
             "Calculate table",
+            disabled=True,
             tooltip="You need to have set all configurations before calculating the table",
         )
     ],
