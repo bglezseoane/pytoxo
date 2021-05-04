@@ -51,7 +51,11 @@ configuration_frame = sg.Frame(
             sg.InputText(key="prev_or_her_in", size=(5, 1)),
             sg.Text("MAFs"),
             # sg.InputText(key="mafs_in", size=(5, 1)),
-            sg.Text("None model loaded", text_color="grey"),
+            sg.Text(
+                "None model loaded",
+                text_color="grey",
+                tooltip="You need to have set the model before setting MAFs",
+            ),
         ],
     ],
     element_justification="left",
@@ -69,7 +73,13 @@ model_frame = sg.Frame(
         #         justification="center",
         #     )
         # ]
-        [sg.Text("None model loaded", text_color="grey")]
+        [
+            sg.Text(
+                "None model loaded",
+                text_color="grey",
+                tooltip="Use the menu to load a model from a file or enter one manually",
+            )
+        ]
     ],
     element_justification="center",
 )
@@ -79,7 +89,12 @@ layout = [
     [menu],
     [model_frame],
     [configuration_frame],
-    [sg.Button("Calculate table")],
+    [
+        sg.Button(
+            "Calculate table",
+            tooltip="You need to have set all configurations before calculating the table",
+        )
+    ],
 ]
 
 # Window composition
