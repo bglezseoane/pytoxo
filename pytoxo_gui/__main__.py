@@ -39,6 +39,7 @@ rows = [[col + row for col in range(len(headings))] for row in range(100)]
 
 # Configuration frame
 configuration_frame = sg.Frame(
+    key="_CONFIG_FRAME_",
     title="Configuration",
     layout=[
         [
@@ -63,6 +64,7 @@ configuration_frame = sg.Frame(
 
 # Model frame
 model_frame = sg.Frame(
+    key="_MODEL_FRAME_",
     title="Epistatic model",
     layout=[
         # [
@@ -106,8 +108,13 @@ window = sg.Window(
     element_justification="center",
     grab_anywhere=False,
     size=(600, 600),
+    finalize=True
     # background_color="#eeeeee",
 )
+
+# Window style patches
+window["_MODEL_FRAME_"].expand(expand_x=True, expand_y=False)
+# window["_CONFIG_FRAME_"].expand(expand_x=True, expand_y=False)
 # #########################################################
 
 # GUI event loop
