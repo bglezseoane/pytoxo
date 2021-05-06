@@ -15,6 +15,17 @@
 
 import PySimpleGUI as sg
 
+import pytoxo
+import pytoxo.errors
+
+
+class PyToxoContext:
+    """Support container class to maintain the PyToxo stuff state during GUI
+    main loop"""
+
+    model = None  # Loaded PyToxo model
+
+
 # ####################### GUI DESIGN ######################
 # General style settings
 sg.theme("SystemDefaultForReal")
@@ -23,8 +34,8 @@ window_general_font = "Verdana, 13"
 # Main menu
 menu = sg.Menu(
     [
-        ["File", ["Open", "Save", "Exit"]],
-        ["Edit", ["Paste", "Undo"]],
+        ["File", ["Open model", "Exit"]],
+        # ["Edit", ["Paste", "Undo"]],
         ["Help", "About PyToxo GUI"],
     ]
 )
@@ -106,7 +117,6 @@ window = sg.Window(
     layout,
     font=window_general_font,
     element_justification="center",
-    grab_anywhere=False,
     size=(600, 600),
     finalize=True
     # background_color="#eeeeee",
@@ -117,23 +127,38 @@ window["_MODEL_FRAME_"].expand(expand_x=True, expand_y=False)
 # window["_CONFIG_FRAME_"].expand(expand_x=True, expand_y=False)
 # #########################################################
 
+
+# Create PyToxo context object
+pytoxo_context = PyToxoContext()
+
+
 # GUI event loop
 def main():
     while True:
         event, values = window.read()
 
-        # if event == "SaveSettings":
-        #     filename = sg.popup_get_file("Save Settings", save_as=True, no_window=True)
-        #     window.SaveToDisk(filename)
-        #     # save(values)
-        # elif event == "LoadSettings":
-        #     filename = sg.popup_get_file("Load Settings", no_window=True)
-        #     window.LoadFromDisk(filename)
-        #     # load(form)
-        if event == "Resize table":
-            filename = sg.popup_get_file("Save Settings", save_as=True, no_window=True)
-            window.SaveToDisk(filename)
-            # save(values)
+        if event == "Open model":
+            filename = sg.popup_get_file(
+                "Open model",
+                no_window=True,  # To use a native approach
+                file_types=(("Comma separated values", "*.csv"),),
+            )
+            try:
+                pytoxo_context.model = pytoxo.Model(filename)
+                # Paint model within GUI
+            except pytoxo.errors.BadFormedModelError:
+                sg.popup_ok(
+                    "The file contains a bad formed model. PyToxo cannot "
+                    "interpret it. Revise PyToxo's file format requirements.",
+                    title="File parsing error",
+                    font=window_general_font,
+                )
+            except IOError:
+                sg.popup_ok(
+                    f"Error trying to open '{filename}'.",
+                    title="File opening error",
+                    font=window_general_font,
+                )
         elif event in ("Exit", None):
             break
 
