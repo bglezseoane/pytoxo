@@ -78,20 +78,22 @@ model_frame = sg.Frame(
     key="_MODEL_FRAME_",
     title="Epistatic model",
     layout=[
-        # [
-        #     sg.Table(
-        #         headings=headings,
-        #         values=rows,
-        #         vertical_scroll_only=True,
-        #         justification="center",
-        #     )
-        # ]
         [
             sg.Text(
                 "None model loaded",
+                key="_MODEL_FRAME_TEXT_",
                 text_color="grey",
                 tooltip="Use the menu to load a model from a file or enter one manually",
-            )
+                visible=True,  # Pending to be disabled when a model was loaded
+            ),
+            sg.Table(
+                key="_MODEL_FRAME_TABLE_",
+                headings=headings,
+                values=rows,
+                vertical_scroll_only=True,
+                justification="center",
+                visible=False,  # Pending to be enabled when a model was loaded
+            ),
         ]
     ],
     element_justification="center",
@@ -145,7 +147,18 @@ def main():
             )
             try:
                 pytoxo_context.model = pytoxo.Model(filename)
-                # Paint model within GUI
+                # Print model in the GUI's table
+                window["_MODEL_FRAME_TEXT_"].Update(visible=False)
+                window["_MODEL_FRAME_TABLE_"].Update(visible=True)
+                window["_MODEL_FRAME_TABLE_"].Update(
+                    values=[
+                        [g, p]
+                        for g, p in zip(
+                            pytoxo_context.model._calculate_genotypes(),
+                            pytoxo_context.model.penetrances,
+                        )
+                    ]
+                )
             except pytoxo.errors.BadFormedModelError:
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
