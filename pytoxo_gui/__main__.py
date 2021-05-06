@@ -119,7 +119,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     element_justification="center",
-    size=(600, 600),
+    size=(650, 600),
     finalize=True
     # background_color="#eeeeee",
 )
