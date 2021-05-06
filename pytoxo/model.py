@@ -12,8 +12,9 @@
 ###########################################################
 
 """Epistasis model definition."""
-
+import itertools
 import os
+import string
 import typing
 
 import mpmath
@@ -503,6 +504,28 @@ class Model:
     def __eq__(self, other):
         return hash(self) == hash(other)
 
+    def _calculate_genotypes(self) -> list[str]:
+        """Calculate the list of genotypes to the given model attending to
+        the model order.
+
+        Uses default alphabetical sort. Capital letters first.
+
+        Returns
+        -------
+        list[str]
+            List of genotypes.
+        """
+        # Deduce alleles attending to the table order
+        # TODO: Is `len(ascii_lowercase) < self._order` possible?
+        letters = list(string.ascii_lowercase[: self._order])
+        alleles = []
+        for letter in letters:
+            lower = letter
+            upper = letter.upper()
+            alleles.append([f"{upper}{upper}", f"{upper}{lower}", f"{lower}{lower}"])
+        # Generate genotypes tracing the alleles cartesian product
+        return [str("".join(p)) for p in list(itertools.product(*alleles))]
+
     def _max_penetrance(self) -> sympy.Expr:
         """Returns the largest of all penetrance expressions, for any real
         and positive value of the two variables and attending to the
@@ -789,6 +812,7 @@ class Model:
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
             model_order=self._order,
+            model_genotypes=self._calculate_genotypes(),
             model_penetrances=self._penetrances,
             values={
                 self._variables[0]: sol[self._variables[0]],
@@ -883,6 +907,7 @@ class Model:
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
             model_order=self._order,
+            model_genotypes=self._calculate_genotypes(),
             model_penetrances=self._penetrances,
             values={
                 self._variables[0]: sol[self._variables[0]],
