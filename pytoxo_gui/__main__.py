@@ -230,13 +230,36 @@ def main():
                     font=window_general_font,
                 )
         elif event == "-PREV_OR_HER_INPUT-":
-            """Check input is a float. At the final of this loop is checked
-            what fields are filled and update the GUI in consonance"""
-            _check_if_numerical_or_clear(event, window, values)
+            """Check input is valid using 'Model' check function. At the
+            final of this loop is checked what fields are filled to update
+            the GUI in consonance"""
+            try:
+                pytoxo_context.model.check_find_table_parameters(
+                    # Simply a valid value to validate th other ignoring this
+                    mafs=[0.0] * pytoxo_context.model.order,
+                    h_or_p=values[event],
+                )
+            except ValueError as e:
+                sg.popup_ok(
+                    f"{e} Revise this field.",
+                    title="Input configuration validation error",
+                    font=window_general_font,
+                )
         elif event.startswith("-MAFS_INPUT_"):
-            """Check input is a float. At the final of this loop is checked
-            what fields are filled and update the GUI in consonance"""
-            _check_if_numerical_or_clear(event, window, values)
+            """Check input is valid using 'Model' check function. At the
+            final of this loop is checked what fields are filled to update
+            the GUI in consonance"""
+            try:
+                pytoxo_context.model.check_find_table_parameters(
+                    mafs=values[event],
+                    h_or_p=0.0,  # Simply a valid value to validate th other ignoring this
+                )
+            except ValueError as e:
+                sg.popup_ok(
+                    f"{e} Revise this field.",
+                    title="Input configuration validation error",
+                    font=window_general_font,
+                )
         elif event == "Calculate table":
             input_mafs = []
             for i in range(1, pytoxo_context.model.order + 1):
