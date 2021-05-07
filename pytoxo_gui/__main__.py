@@ -209,6 +209,18 @@ def main():
                     title="File opening error",
                     font=window_general_font,
                 )
+        elif event == "-PREV_OR_HER_INPUT-":
+            """Check input is a float. At the final of this loop is checked
+            what fields are filled and update the GUI in consonance"""
+            try:
+                float(values[event])
+            except ValueError:
+                sg.popup_ok(
+                    f"This field must be filled with a float. Try again",
+                    title="Input configuration validation error",
+                    font=window_general_font,
+                )
+                window[event].Update(value="")
         elif event == "Calculate table":
             input_mafs = []
             for i in range(1, pytoxo_context.model.order + 1):
