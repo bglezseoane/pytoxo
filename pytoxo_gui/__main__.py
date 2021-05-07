@@ -162,24 +162,6 @@ window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
 # #########################################################
 
 
-# ################## AUXILIARY FUNCTIONS ##################
-def _check_if_numerical_or_clear(event: str, window: sg.Window, values: dict) -> None:
-    """Auxiliary function to check if a field is filled with a numerical value.
-    If not, raises a popup and clean the field in the window."""
-    try:
-        float(values[event])
-    except ValueError:
-        sg.popup_ok(
-            f"This field must be filled with numerical value. Try again",
-            title="Input configuration validation error",
-            font=window_general_font,
-        )
-        window[event].Update(value="")
-
-
-# #########################################################
-
-
 # Create PyToxo context object
 pytoxo_context = PyToxoContext()
 
