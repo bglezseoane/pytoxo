@@ -205,25 +205,44 @@ def main():
             for i in range(1, pytoxo_context.model.order + 1):
                 input_mafs.append(float(values[f"_MAFS_INPUT_{i}_"]))
 
-            if values["_PREV_OR_HER_CB_"] == "Heritability":
-                ptable = pytoxo_context.model.find_max_prevalence_table(
-                    mafs=input_mafs, h=float(values["_PREV_OR_HER_INPUT_"])
-                )
-            elif values["_PREV_OR_HER_CB_"] == "Prevalence":
-                ptable = pytoxo_context.model.find_max_heritability_table(
-                    mafs=input_mafs, p=float(values["_PREV_OR_HER_INPUT_"])
-                )
-            # Print generated penetrance table in the GUI's table
-            window["_MODEL_TABLE_"].Update(
-                values=[
-                    [g, p, pen]
-                    for g, p, pen in zip(
-                        pytoxo_context.model._calculate_genotypes(),
-                        pytoxo_context.model.penetrances,
-                        ptable.penetrance_values,
+            try:
+                if values["_PREV_OR_HER_CB_"] == "Heritability":
+                    ptable = pytoxo_context.model.find_max_prevalence_table(
+                        mafs=input_mafs, h=float(values["_PREV_OR_HER_INPUT_"])
                     )
-                ]
-            )
+                elif values["_PREV_OR_HER_CB_"] == "Prevalence":
+                    ptable = pytoxo_context.model.find_max_heritability_table(
+                        mafs=input_mafs, p=float(values["_PREV_OR_HER_INPUT_"])
+                    )
+                # Print generated penetrance table in the GUI's table
+                window["_MODEL_TABLE_"].Update(
+                    values=[
+                        [g, p, pen]
+                        for g, p, pen in zip(
+                            pytoxo_context.model.calculate_genotypes(),
+                            pytoxo_context.model.penetrances,
+                            ptable.penetrance_values,
+                        )
+                    ]
+                )
+            except pytoxo.errors.BadFormedModelError as e:
+                sg.popup_ok(
+                    e.message,
+                    title="Resolution error",
+                    font=window_general_font,
+                )
+            except pytoxo.errors.UnsolvableModelError as e:
+                sg.popup_ok(
+                    e.message,
+                    title="Unsolvable model error",
+                    font=window_general_font,
+                )
+            except ValueError as e:
+                sg.popup_ok(
+                    f"{e} Check input parameters.",
+                    title="Input configuration validation error",
+                    font=window_general_font,
+                )
         elif event in ("Exit", None):
             break
 
