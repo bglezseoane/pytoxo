@@ -243,7 +243,7 @@ def main():
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
-        elif event in ("Exit", None):
+        elif event in ("Exit", sg.WIN_CLOSED, None):
             break
 
     window.close()
