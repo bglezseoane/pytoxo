@@ -178,7 +178,7 @@ def main():
                     values=[
                         [g, p]
                         for g, p in zip(
-                            pytoxo_context.model._calculate_genotypes(),
+                            pytoxo_context.model.calculate_genotypes(),
                             pytoxo_context.model.penetrances,
                         )
                     ]
