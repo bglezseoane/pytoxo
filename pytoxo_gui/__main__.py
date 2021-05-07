@@ -52,19 +52,19 @@ rows = [[col + row for col in range(len(headings))] for row in range(100)]
 
 # Model frame
 model_frame = sg.Frame(
-    key="_MODEL_FRAME_",
+    key="-MODEL_FRAME-",
     title="Epistatic model",
     layout=[
         [
             sg.Text(
                 "None model loaded",
-                key="_MODEL_DISABLED_TEXT_",
+                key="-MODEL_DISABLED_TEXT-",
                 text_color="grey",
                 tooltip="Use the menu to load a model from a file or enter one manually",
                 visible=True,  # Pending to be disabled when a model was loaded
             ),
             sg.Table(
-                key="_MODEL_TABLE_",
+                key="-MODEL_TABLE-",
                 headings=headings,
                 values=rows,
                 vertical_scroll_only=True,
@@ -81,7 +81,7 @@ mafs_entries = []
 for i in range(1, MAX_ORDER_SUPPORTED + 1):
     mafs_entries.append(
         sg.InputText(
-            key=f"_MAFS_INPUT_{i}_",
+            key=f"-MAFS_INPUT_{i}-",
             size=(3, 1),
             visible=False,  # Pending to be enabled when a model was loaded
             enable_events=True,  # To refresh the loop and can check filled fields
@@ -91,30 +91,30 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
 
 # Configuration frame
 configuration_frame = sg.Frame(
-    key="_CONFIG_FRAME_",
+    key="-CONFIG_FRAME-",
     title="Configuration",
     layout=[
         [
             sg.Combo(
                 ("Heritability", "Prevalence"),
-                key="_PREV_OR_HER_CB_",
+                key="-PREV_OR_HER_CB-",
                 size=(10, 1),
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
             ),
             sg.InputText(
-                key="_PREV_OR_HER_INPUT_",
+                key="-PREV_OR_HER_INPUT-",
                 size=(5, 1),
                 enable_events=True,  # To refresh the loop and can check filled fields
             ),
             sg.Frame(
-                key="_MAFS_FRAME_",
+                key="-MAFS_FRAME-",
                 title="MAFs",
                 layout=[
                     [
                         sg.Text(
                             "None model loaded",
-                            key="_MAFS_DISABLED_TEXT_",
+                            key="-MAFS_DISABLED_TEXT-",
                             text_color="grey",
                             tooltip="You need to have set the model before setting MAFs",
                             visible=True,  # Pending to be disabled when a model was loaded
@@ -155,8 +155,8 @@ window = sg.Window(
 )
 
 # Window style patches
-window["_MODEL_FRAME_"].expand(expand_x=True, expand_y=False)
-# window["_CONFIG_FRAME_"].expand(expand_x=True, expand_y=False)
+window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
+# window["-CONFIG_FRAME-"].expand(expand_x=True, expand_y=False)
 # #########################################################
 
 
@@ -181,9 +181,9 @@ def main():
             try:
                 pytoxo_context.model = pytoxo.Model(filename)
                 # Print model in the GUI's table
-                window["_MODEL_DISABLED_TEXT_"].Update(visible=False)
-                window["_MODEL_TABLE_"].Update(visible=True)
-                window["_MODEL_TABLE_"].Update(
+                window["-MODEL_DISABLED_TEXT-"].Update(visible=False)
+                window["-MODEL_TABLE-"].Update(visible=True)
+                window["-MODEL_TABLE-"].Update(
                     values=[
                         [g, p]
                         for g, p in zip(
@@ -193,9 +193,9 @@ def main():
                     ]
                 )
                 # Enable MAFs
-                window["_MAFS_DISABLED_TEXT_"].Update(visible=False)
+                window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
                 for i in range(1, pytoxo_context.model.order + 1):
-                    window[f"_MAFS_INPUT_{i}_"].Update(visible=True)
+                    window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
             except pytoxo.errors.BadFormedModelError:
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
@@ -212,20 +212,20 @@ def main():
         elif event == "Calculate table":
             input_mafs = []
             for i in range(1, pytoxo_context.model.order + 1):
-                input_mafs.append(float(values[f"_MAFS_INPUT_{i}_"]))
+                input_mafs.append(float(values[f"-MAFS_INPUT_{i}-"]))
 
             try:
-                if values["_PREV_OR_HER_CB_"] == "Heritability":
+                if values["-PREV_OR_HER_CB-"] == "Heritability":
                     ptable = pytoxo_context.model.find_max_prevalence_table(
-                        mafs=input_mafs, h=float(values["_PREV_OR_HER_INPUT_"])
+                        mafs=input_mafs, h=float(values["-PREV_OR_HER_INPUT-"])
                     )
-                elif values["_PREV_OR_HER_CB_"] == "Prevalence":
+                elif values["-PREV_OR_HER_CB-"] == "Prevalence":
                     ptable = pytoxo_context.model.find_max_heritability_table(
-                        mafs=input_mafs, p=float(values["_PREV_OR_HER_INPUT_"])
+                        mafs=input_mafs, p=float(values["-PREV_OR_HER_INPUT-"])
                     )
                 # Print generated penetrance table in the GUI's table
                 # noinspection PyUnboundLocalVariable
-                window["_MODEL_TABLE_"].Update(
+                window["-MODEL_TABLE-"].Update(
                     values=[
                         [g, p, pen]
                         for g, p, pen in zip(
@@ -258,10 +258,10 @@ def main():
 
         # Check current values state: if all configuration is filled, enable
         # calculate button, else disable it
-        if window["_MODEL_TABLE_"].visible and "" not in [
-            values["_PREV_OR_HER_CB_"]
-        ] + [values["_PREV_OR_HER_INPUT_"]] + [
-            values[f"_MAFS_INPUT_" f"{i}_"]
+        if window["-MODEL_TABLE-"].visible and "" not in [
+            values["-PREV_OR_HER_CB-"]
+        ] + [values["-PREV_OR_HER_INPUT-"]] + [
+            values[f"-MAFS_INPUT_" f"{i}-"]
             for i in range(1, pytoxo_context.model.order + 1)
         ]:
             window["Calculate table"].Update(disabled=False)
