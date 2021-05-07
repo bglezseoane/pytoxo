@@ -233,6 +233,10 @@ def main():
             """Check input is a float. At the final of this loop is checked
             what fields are filled and update the GUI in consonance"""
             _check_if_numerical_or_clear(event, window, values)
+        elif event.startswith("-MAFS_INPUT_"):
+            """Check input is a float. At the final of this loop is checked
+            what fields are filled and update the GUI in consonance"""
+            _check_if_numerical_or_clear(event, window, values)
         elif event == "Calculate table":
             input_mafs = []
             for i in range(1, pytoxo_context.model.order + 1):
