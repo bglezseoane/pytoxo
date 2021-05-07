@@ -95,18 +95,29 @@ configuration_frame = sg.Frame(
     title="Configuration",
     layout=[
         [
+            sg.Text(
+                "None model loaded",
+                key="-PREV_OR_HER_DISABLED_TEXT-",
+                text_color="grey",
+                tooltip="You need to have set the model before setting this",
+                visible=True,  # Pending to be disabled when a model was loaded
+            ),
             sg.Combo(
                 ("Heritability", "Prevalence"),
                 key="-PREV_OR_HER_CB-",
                 size=(10, 1),
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
+                visible=False,  # Pending to be disabled when a model was loaded
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
                 size=(5, 1),
                 enable_events=True,  # To refresh the loop and can check filled fields
+                visible=False,  # Pending to be disabled when a model was loaded
             ),
+        ],
+        [
             sg.Frame(
                 key="-MAFS_FRAME-",
                 title="MAFs",
@@ -195,9 +206,19 @@ def main():
                     ]
                 )
                 # Enable MAFs
-                window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
                 for i in range(1, pytoxo_context.model.order + 1):
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
+                window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
+                # Enable prevalence or heritability entry
+                """Note: actually this parameter is independent of the load 
+                of the model. However, thus limiting the order of filling 
+                fields, it is possible to validate this field with the validator
+                of the model, which otherwise might not be available. It also
+                makes the user better understand the order in which the 
+                interface should be used."""
+                window[f"-PREV_OR_HER_CB-"].Update(visible=True)
+                window[f"-PREV_OR_HER_INPUT-"].Update(visible=True)
+                window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=False)
             except pytoxo.errors.BadFormedModelError:
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
