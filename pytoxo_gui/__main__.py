@@ -169,6 +169,8 @@ def main():
                 no_window=True,  # To use a native approach
                 file_types=(("Comma separated values", "*.csv"),),
             )
+            if not filename:
+                continue  # The operation has been canceled
             try:
                 pytoxo_context.model = pytoxo.Model(filename)
                 # Print model in the GUI's table
