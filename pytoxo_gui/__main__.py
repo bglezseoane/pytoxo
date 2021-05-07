@@ -18,6 +18,8 @@ import PySimpleGUI as sg
 import pytoxo
 import pytoxo.errors
 
+MAX_ORDER_SUPPORTED = 12
+
 
 class PyToxoContext:
     """Support container class to maintain the PyToxo stuff state during GUI
@@ -48,31 +50,6 @@ headings = [
 ]
 rows = [[col + row for col in range(len(headings))] for row in range(100)]
 
-# Configuration frame
-configuration_frame = sg.Frame(
-    key="_CONFIG_FRAME_",
-    title="Configuration",
-    layout=[
-        [
-            sg.Combo(
-                ("Heritability", "Prevalence"),
-                key="prev_or_her_cb",
-                size=(10, 1),
-                readonly=True,
-            ),
-            sg.InputText(key="prev_or_her_in", size=(5, 1)),
-            sg.Text("MAFs"),
-            # sg.InputText(key="mafs_in", size=(5, 1)),
-            sg.Text(
-                "None model loaded",
-                text_color="grey",
-                tooltip="You need to have set the model before setting MAFs",
-            ),
-        ],
-    ],
-    element_justification="left",
-)
-
 # Model frame
 model_frame = sg.Frame(
     key="_MODEL_FRAME_",
@@ -81,13 +58,13 @@ model_frame = sg.Frame(
         [
             sg.Text(
                 "None model loaded",
-                key="_MODEL_FRAME_TEXT_",
+                key="_MODEL_DISABLED_TEXT_",
                 text_color="grey",
                 tooltip="Use the menu to load a model from a file or enter one manually",
                 visible=True,  # Pending to be disabled when a model was loaded
             ),
             sg.Table(
-                key="_MODEL_FRAME_TABLE_",
+                key="_MODEL_TABLE_",
                 headings=headings,
                 values=rows,
                 vertical_scroll_only=True,
@@ -97,6 +74,53 @@ model_frame = sg.Frame(
         ]
     ],
     element_justification="center",
+)
+
+# MAFs frame text entries
+mafs_entries = []
+for i in range(1, MAX_ORDER_SUPPORTED + 1):
+    mafs_entries.append(
+        sg.InputText(
+            key=f"_MAFS_INPUT_{i}_",
+            size=(3, 1),
+            visible=False,  # Pending to be enabled when a model was loaded
+        )
+    )
+
+
+# Configuration frame
+configuration_frame = sg.Frame(
+    key="_CONFIG_FRAME_",
+    title="Configuration",
+    layout=[
+        [
+            sg.Combo(
+                ("Heritability", "Prevalence"),
+                key="_PREV_OR_HER_CB_",
+                size=(10, 1),
+                readonly=True,
+            ),
+            sg.InputText(key="_PREV_OR_HER_INPUT_", size=(5, 1)),
+            sg.Frame(
+                key="_MAFS_FRAME_",
+                title="MAFs",
+                layout=[
+                    [
+                        sg.Text(
+                            "None model loaded",
+                            key="_MAFS_DISABLED_TEXT_",
+                            text_color="grey",
+                            tooltip="You need to have set the model before setting MAFs",
+                            visible=True,  # Pending to be disabled when a model was loaded
+                        ),
+                    ]
+                    + mafs_entries
+                ],
+                element_justification="center",
+            ),
+        ],
+    ],
+    element_justification="left",
 )
 
 # Layout composition
@@ -148,9 +172,9 @@ def main():
             try:
                 pytoxo_context.model = pytoxo.Model(filename)
                 # Print model in the GUI's table
-                window["_MODEL_FRAME_TEXT_"].Update(visible=False)
-                window["_MODEL_FRAME_TABLE_"].Update(visible=True)
-                window["_MODEL_FRAME_TABLE_"].Update(
+                window["_MODEL_DISABLED_TEXT_"].Update(visible=False)
+                window["_MODEL_TABLE_"].Update(visible=True)
+                window["_MODEL_TABLE_"].Update(
                     values=[
                         [g, p]
                         for g, p in zip(
@@ -159,6 +183,10 @@ def main():
                         )
                     ]
                 )
+                # Enable MAFs
+                window["_MAFS_DISABLED_TEXT_"].Update(visible=False)
+                for i in range(1, pytoxo_context.model.order + 1):
+                    window[f"_MAFS_INPUT_{i}_"].Update(visible=True)
             except pytoxo.errors.BadFormedModelError:
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
