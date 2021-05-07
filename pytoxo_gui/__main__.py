@@ -224,6 +224,7 @@ def main():
                         mafs=input_mafs, p=float(values["_PREV_OR_HER_INPUT_"])
                     )
                 # Print generated penetrance table in the GUI's table
+                # noinspection PyUnboundLocalVariable
                 window["_MODEL_TABLE_"].Update(
                     values=[
                         [g, p, pen]
