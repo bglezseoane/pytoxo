@@ -1341,3 +1341,30 @@ class ModelUnitTestSuite(unittest.TestCase):
         self.assertEqual("x*(y + 1)**4", str(m2._penetrances[20]))
         self.assertEqual("x*(y + 1)**3", str(m2._penetrances[21]))
         self.assertEqual("x*(y + 1)**6", str(m2._penetrances[26]))
+
+    def test_find_parameters_check(self):
+        m = pytoxo.model.Model(filename=os.path.join("models", "multiplicative_2.csv"))
+
+        # Only one MAF, two needed
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([0.2], 0.4)
+
+        # MAFs should be floats
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([True, 0.3], 0.4)
+
+        # MAFs should be less or equal than 0.5
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([0.51] * m.order, 0.4)
+
+        # Prevalence should be a float
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([0.2] * m.order, 4)
+
+        # Timeout should be an integer or a bool
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([0.2] * m.order, 0.4, 1.5)
+
+        # Check flag should be a bool
+        with self.assertRaises(ValueError):
+            m.find_max_heritability_table([0.2] * m.order, 0.4, 4, 1)

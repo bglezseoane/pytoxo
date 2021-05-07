@@ -14,6 +14,7 @@
 """Part of PyToxo solubility test suite."""
 
 import os
+import random
 import unittest
 
 import pytoxo.calculations
@@ -31,6 +32,10 @@ class ModelsSolubilityTestSuite(unittest.TestCase):
     Then, parse the variables (model, MAFs and prevalence or heritability) of
     these cases and assert that here with PyToxo the cases are also solved.
 
+    To be capable to run the test in a reasonable time, as default only some
+    cases are randomly selected and used, but editing the flag `exhaustive`
+    to true is possible to use all cases.
+
     To achieve Toxo outputs, some modifications of scripts
     `calculate_all_tables_with_times_max_p.m` and
     `calculate_all_tables_with_times_max_h.m` has been fixed to define cases
@@ -39,6 +44,12 @@ class ModelsSolubilityTestSuite(unittest.TestCase):
     Tests for PyToxo penetrance table generation process at integration
     level.
     """
+
+    # ####################### EDIT HERE #######################
+    # Set to true to check all possible cases. Consider that it will take a lot of time
+    exhaustive = False
+    n_cases_to_check = 20  # If `exhaustive = False`, controls how many cases use
+    # #########################################################
 
     def test_models_solubility(self):
         """This test focuses on verifying that PyToxo is capable of solving at
@@ -91,6 +102,16 @@ class ModelsSolubilityTestSuite(unittest.TestCase):
                 ):
                     toxo_cases.remove(toxo_case_path)
                     break
+
+        """There are too many cases to check due to this repository contains
+        archived a lot of Toxo errors. The following lines serve to select a
+        limited set of them to run this script. The exhaustive allow a full
+        execution is is set to true"""
+        if not self.exhaustive:
+            toxo_cases = random.choices(
+                toxo_cases, k=self.n_cases_to_check
+            )  # Select `k` cases randomly
+            toxo_cases = sorted(toxo_cases)  # Reorder after selection
 
         # Print how many cases are going to be checked
         print(f"There going to be run {len(toxo_cases)} solubility case checks.")

@@ -33,13 +33,13 @@ class ErrorHandlingTestSuite(unittest.TestCase):
         known unsolvable cases."""
         # Cases determined unsolvable by Toxo
         cases = [
-            (os.path.join("models", "additive_4.csv"), 0.8, 0.1),
-            (os.path.join("models", "additive_5.csv"), 0.8, 0.1),
-            (os.path.join("models", "additive_6.csv"), 0.9, 0.1),
-            (os.path.join("models", "additive_6.csv"), 0.9, 0.2),
-            (os.path.join("models", "multiplicative_2.csv"), 0.6, 0.1),
-            (os.path.join("models", "multiplicative_2.csv"), 0.7, 0.1),
-            (os.path.join("models", "multiplicative_2.csv"), 0.7, 0.2),
+            (os.path.join("models", "additive_4.csv"), 0.3, 0.1),
+            (os.path.join("models", "additive_5.csv"), 0.3, 0.1),
+            (os.path.join("models", "additive_6.csv"), 0.49, 0.1),
+            (os.path.join("models", "additive_6.csv"), 0.49, 0.2),
+            (os.path.join("models", "multiplicative_2.csv"), 0.1, 0.1),
+            (os.path.join("models", "multiplicative_2.csv"), 0.2, 0.1),
+            (os.path.join("models", "multiplicative_2.csv"), 0.3456, 0.2),
         ]
 
         for case_file, case_mafs, case_p in cases:

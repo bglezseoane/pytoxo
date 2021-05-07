@@ -235,12 +235,12 @@ def _try_to_simplify(expr: Expr, timeout: int = 60, model_order: int = None):
         timeout = model_order * 60  # Seconds
 
     @timeout_decorator.timeout_decorator.timeout(
-        timeout, timeout_exception=StopIteration
+        timeout, timeout_exception=TimeoutError
     )
     def simplify_call():
         return simplify(expr)
 
     try:
         return simplify_call()
-    except StopIteration:
+    except TimeoutError:
         return expr
