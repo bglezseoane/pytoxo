@@ -84,6 +84,7 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
             key=f"_MAFS_INPUT_{i}_",
             size=(3, 1),
             visible=False,  # Pending to be enabled when a model was loaded
+            enable_events=True,  # To refresh the loop and can check filled fields
         )
     )
 
@@ -99,8 +100,13 @@ configuration_frame = sg.Frame(
                 key="_PREV_OR_HER_CB_",
                 size=(10, 1),
                 readonly=True,
+                enable_events=True,  # To refresh the loop and can check filled fields
             ),
-            sg.InputText(key="_PREV_OR_HER_INPUT_", size=(5, 1)),
+            sg.InputText(
+                key="_PREV_OR_HER_INPUT_",
+                size=(5, 1),
+                enable_events=True,  # To refresh the loop and can check filled fields
+            ),
             sg.Frame(
                 key="_MAFS_FRAME_",
                 title="MAFs",
@@ -131,7 +137,7 @@ layout = [
     [
         sg.Button(
             "Calculate table",
-            # disabled=True,
+            disabled=True,
             tooltip="You need to have set all configurations before calculating the table",
         )
     ],
@@ -163,6 +169,7 @@ def main():
     while True:
         event, values = window.read()
 
+        # Check events
         if event == "Open model":
             filename = sg.popup_get_file(
                 "Open model",
@@ -247,6 +254,18 @@ def main():
                 )
         elif event in ("Exit", sg.WIN_CLOSED, None):
             break
+
+        # Check current values state: if all configuration is filled, enable
+        # calculate button, else disable it
+        if window["_MODEL_TABLE_"].visible and "" not in [
+            values["_PREV_OR_HER_CB_"]
+        ] + [values["_PREV_OR_HER_INPUT_"]] + [
+            values[f"_MAFS_INPUT_" f"{i}_"]
+            for i in range(1, pytoxo_context.model.order + 1)
+        ]:
+            window["Calculate table"].Update(disabled=False)
+        else:
+            window["Calculate table"].Update(disabled=True)
 
     window.close()
 
