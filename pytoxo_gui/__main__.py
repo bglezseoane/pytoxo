@@ -21,7 +21,7 @@ import pytoxo.errors
 
 class PyToxoContext:
     """Support container class to maintain the PyToxo stuff state during GUI
-    main loop"""
+    main loop."""
 
     model = None  # Loaded PyToxo model
 
