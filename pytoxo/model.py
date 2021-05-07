@@ -504,7 +504,7 @@ class Model:
     def __eq__(self, other):
         return hash(self) == hash(other)
 
-    def _calculate_genotypes(self) -> list[str]:
+    def calculate_genotypes(self) -> list[str]:
         """Calculate the list of genotypes to the given model attending to
         the model order.
 
@@ -792,7 +792,7 @@ class Model:
         ValueError
             With a bad parameter configuration.
         """
-        self._check_find_table_parameters(mafs, h, solve_timeout, check)
+        self.check_find_table_parameters(mafs, h, solve_timeout, check)
 
         eq_system = self._build_max_prevalence_system(mafs, h)
 
@@ -810,7 +810,7 @@ class Model:
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
             model_order=self._order,
-            model_genotypes=self._calculate_genotypes(),
+            model_genotypes=self.calculate_genotypes(),
             model_penetrances=self._penetrances,
             values={
                 self._variables[0]: sol[self._variables[0]],
@@ -885,7 +885,7 @@ class Model:
         ValueError
             With a bad parameter configuration.
         """
-        self._check_find_table_parameters(mafs, p, solve_timeout, check)
+        self.check_find_table_parameters(mafs, p, solve_timeout, check)
 
         eq_system = self._build_max_heritability_system(mafs, p)
 
@@ -903,7 +903,7 @@ class Model:
         # Return the final achieved solution as penetrance table object
         return pytoxo.ptable.PTable(
             model_order=self._order,
-            model_genotypes=self._calculate_genotypes(),
+            model_genotypes=self.calculate_genotypes(),
             model_penetrances=self._penetrances,
             values={
                 self._variables[0]: sol[self._variables[0]],
@@ -911,7 +911,7 @@ class Model:
             },
         )
 
-    def _check_find_table_parameters(
+    def check_find_table_parameters(
         self,
         mafs: list[float],
         h_or_p: float,
