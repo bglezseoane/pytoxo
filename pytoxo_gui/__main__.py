@@ -270,8 +270,14 @@ def main():
                     ),  # Try cast because actually is a string
                 )
             except ValueError as e:
+                # Format error message
+                msg = e.__str__()
+                if not msg.endswith("."):
+                    msg = f"{e}."
+                msg = msg.capitalize()
+
                 sg.popup_ok(
-                    f"{e} Revise this field.",
+                    f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
@@ -290,8 +296,14 @@ def main():
                     h_or_p=0.0,  # Simply a valid value to validate th other ignoring this
                 )
             except ValueError as e:
+                # Format error message
+                msg = e.__str__()
+                if not msg.endswith("."):
+                    msg = f"{e}."
+                msg = msg.capitalize()
+
                 sg.popup_ok(
-                    f"{e} Revise this field.",
+                    f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
