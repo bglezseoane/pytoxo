@@ -182,6 +182,25 @@ def main():
     while True:
         event, values = window.read()
 
+        """First fix incomplete fields like `.2` instead of `0.2`. It must be 
+        done here because then working with the current event some validations
+        are done and they would fail"""
+        if pytoxo_context.model and values:
+            widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
+                f"-MAFS_INPUT_" f"{i}-"
+                for i in range(1, pytoxo_context.model.order + 1)
+            ]
+            for widget in widgets_to_check:
+                if values[widget] == "." and event != widget:
+                    window[widget].Update(value="0.0")
+                    values[widget] = "0.0"
+                elif values[widget].startswith(".") and event != widget:
+                    window[widget].Update(value=f"0{values[widget]}")
+                    values[widget] = window[widget]
+                elif values[widget].endswith(".") and event != widget:
+                    window[widget].Update(value=f"{values[widget]}0")
+                    values[widget] = window[widget]
+
         # Check events
         if event in ("Exit", sg.WIN_CLOSED, None):
             break
@@ -234,7 +253,11 @@ def main():
                     title="File opening error",
                     font=window_general_font,
                 )
-        elif event == "-PREV_OR_HER_INPUT-":
+        elif (
+            event == "-PREV_OR_HER_INPUT-"
+            and values[event] != ""
+            and values[event] != "."
+        ):
             """Check input is valid using 'Model' check function. At the
             final of this loop is checked what fields are filled to update
             the GUI in consonance"""
@@ -250,7 +273,11 @@ def main():
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
-        elif event.startswith("-MAFS_INPUT_"):
+        elif (
+            event.startswith("-MAFS_INPUT_")
+            and values[event] != ""
+            and values[event] != "."
+        ):
             """Check input is valid using 'Model' check function. At the
             final of this loop is checked what fields are filled to update
             the GUI in consonance"""
