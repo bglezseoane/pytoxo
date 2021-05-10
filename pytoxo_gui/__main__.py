@@ -265,7 +265,9 @@ def main():
                 pytoxo_context.model.check_find_table_parameters(
                     # Simply a valid value to validate th other ignoring this
                     mafs=[0.0] * pytoxo_context.model.order,
-                    h_or_p=values[event],
+                    h_or_p=float(
+                        values[event]
+                    ),  # Try cast because actually is a string
                 )
             except ValueError as e:
                 sg.popup_ok(
@@ -283,7 +285,8 @@ def main():
             the GUI in consonance"""
             try:
                 pytoxo_context.model.check_find_table_parameters(
-                    mafs=values[event],
+                    mafs=[float(values[event])]
+                    * pytoxo_context.model.order,  # Try cast because actually is a string
                     h_or_p=0.0,  # Simply a valid value to validate th other ignoring this
                 )
             except ValueError as e:
