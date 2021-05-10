@@ -183,7 +183,9 @@ def main():
         event, values = window.read()
 
         # Check events
-        if event == "Open model":
+        if event in ("Exit", sg.WIN_CLOSED, None):
+            break
+        elif event == "Open model":
             filename = sg.popup_get_file(
                 "Open model",
                 no_window=True,  # To use a native approach
@@ -307,8 +309,6 @@ def main():
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
-        elif event in ("Exit", sg.WIN_CLOSED, None):
-            break
 
         # Check current values state: if all configuration is filled, enable
         # calculate button, else disable it
