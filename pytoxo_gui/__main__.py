@@ -281,6 +281,8 @@ def main():
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
+                # Remove value
+                window[event].Update(value="")
         elif (
             event.startswith("-MAFS_INPUT_")
             and values[event] != ""
@@ -307,6 +309,8 @@ def main():
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
+                # Remove value
+                window[event].Update(value="")
         elif event == "Calculate table":
             input_mafs = []
             for i in range(1, pytoxo_context.model.order + 1):
