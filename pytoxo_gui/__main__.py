@@ -38,7 +38,7 @@ window_general_font = "Verdana, 13"
 # Main menu
 menu = sg.Menu(
     [
-        ["File", ["Open model", "Exit"]],
+        ["File", ["Open model", "Close model", "Exit"]],
         # ["Edit", ["Paste", "Undo"]],
         ["Help", "About PyToxo GUI"],
     ]
@@ -318,6 +318,45 @@ def main():
                     title="File opening error",
                     font=window_general_font,
                 )
+        elif event == "Close model":
+            # Load to the PyToxo context
+            pytoxo_context = PyToxoContext()  # Refresh with a new instance
+
+            # Remove the previous model from the GUI
+            window["-MODEL_DISABLED_TEXT-"].Update(visible=True)
+            window["-MODEL_TABLE-"].Update(visible=False)
+            window["-MODEL_TABLE-"].Update(values=empty_rows)
+            # Disable MAFs and clean values
+            for k in mafs_entries_to_check_keys:
+                window[k].Update(visible=False)
+                values[k] = ""
+                window[k].Update(value=values[k])
+            window["-MAFS_DISABLED_TEXT-"].Update(visible=True)
+            # Disable prevalence or heritability entry and clean values
+            """Note: actually this parameter is independent of the load 
+            of the model. However, thus limiting the order of filling 
+            fields, it is possible to validate this field with the validator
+            of the model, which otherwise might not be available. It also
+            makes the user better understand the order in which the 
+            interface should be used."""
+            window[f"-PREV_OR_HER_CB-"].Update(visible=False)
+            values[f"-PREV_OR_HER_CB-"] = ""
+            window[f"-PREV_OR_HER_CB-"].Update(value=values[f"-PREV_OR_HER_CB-"])
+            window[f"-PREV_OR_HER_INPUT-"].Update(visible=False)
+            values[f"-PREV_OR_HER_INPUT-"] = ""
+            window[f"-PREV_OR_HER_INPUT-"].Update(value=values[f"-PREV_OR_HER_INPUT-"])
+            window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=True)
+
+            # Refresh text items to check
+            mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
+                pytoxo_context
+            )
+            text_entries_to_check_keys = refresh_text_entries_to_check_keys(
+                mafs_entries_to_check_keys
+            )
+            text_entries_to_check_values = refresh_text_entries_to_check_values(
+                text_entries_to_check_keys, values
+            )
         elif (
             event == "-PREV_OR_HER_INPUT-"
             and values[event] != ""
