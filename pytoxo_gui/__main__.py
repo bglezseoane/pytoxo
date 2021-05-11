@@ -175,12 +175,13 @@ window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
 # #########################################################
 
 
-# Create PyToxo context object
-pytoxo_context = PyToxoContext()
 
 
 # ##################### GUI EVENT LOOP ####################
 def main():
+    # Create PyToxo context object
+    pytoxo_context = PyToxoContext()
+
     while True:
         event, values = window.read()
 
