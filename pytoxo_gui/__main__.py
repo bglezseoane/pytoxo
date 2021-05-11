@@ -208,19 +208,11 @@ def main():
             ]
             for widget in widgets_to_check:
                 if values[widget] == "." and event != widget:
-                    # Fix e.g. `.`
+                    # Fix `.`
                     values[widget] = "0.0"
                     window[widget].Update(value=values[widget])
-                elif values[widget].startswith(".") and event != widget:
-                    # Fix e.g. `.23'
-                    values[widget] = f"0{values[widget]}"
-                    window[widget].update(value=values[widget])
-                elif values[widget].endswith(".") and event != widget:
-                    # Fix e.g. `1.`
-                    values[widget] = f"{values[widget]}0"
-                    window[widget].update(value=values[widget])
                 elif values[widget] != "" and event != widget:
-                    # Fix e.g. `00.1` or `0.4600000`
+                    # Fix e.g. `00.1`, `0.4600000`, `1.` or `.23'
                     values[widget] = str(float(values[widget]))
                     window[widget].update(value=values[widget])
 
