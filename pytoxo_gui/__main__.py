@@ -352,6 +352,7 @@ def main():
                     title="File opening error",
                     font=window_general_font,
                 )
+
         elif event == "Close model":
             # Load to the PyToxo context
             pytoxo_context = PyToxoContext()  # Refresh with a new instance
@@ -393,6 +394,7 @@ def main():
             text_entries_to_check_values = refresh_text_entries_to_check_values(
                 text_entries_to_check_keys, values
             )
+
         elif event == "Save calculated table":
             if not pytoxo_context.ptable:
                 sg.popup_ok(
@@ -444,6 +446,7 @@ def main():
                 )
                 # Remove value
                 window[event].Update(value="")
+
         elif (
             event.startswith("-MAFS_INPUT_")
             and values[event] != ""
@@ -473,6 +476,7 @@ def main():
                 )
                 # Remove value
                 window[event].Update(value="")
+
         elif event == "Calculate table":
             """Security check to avoid some stranger cases playing with the
             input fields"""
