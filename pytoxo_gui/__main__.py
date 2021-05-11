@@ -317,6 +317,7 @@ def main():
                 for i in range(1, pytoxo_context.model.order + 1):
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
                 window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
+
                 # Enable prevalence or heritability entry
                 """Note: actually this parameter is independent of the load 
                 of the model. However, thus limiting the order of filling 
@@ -327,6 +328,7 @@ def main():
                 window[f"-PREV_OR_HER_CB-"].Update(visible=True)
                 window[f"-PREV_OR_HER_INPUT-"].Update(visible=True)
                 window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=False)
+
                 # Refresh text items to check
                 mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
                     pytoxo_context
@@ -358,12 +360,14 @@ def main():
             window["-MODEL_DISABLED_TEXT-"].Update(visible=True)
             window["-MODEL_TABLE-"].Update(visible=False)
             window["-MODEL_TABLE-"].Update(values=empty_rows)
+
             # Disable MAFs and clean values
             for k in mafs_entries_to_check_keys:
                 window[k].Update(visible=False)
                 values[k] = ""
                 window[k].Update(value=values[k])
             window["-MAFS_DISABLED_TEXT-"].Update(visible=True)
+
             # Disable prevalence or heritability entry and clean values
             """Note: actually this parameter is independent of the load 
             of the model. However, thus limiting the order of filling 
