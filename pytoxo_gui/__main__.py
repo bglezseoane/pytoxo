@@ -362,7 +362,8 @@ def main():
         elif (
             event == "-PREV_OR_HER_INPUT-"
             and values[event] != ""
-            and values[event] != "."
+            and values[event]
+            != "."  # The user is already writing, or it will solved in the next interaction
         ):
             """Check input is valid using 'Model' check function. At the
             final of this loop is checked what fields are filled to update
@@ -392,7 +393,8 @@ def main():
         elif (
             event.startswith("-MAFS_INPUT_")
             and values[event] != ""
-            and values[event] != "."
+            and values[event]
+            != "."  # The user is already writing, or it will solved in the next interaction
         ):
             """Check input is valid using 'Model' check function. At the
             final of this loop is checked what fields are filled to update
