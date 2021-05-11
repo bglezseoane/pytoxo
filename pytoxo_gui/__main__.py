@@ -182,6 +182,24 @@ def main():
     while True:
         event, values = window.read()
 
+        """First fix the input of illegal chars. In entry widgets, 
+        only numerical values are allowed"""
+        if pytoxo_context.model and values:
+            widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
+                f"-MAFS_INPUT_" f"{i}-"
+                for i in range(1, pytoxo_context.model.order + 1)
+            ]
+            for widget in widgets_to_check:
+                if len(values[widget]) > 1 and values[widget][-1] not in (
+                    ".0123456789"
+                ):
+                    # delete last char from input
+                    values[widget] = values[widget][:-1]
+                    window[widget].update(value=values[widget])
+                elif len(values[widget]) == 1 and values[widget] not in (".0123456789"):
+                    values[widget] = ""
+                    window[widget].update(value=values[widget])
+
         # Beautify incomplete fields like `.2` instead of `0.2`
         if pytoxo_context.model and values:
             widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
