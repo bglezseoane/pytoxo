@@ -39,7 +39,7 @@ window_general_font = "Verdana, 13"
 # Main menu
 menu = sg.Menu(
     [
-        ["File", ["Open model", "Close model", "Exit"]],
+        ["File", ["Open model", "Close model", "Save calculated table", "Exit"]],
         # ["Edit", ["Paste", "Undo"]],  # TODO
         # ["Help", "About PyToxo GUI"],  # TODO
     ]
@@ -360,6 +360,26 @@ def main():
             text_entries_to_check_values = refresh_text_entries_to_check_values(
                 text_entries_to_check_keys, values
             )
+        elif event == "Save calculated table":
+            if not pytoxo_context.ptable:
+                sg.popup_ok(
+                    f"There is not a calculated penetrance table. Calculate "
+                    f"the table before trying to save it.",
+                    title="No penetrance table",
+                    font=window_general_font,
+                )
+            else:
+                filename = sg.popup_get_file(
+                    "Save calculated table",
+                    save_as=True,
+                    default_extension="csv",
+                    no_window=True,  # To use a native approach
+                    file_types=(("Comma separated values", "*.csv"),),
+                )
+                if not filename:
+                    continue  # The operation has been canceled
+                else:
+                    print(filename)
         elif (
             event == "-PREV_OR_HER_INPUT-"
             and values[event] != ""
