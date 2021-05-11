@@ -209,43 +209,47 @@ def main():
     while True:
         event, values = window.read()
 
-        mafs_entries_to_check = [
-            f"-MAFS_INPUT_" f"{i}-" for i in range(1, pytoxo_context.order + 1)
-        ]
-        text_entries_to_check = ["-PREV_OR_HER_INPUT-"] + mafs_entries_to_check
+        # Load text items to check
+        mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(pytoxo_context)
+        text_entries_to_check_keys = refresh_text_entries_to_check_keys(
+            mafs_entries_to_check_keys
+        )
+        text_entries_to_check_values = refresh_text_entries_to_check_values(
+            text_entries_to_check_keys, values
+        )
 
         """First fix the input of illegal chars. In entry widgets, 
         only numerical values are allowed"""
         if pytoxo_context.model and values:
-            for entry in text_entries_to_check:
-                if len(values[entry]) > 1 and (
-                    values[entry][-1] not in (".0123456789")  # Illegal chars
+            for k in text_entries_to_check_keys:
+                if len(values[k]) > 1 and (
+                    values[k][-1] not in (".0123456789")  # Illegal chars
                     or (
-                        "." in values[entry][:-1] and values[entry][-1] == "."
+                        "." in values[k][:-1] and values[k][-1] == "."
                     )  # Only one `.` in the entry
-                    or len(values[entry]) > MAX_NUMERICAL_INPUT_LEN  # Already too long
+                    or len(values[k]) > MAX_NUMERICAL_INPUT_LEN  # Already too long
                 ):
                     """Delete last char from input. The user perceives that
                     the keystroke is ignored"""
-                    values[entry] = values[entry][:-1]
-                    window[entry].update(value=values[entry])
-                elif len(values[entry]) == 1 and values[entry] not in (
+                    values[k] = values[k][:-1]
+                    window[k].update(value=values[k])
+                elif len(values[k]) == 1 and values[k] not in (
                     ".0123456789"
                 ):  # Illegal chars
-                    values[entry] = ""
-                    window[entry].update(value=values[entry])
+                    values[k] = ""
+                    window[k].update(value=values[k])
 
         # Beautify incomplete fields like `.2` instead of `0.2`
         if pytoxo_context.model and values:
-            for entry in text_entries_to_check:
-                if values[entry] == "." and event != entry:
+            for k in text_entries_to_check_keys:
+                if values[k] == "." and event != k:
                     # Fix `.`
-                    values[entry] = "0.0"
-                    window[entry].Update(value=values[entry])
-                elif values[entry] != "" and event != entry:
+                    values[k] = "0.0"
+                    window[k].Update(value=values[k])
+                elif values[k] != "" and event != k:
                     # Fix e.g. `00.1`, `0.4600000`, `1.` or `.23'
-                    values[entry] = str(float(values[entry]))
-                    window[entry].update(value=values[entry])
+                    values[k] = str(float(values[k]))
+                    window[k].update(value=values[k])
 
         # Check events
         if event in ("Exit", sg.WIN_CLOSED, None):
@@ -411,7 +415,7 @@ def main():
         # calculate button, else disable it
         if (
             window["-MODEL_TABLE-"].visible
-            and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check
+            and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check_values
         ):
             window["Calculate table"].Update(disabled=False)
         else:
