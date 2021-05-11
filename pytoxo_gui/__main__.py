@@ -39,8 +39,8 @@ window_general_font = "Verdana, 13"
 menu = sg.Menu(
     [
         ["File", ["Open model", "Close model", "Exit"]],
-        # ["Edit", ["Paste", "Undo"]],
-        ["Help", "About PyToxo GUI"],
+        # ["Edit", ["Paste", "Undo"]],  # TODO
+        # ["Help", "About PyToxo GUI"],  # TODO
     ]
 )
 
