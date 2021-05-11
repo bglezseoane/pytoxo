@@ -50,7 +50,7 @@ headings = [
     "Penetrance expression",
     "Calculated penetrance",
 ]
-rows = [[col + row for col in range(len(headings))] for row in range(100)]
+empty_rows = [["" for col in range(len(headings))]]
 
 # Model frame
 model_frame = sg.Frame(
@@ -68,7 +68,7 @@ model_frame = sg.Frame(
             sg.Table(
                 key="-MODEL_TABLE-",
                 headings=headings,
-                values=rows,
+                values=empty_rows,
                 vertical_scroll_only=True,
                 justification="center",
                 visible=False,  # Pending to be enabled when a model was loaded
