@@ -199,6 +199,24 @@ def refresh_text_entries_to_check_values(
     return [values[k] for k in text_entries_to_check_keys]
 
 
+def check_all_filled(
+    window: sg.Window, values: dict, text_entries_to_check_values: list[str]
+) -> bool:
+    """Check current values state: if all configuration is filled, enable
+    calculate button, else disable it. Also returns a bool about the all
+    filled condition to add the possibility to reuse this function to a
+    security check before try to calculate."""
+    if (
+        window["-MODEL_TABLE-"].visible
+        and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check_values
+    ):
+        window["Calculate table"].Update(disabled=False)
+        return True
+    else:
+        window["Calculate table"].Update(disabled=True)
+        return False
+
+
 # #########################################################
 
 
@@ -501,15 +519,8 @@ def main():
                     font=window_general_font,
                 )
 
-        # Check current values state: if all configuration is filled, enable
-        # calculate button, else disable it
-        if (
-            window["-MODEL_TABLE-"].visible
-            and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check_values
-        ):
-            window["Calculate table"].Update(disabled=False)
-        else:
-            window["Calculate table"].Update(disabled=True)
+        # Finally, check if all is filled before go to the next interaction
+        check_all_filled(window, values, text_entries_to_check_values)
 
     window.close()
 
