@@ -414,7 +414,10 @@ def main():
                 if not filename:
                     continue  # The operation has been canceled
                 else:
-                    print(filename)
+                    pytoxo_context.ptable.write_to_file(
+                        filename=filename, overwrite=True, format="csv"
+                    )
+
         elif (
             event == "-PREV_OR_HER_INPUT-"
             and values[event] != ""
