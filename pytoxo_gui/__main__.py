@@ -417,7 +417,7 @@ def main():
                 window[event].Update(value="")
         elif event == "Calculate table":
             input_mafs = []
-            for k in mafs_entries_to_check:
+            for k in mafs_entries_to_check_keys:
                 input_mafs.append(float(values[k]))
 
             try:
