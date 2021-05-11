@@ -209,6 +209,10 @@ def main():
     while True:
         event, values = window.read()
 
+        # Check if exit event
+        if event in ("Exit", sg.WIN_CLOSED, None):
+            break
+
         # Load text items to check
         mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(pytoxo_context)
         text_entries_to_check_keys = refresh_text_entries_to_check_keys(
@@ -218,7 +222,7 @@ def main():
             text_entries_to_check_keys, values
         )
 
-        """First fix the input of illegal chars. In entry widgets, 
+        """Fix the input of illegal chars. In entry widgets, 
         only numerical values are allowed"""
         if pytoxo_context.model and values:
             for k in text_entries_to_check_keys:
@@ -252,9 +256,7 @@ def main():
                     window[k].update(value=values[k])
 
         # Check events
-        if event in ("Exit", sg.WIN_CLOSED, None):
-            break
-        elif event == "Open model":
+        if event == "Open model":
             filename = sg.popup_get_file(
                 "Open model",
                 no_window=True,  # To use a native approach
