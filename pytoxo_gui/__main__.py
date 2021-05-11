@@ -397,12 +397,14 @@ def main():
 
         elif event == "Save calculated table":
             if not pytoxo_context.ptable:
+                window.Hide()  # Patch because popup modal function does not work in all platforms
                 sg.popup_ok(
                     f"There is not a calculated penetrance table. Calculate "
                     f"the table before trying to save it.",
                     title="No penetrance table",
                     font=window_general_font,
                 )
+                window.UnHide()
             else:
                 filename = sg.popup_get_file(
                     "Save calculated table",
@@ -442,11 +444,14 @@ def main():
                     msg = f"{e}."
                 msg = msg.capitalize()
 
+                window.Hide()  # Patch because popup modal function does not work in all platforms
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
+                window.UnHide()
+
                 # Remove value
                 window[event].Update(value="")
 
@@ -472,11 +477,14 @@ def main():
                     msg = f"{e}."
                 msg = msg.capitalize()
 
+                window.Hide()  # Patch because popup modal function does not work in all platforms
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
+                window.UnHide()
+
                 # Remove value
                 window[event].Update(value="")
 
