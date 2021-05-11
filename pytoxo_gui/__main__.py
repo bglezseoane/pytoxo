@@ -182,9 +182,7 @@ def main():
     while True:
         event, values = window.read()
 
-        """First fix incomplete fields like `.2` instead of `0.2`. It must be 
-        done here because then working with the current event some validations
-        are done and they would fail"""
+        # Beautify incomplete fields like `.2` instead of `0.2`
         if pytoxo_context.model and values:
             widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
                 f"-MAFS_INPUT_" f"{i}-"
@@ -192,14 +190,21 @@ def main():
             ]
             for widget in widgets_to_check:
                 if values[widget] == "." and event != widget:
-                    window[widget].Update(value="0.0")
+                    # Fix e.g. `.`
                     values[widget] = "0.0"
+                    window[widget].Update(value=values[widget])
                 elif values[widget].startswith(".") and event != widget:
-                    window[widget].Update(value=f"0{values[widget]}")
-                    values[widget] = window[widget]
+                    # Fix e.g. `.23'
+                    values[widget] = f"0{values[widget]}"
+                    window[widget].update(value=values[widget])
                 elif values[widget].endswith(".") and event != widget:
-                    window[widget].Update(value=f"{values[widget]}0")
-                    values[widget] = window[widget]
+                    # Fix e.g. `1.`
+                    values[widget] = f"{values[widget]}0"
+                    window[widget].update(value=values[widget])
+                elif values[widget] != "" and event != widget:
+                    # Fix e.g. `00.1` or `0.4600000`
+                    values[widget] = str(float(values[widget]))
+                    window[widget].update(value=values[widget])
 
         # Check events
         if event in ("Exit", sg.WIN_CLOSED, None):
