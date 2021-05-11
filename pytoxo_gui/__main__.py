@@ -295,6 +295,16 @@ def main():
                 window[f"-PREV_OR_HER_CB-"].Update(visible=True)
                 window[f"-PREV_OR_HER_INPUT-"].Update(visible=True)
                 window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=False)
+                # Refresh text items to check
+                mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
+                    pytoxo_context
+                )
+                text_entries_to_check_keys = refresh_text_entries_to_check_keys(
+                    mafs_entries_to_check_keys
+                )
+                text_entries_to_check_values = refresh_text_entries_to_check_values(
+                    text_entries_to_check_keys, values
+                )
             except pytoxo.errors.BadFormedModelError:
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
