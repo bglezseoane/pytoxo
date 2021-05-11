@@ -19,6 +19,7 @@ import pytoxo
 import pytoxo.errors
 
 MAX_ORDER_SUPPORTED = 12
+MAX_NUMERICAL_INPUT_LEN = 20
 
 
 class PyToxoContext:
@@ -192,11 +193,20 @@ def main():
         only numerical values are allowed"""
         if pytoxo_context.model and values:
             for entry in text_entries_to_check:
-                if len(values[entry]) > 1 and values[entry][-1] not in (".0123456789"):
-                    # delete last char from input
+                if len(values[entry]) > 1 and (
+                    values[entry][-1] not in (".0123456789")  # Illegal chars
+                    or (
+                        "." in values[entry][:-1] and values[entry][-1] == "."
+                    )  # Only one `.` in the entry
+                    or len(values[entry]) > MAX_NUMERICAL_INPUT_LEN  # Already too long
+                ):
+                    """Delete last char from input. The user perceives that
+                    the keystroke is ignored"""
                     values[entry] = values[entry][:-1]
                     window[entry].update(value=values[entry])
-                elif len(values[entry]) == 1 and values[entry] not in (".0123456789"):
+                elif len(values[entry]) == 1 and values[entry] not in (
+                    ".0123456789"
+                ):  # Illegal chars
                     values[entry] = ""
                     window[entry].update(value=values[entry])
 
