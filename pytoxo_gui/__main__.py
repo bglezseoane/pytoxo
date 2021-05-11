@@ -451,7 +451,7 @@ def main():
                         )
                     ]
                 )
-            except pytoxo.errors.BadFormedModelError as e:
+            except pytoxo.errors.ResolutionError as e:
                 sg.popup_ok(
                     e.message,
                     title="Resolution error",
