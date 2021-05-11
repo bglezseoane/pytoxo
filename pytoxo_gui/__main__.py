@@ -244,6 +244,17 @@ def main():
                     values[k] = ""
                     window[k].update(value=values[k])
 
+            # Refresh text items to check
+            mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
+                pytoxo_context
+            )
+            text_entries_to_check_keys = refresh_text_entries_to_check_keys(
+                mafs_entries_to_check_keys
+            )
+            text_entries_to_check_values = refresh_text_entries_to_check_values(
+                text_entries_to_check_keys, values
+            )
+
         # Beautify incomplete fields like `.2` instead of `0.2`
         if pytoxo_context.model and values:
             for k in text_entries_to_check_keys:
