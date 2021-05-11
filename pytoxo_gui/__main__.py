@@ -26,6 +26,7 @@ class PyToxoContext:
     main loop."""
 
     model = None  # Loaded PyToxo model
+    order = 1  # Must be modified when a model is loaded. Before serves to control some workarounds with the GUI
 
 
 # ####################### GUI DESIGN ######################
@@ -182,39 +183,34 @@ def main():
     while True:
         event, values = window.read()
 
+        mafs_entries_to_check = [
+            f"-MAFS_INPUT_" f"{i}-" for i in range(1, pytoxo_context.order + 1)
+        ]
+        text_entries_to_check = ["-PREV_OR_HER_INPUT-"] + mafs_entries_to_check
+
         """First fix the input of illegal chars. In entry widgets, 
         only numerical values are allowed"""
         if pytoxo_context.model and values:
-            widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
-                f"-MAFS_INPUT_" f"{i}-"
-                for i in range(1, pytoxo_context.model.order + 1)
-            ]
-            for widget in widgets_to_check:
-                if len(values[widget]) > 1 and values[widget][-1] not in (
-                    ".0123456789"
-                ):
+            for entry in text_entries_to_check:
+                if len(values[entry]) > 1 and values[entry][-1] not in (".0123456789"):
                     # delete last char from input
-                    values[widget] = values[widget][:-1]
-                    window[widget].update(value=values[widget])
-                elif len(values[widget]) == 1 and values[widget] not in (".0123456789"):
-                    values[widget] = ""
-                    window[widget].update(value=values[widget])
+                    values[entry] = values[entry][:-1]
+                    window[entry].update(value=values[entry])
+                elif len(values[entry]) == 1 and values[entry] not in (".0123456789"):
+                    values[entry] = ""
+                    window[entry].update(value=values[entry])
 
         # Beautify incomplete fields like `.2` instead of `0.2`
         if pytoxo_context.model and values:
-            widgets_to_check = ["-PREV_OR_HER_INPUT-"] + [
-                f"-MAFS_INPUT_" f"{i}-"
-                for i in range(1, pytoxo_context.model.order + 1)
-            ]
-            for widget in widgets_to_check:
-                if values[widget] == "." and event != widget:
+            for entry in text_entries_to_check:
+                if values[entry] == "." and event != entry:
                     # Fix `.`
-                    values[widget] = "0.0"
-                    window[widget].Update(value=values[widget])
-                elif values[widget] != "" and event != widget:
+                    values[entry] = "0.0"
+                    window[entry].Update(value=values[entry])
+                elif values[entry] != "" and event != entry:
                     # Fix e.g. `00.1`, `0.4600000`, `1.` or `.23'
-                    values[widget] = str(float(values[widget]))
-                    window[widget].update(value=values[widget])
+                    values[entry] = str(float(values[entry]))
+                    window[entry].update(value=values[entry])
 
         # Check events
         if event in ("Exit", sg.WIN_CLOSED, None):
@@ -228,7 +224,12 @@ def main():
             if not filename:
                 continue  # The operation has been canceled
             try:
+                # Load to the PyToxo context
                 pytoxo_context.model = pytoxo.Model(filename)
+                pytoxo_context.order = (
+                    pytoxo_context.model.order
+                )  # It is important to update also this
+
                 # Print model in the GUI's table
                 window["-MODEL_DISABLED_TEXT-"].Update(visible=False)
                 window["-MODEL_TABLE-"].Update(visible=True)
@@ -328,8 +329,8 @@ def main():
                 window[event].Update(value="")
         elif event == "Calculate table":
             input_mafs = []
-            for i in range(1, pytoxo_context.model.order + 1):
-                input_mafs.append(float(values[f"-MAFS_INPUT_{i}-"]))
+            for k in mafs_entries_to_check:
+                input_mafs.append(float(values[k]))
 
             try:
                 if values["-PREV_OR_HER_CB-"] == "Heritability":
@@ -373,12 +374,10 @@ def main():
 
         # Check current values state: if all configuration is filled, enable
         # calculate button, else disable it
-        if window["-MODEL_TABLE-"].visible and "" not in [
-            values["-PREV_OR_HER_CB-"]
-        ] + [values["-PREV_OR_HER_INPUT-"]] + [
-            values[f"-MAFS_INPUT_" f"{i}-"]
-            for i in range(1, pytoxo_context.model.order + 1)
-        ]:
+        if (
+            window["-MODEL_TABLE-"].visible
+            and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check
+        ):
             window["Calculate table"].Update(disabled=False)
         else:
             window["Calculate table"].Update(disabled=True)
