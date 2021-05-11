@@ -28,6 +28,7 @@ class PyToxoContext:
 
     model = None  # Loaded PyToxo model
     order = 1  # Must be modified when a model is loaded. Before serves to control some workarounds with the GUI
+    ptable = None  # When a penetrance table is calculated
 
 
 # ####################### GUI DESIGN ######################
@@ -433,6 +434,11 @@ def main():
                     ptable = pytoxo_context.model.find_max_heritability_table(
                         mafs=input_mafs, p=float(values["-PREV_OR_HER_INPUT-"])
                     )
+
+                # Load the table to the PyToxo context
+                # noinspection PyUnboundLocalVariable
+                pytoxo_context.ptable = ptable
+
                 # Print generated penetrance table in the GUI's table
                 # noinspection PyUnboundLocalVariable
                 window["-MODEL_TABLE-"].Update(
