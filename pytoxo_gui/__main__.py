@@ -90,6 +90,7 @@ model_frame = sg.Frame(
                 key="-MODEL_TABLE-",
                 headings=headings,
                 values=empty_rows,
+                enable_events=True,
                 vertical_scroll_only=True,
                 justification="center",
                 num_rows=size_y_model_frame_component - 1,  # Due to header row
@@ -534,6 +535,10 @@ def main():
                     pytoxo_context.ptable.write_to_file(
                         filename=filename, overwrite=True, format="csv"
                     )
+
+        elif event == "-MODEL_TABLE-":
+            # Intercept the event to refresh window when click on the table
+            pass
 
         elif event == "-PREV_OR_HER_CB-" and values[event] != "":
             # Update informative banner
