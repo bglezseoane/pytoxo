@@ -65,6 +65,7 @@ headings = [
 empty_rows = [["" for col in range(len(headings))]]
 
 # Model frame
+size_y_model_frame_component = 28  # Used by the disabled text or the table
 model_frame = sg.Frame(
     key="-MODEL_FRAME-",
     title="Epistatic model",
@@ -74,6 +75,7 @@ model_frame = sg.Frame(
                 "None model loaded",
                 key="-MODEL_DISABLED_TEXT-",
                 text_color="grey",
+                size=(None, size_y_model_frame_component),
                 tooltip=tt_model_disabled_text,
                 visible=True,  # Pending to be disabled when a model was loaded
             ),
@@ -81,6 +83,7 @@ model_frame = sg.Frame(
                 key="-MODEL_TABLE-",
                 headings=headings,
                 values=empty_rows,
+                num_rows=size_y_model_frame_component - 1,  # Due to header row
                 vertical_scroll_only=True,
                 justification="center",
                 visible=False,  # Pending to be enabled when a model was loaded
@@ -176,7 +179,7 @@ window = sg.Window(
 )
 
 # Window style patches
-window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=True)
+window["-MODEL_FRAME-"].expand(expand_x=True)
 
 
 # #########################################################
