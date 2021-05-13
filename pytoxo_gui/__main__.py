@@ -18,7 +18,7 @@ import PySimpleGUI as sg
 import pytoxo
 import pytoxo.errors
 
-MAX_ORDER_SUPPORTED = 12
+MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
 
 
@@ -119,12 +119,15 @@ prev_or_her_frame = sg.Frame(
 mafs_entries = []
 for i in range(1, MAX_ORDER_SUPPORTED + 1):
     mafs_entries.append(
-        sg.InputText(
-            key=f"-MAFS_INPUT_{i}-",
-            size=(3, 1),
-            visible=False,  # Pending to be enabled when a model was loaded
-            enable_events=True,  # To refresh the loop and can check filled fields
-            tooltip=tt_mafs_input,
+        sg.pin(  # To fix the entries in the layout, in horizontal
+            sg.InputText(
+                key=f"-MAFS_INPUT_{i}-",
+                size=(3, 1),
+                pad=(0, 3),  # 3 seems to be the default
+                visible=False,  # Pending to be enabled when a model was loaded
+                enable_events=True,  # To refresh the loop and can check filled fields
+                tooltip=tt_mafs_input,
+            )
         )
     )
 
