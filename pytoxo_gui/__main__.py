@@ -33,8 +33,19 @@ class PyToxoContext:
 
 # ####################### GUI DESIGN ######################
 # General style settings
-sg.theme("SystemDefaultForReal")
-window_general_font = "Verdana, 13"
+sg.theme("DarkGreen4")
+window_general_font = "13"
+table_font = ("Courier", "15")
+main_background_color = "#044343"  # Default of `DarkGreen4` theme
+table_font_color = "black"
+table_headers_font = window_general_font
+table_headers_font_color = "white"
+table_background_color = "white"
+table_alternating_background_color = "lightgrey"
+text_inputs_text_color = "black"
+text_inputs_background_color = "white"
+selection_colors = ("black", "#c6dffc")
+disabled_text_color = "grey"
 
 # Tooltipis
 tt_model_disabled_text = (
@@ -74,19 +85,29 @@ model_frame = sg.Frame(
             sg.Text(
                 "None model loaded",
                 key="-MODEL_DISABLED_TEXT-",
-                text_color="grey",
-                size=(None, size_y_model_frame_component),
-                tooltip=tt_model_disabled_text,
                 visible=True,  # Pending to be disabled when a model was loaded
+                tooltip=tt_model_disabled_text,
+                size=(None, size_y_model_frame_component),
+                text_color=disabled_text_color,
             ),
             sg.Table(
                 key="-MODEL_TABLE-",
                 headings=headings,
                 values=empty_rows,
-                num_rows=size_y_model_frame_component - 1,  # Due to header row
+                visible=False,  # Pending to be enabled when a model was loaded
                 vertical_scroll_only=True,
                 justification="center",
-                visible=False,  # Pending to be enabled when a model was loaded
+                num_rows=size_y_model_frame_component - 1,  # Due to header row
+                display_row_numbers=True,
+                hide_vertical_scroll=True,
+                auto_size_columns=True,
+                header_font=table_headers_font,
+                header_text_color=table_headers_font_color,
+                font=table_font,
+                text_color=table_font_color,
+                background_color=table_background_color,
+                alternating_row_color=table_alternating_background_color,
+                selected_row_colors=selection_colors,
             ),
         ]
     ],
@@ -102,16 +123,20 @@ prev_or_her_frame = sg.Frame(
             sg.Combo(
                 ("Heritability", "Prevalence"),
                 key="-PREV_OR_HER_CB-",
-                size=(9, 1),
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
+                size=(9, 1),
+                text_color=text_inputs_text_color,
+                background_color=text_inputs_background_color,
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
-                size=(4, 1),
-                enable_events=True,  # To refresh the loop and can check filled fields
                 disabled=True,  # Pending to be disabled when a model was loaded
+                enable_events=True,  # To refresh the loop and can check filled fields
                 tooltip=tt_prev_or_her_input_dis,
+                size=(4, 1),
+                text_color=text_inputs_text_color,
+                background_color=text_inputs_background_color,
             ),
         ],
     ],
@@ -125,11 +150,13 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
         sg.pin(  # To fix the entries in the layout, in horizontal
             sg.InputText(
                 key=f"-MAFS_INPUT_{i}-",
-                size=(4, 1),
-                pad=(0, 3),  # 3 seems to be the default
                 visible=False,  # Pending to be enabled when a model was loaded
                 enable_events=True,  # To refresh the loop and can check filled fields
                 tooltip=tt_mafs_input,
+                size=(4, 1),
+                pad=(1, 3),  # 3 seems to be the default
+                text_color=text_inputs_text_color,
+                background_color=text_inputs_background_color,
             )
         )
     )
@@ -143,9 +170,9 @@ mafs_frame = sg.Frame(
             sg.Text(
                 "None model loaded",
                 key="-MAFS_DISABLED_TEXT-",
-                text_color="grey",
-                tooltip=tt_mafs_disabled_text,
                 visible=True,  # Pending to be disabled when a model was loaded
+                tooltip=tt_mafs_disabled_text,
+                text_color=disabled_text_color,
             ),
         ]
         + mafs_entries
@@ -172,10 +199,9 @@ window = sg.Window(
     "PyToxo GUI",
     layout,
     font=window_general_font,
-    element_justification="center",
+    finalize=True,
     size=(650, 600),
-    finalize=True
-    # background_color="#eeeeee",
+    element_justification="center",
 )
 
 # Window style patches
