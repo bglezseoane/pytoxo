@@ -20,6 +20,7 @@ import pytoxo.errors
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
+INFO_BANNER_MAX_MODEL_NAME_LEN = 10
 
 
 class PyToxoContext:
@@ -61,7 +62,10 @@ tt_calculate_button_en = "Calculate the table with the set configuration"
 # Main menu
 menu = sg.Menu(
     [
-        ["File", ["Open model", "Close model", "Save calculated table", "Exit"]],
+        [
+            "File",
+            ["Open model", "Close model and clean", "Save calculated table", "Exit"],
+        ],
         # ["Edit", ["Paste", "Undo"]],  # TODO
         # ["Help", "About PyToxo GUI"],  # TODO
     ]
@@ -106,18 +110,50 @@ model_frame = sg.Frame(
 )
 
 # Informative banner
+info_banner_model_head_text = "Model: "
+info_banner_order_head_text = "Order: "
+info_banner_maximizing_head_text = "Maximizing: "
+info_banner_model_none_text = f"{info_banner_model_head_text}none"
+info_banner_order_none_text = f"{info_banner_order_head_text}none"
+info_banner_maximizing_none_text = f"{info_banner_maximizing_head_text}none"
 info_banner = [
-    sg.Text("Loaded model: None", key="-INFO_MODEL-", text_color=disabled_text_color),
-    sg.Text("Order: None", key="-INFO_ORDER-", text_color=disabled_text_color),
     sg.Text(
-        "Maximizing: None", key="-INFO_MAXIMIZING-", text_color=disabled_text_color
+        info_banner_model_none_text,
+        key="-INFO_MODEL-",
+        size=(INFO_BANNER_MAX_MODEL_NAME_LEN + len(info_banner_model_head_text), 1),
+        text_color=disabled_text_color,
+        justification="center",
     ),
-    sg.Text("State: Ready", key="-INFO_STATE_READY-", text_color="green", visible=True),
+    sg.Text(
+        info_banner_order_none_text,
+        key="-INFO_ORDER-",
+        text_color=disabled_text_color,
+        justification="center",
+    ),
+    sg.Text(
+        info_banner_maximizing_none_text,
+        key="-INFO_MAXIMIZING-",
+        size=(
+            len(max("prevalence", "heritability"))
+            + len(info_banner_maximizing_head_text),
+            1,
+        ),
+        text_color=disabled_text_color,
+        justification="center",
+    ),
+    sg.Text(
+        "State: Ready",
+        key="-INFO_STATE_READY-",
+        visible=True,
+        text_color="green",
+        justification="center",
+    ),
     sg.Text(
         "State: Calculating...",
         key="-INFO_STATE_CALCULATING-",
-        text_color="orange",
         visible=False,
+        text_color="orange",
+        justification="center",
     ),
 ]
 
@@ -262,6 +298,23 @@ def check_all_filled(
         return False
 
 
+def update_info_banner(window: sg.Window, key: str, new_info: str = None) -> None:
+    """Auxiliary function to update the informative banner. The different
+    keys have different treatments. Supported keys are: `-INFO_MODEL-`,
+    `-INFO_ORDER-`, `-INFO_MAXIMIZING-`, `-INFO_STATE_READY-`,
+    `-INFO_STATE_CALCULATING-` and `CLEAN`. `CLEAN` key serves to clean the
+    banner as default."""
+    if key == "-INFO_MODEL-":
+        if len(new_info) > INFO_BANNER_MAX_MODEL_NAME_LEN:
+            new_info = new_info[:INFO_BANNER_MAX_MODEL_NAME_LEN]
+        window[key].Update(value=f"{info_banner_model_head_text}{new_info}")
+    elif key == "-INFO_ORDER-":
+        window[key].Update(value=f"{info_banner_order_head_text}{new_info}")
+    elif key == "CLEAN":
+        window["-INFO_MODEL-"].Update(value=f"{info_banner_model_none_text}")
+        window["-INFO_ORDER-"].Update(value=f"{info_banner_model_none_text}")
+
+
 # #########################################################
 
 
@@ -371,6 +424,10 @@ def main():
                 window[f"-PREV_OR_HER_INPUT-"].Update(disabled=False)
                 window["-PREV_OR_HER_INPUT-"].set_tooltip(tt_prev_or_her_input_en)
 
+                # Update informative banner
+                update_info_banner(window, "-INFO_MODEL-", pytoxo_context.model.name)
+                update_info_banner(window, "-INFO_ORDER-", str(pytoxo_context.order))
+
                 # Refresh text items to check
                 mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
                     pytoxo_context
@@ -399,7 +456,7 @@ def main():
                 )
                 window.UnHide()
 
-        elif event == "Close model":
+        elif event == "Close model and clean":
             # Load to the PyToxo context
             pytoxo_context = PyToxoContext()  # Refresh with a new instance
 
@@ -426,6 +483,9 @@ def main():
             window["-PREV_OR_HER_INPUT-"].set_tooltip(tt_prev_or_her_input_dis)
             values[f"-PREV_OR_HER_INPUT-"] = ""
             window[f"-PREV_OR_HER_INPUT-"].Update(value=values[f"-PREV_OR_HER_INPUT-"])
+
+            # Update informative banner
+            update_info_banner(window, "CLEAN")  # Clean all model related
 
             # Refresh text items to check
             mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
