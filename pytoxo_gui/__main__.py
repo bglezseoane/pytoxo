@@ -107,10 +107,18 @@ model_frame = sg.Frame(
 
 # Informative banner
 info_banner = [
-    sg.Text("Loaded model: None", text_color=disabled_text_color),
-    sg.Text("Order: None", text_color=disabled_text_color),
-    sg.Text("Maximizing: None", text_color=disabled_text_color),
-    sg.Text("State: Ready", text_color=disabled_text_color),
+    sg.Text("Loaded model: None", key="-INFO_MODEL-", text_color=disabled_text_color),
+    sg.Text("Order: None", key="-INFO_ORDER-", text_color=disabled_text_color),
+    sg.Text(
+        "Maximizing: None", key="-INFO_MAXIMIZING-", text_color=disabled_text_color
+    ),
+    sg.Text("State: Ready", key="-INFO_STATE_READY-", text_color="green", visible=True),
+    sg.Text(
+        "State: Calculating...",
+        key="-INFO_STATE_CALCULATING-",
+        text_color="orange",
+        visible=False,
+    ),
 ]
 
 # Prevalence or heritability frame
