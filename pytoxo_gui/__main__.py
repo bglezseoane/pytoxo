@@ -152,7 +152,7 @@ info_banner = [
         "State: Calculating...",
         key="-INFO_STATE_CALCULATING-",
         visible=False,
-        text_color="orange",
+        text_color="#f29114",
         justification="center",
     ),
 ]
@@ -312,9 +312,19 @@ def update_info_banner(window: sg.Window, key: str, new_info: str = None) -> Non
         window[key].Update(value=f"{info_banner_order_head_text}{new_info}")
     elif key == "-INFO_MAXIMIZING-":
         window[key].Update(value=f"{info_banner_maximizing_head_text}{new_info}")
+    elif key == "-INFO_STATE_READY-":
+        window[key].Update(visible=True)
+        window["-INFO_STATE_CALCULATING-"].Update(visible=False)
+    elif key == "-INFO_STATE_CALCULATING-":
+        window[key].Update(visible=True)
+        window["-INFO_STATE_READY-"].Update(visible=False)
+        window.refresh()  # Needed here because it does not go through the loop
     elif key == "CLEAN":
         window["-INFO_MODEL-"].Update(value=f"{info_banner_model_none_text}")
         window["-INFO_ORDER-"].Update(value=f"{info_banner_model_none_text}")
+        window.refresh()  # Needed here because it does not go through the loop
+    else:
+        raise ValueError(key)
 
 
 # #########################################################
@@ -605,6 +615,8 @@ def main():
                 for k in mafs_entries_to_check_keys:
                     input_mafs.append(float(values[k]))
 
+                # Update informative banner
+                update_info_banner(window, "-INFO_STATE_CALCULATING-")
                 try:
                     if values["-PREV_OR_HER_CB-"] == "Heritability":
                         ptable = pytoxo_context.model.find_max_prevalence_table(
@@ -655,6 +667,9 @@ def main():
                         font=window_general_font,
                     )
                     window.UnHide()
+                finally:
+                    # Update informative banner
+                    update_info_banner(window, "-INFO_STATE_READY-")
 
         # Finally, check if all is filled before go to the next interaction
         check_all_filled(window, values, text_entries_to_check_values)
