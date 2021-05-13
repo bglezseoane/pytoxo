@@ -102,7 +102,7 @@ prev_or_her_frame = sg.Frame(
             sg.Combo(
                 ("Heritability", "Prevalence"),
                 key="-PREV_OR_HER_CB-",
-                size=(10, 1),
+                size=(9, 1),
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
             ),
