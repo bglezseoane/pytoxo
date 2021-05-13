@@ -108,7 +108,7 @@ prev_or_her_frame = sg.Frame(
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
-                size=(5, 1),
+                size=(4, 1),
                 enable_events=True,  # To refresh the loop and can check filled fields
                 disabled=True,  # Pending to be disabled when a model was loaded
                 tooltip=tt_prev_or_her_input_dis,
@@ -125,7 +125,7 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
         sg.pin(  # To fix the entries in the layout, in horizontal
             sg.InputText(
                 key=f"-MAFS_INPUT_{i}-",
-                size=(3, 1),
+                size=(4, 1),
                 pad=(0, 3),  # 3 seems to be the default
                 visible=False,  # Pending to be enabled when a model was loaded
                 enable_events=True,  # To refresh the loop and can check filled fields
