@@ -91,20 +91,12 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
         )
     )
 
-
-# Configuration frame
-configuration_frame = sg.Frame(
-    key="-CONFIG_FRAME-",
-    title="Configuration",
+# Prevalence or heritability frame
+prev_or_her_frame = sg.Frame(
+    key="-PREV_OR_HER_FRAME-",
+    title="Prevalence and heritability",
     layout=[
         [
-            sg.Text(
-                "None model loaded",
-                key="-PREV_OR_HER_DISABLED_TEXT-",
-                text_color="grey",
-                tooltip="You need to have set the model before setting this",
-                visible=True,  # Pending to be disabled when a model was loaded
-            ),
             sg.Combo(
                 ("Heritability", "Prevalence"),
                 key="-PREV_OR_HER_CB-",
@@ -119,35 +111,42 @@ configuration_frame = sg.Frame(
                 enable_events=True,  # To refresh the loop and can check filled fields
                 visible=False,  # Pending to be disabled when a model was loaded
             ),
-        ],
-        [
-            sg.Frame(
-                key="-MAFS_FRAME-",
-                title="MAFs",
-                layout=[
-                    [
-                        sg.Text(
-                            "None model loaded",
-                            key="-MAFS_DISABLED_TEXT-",
-                            text_color="grey",
-                            tooltip="You need to have set the model before setting MAFs",
-                            visible=True,  # Pending to be disabled when a model was loaded
-                        ),
-                    ]
-                    + mafs_entries
-                ],
-                element_justification="center",
+            sg.Text(
+                "None model loaded",
+                key="-PREV_OR_HER_DISABLED_TEXT-",
+                text_color="grey",
+                tooltip="You need to have set the model before setting this",
+                visible=True,  # Pending to be disabled when a model was loaded
             ),
         ],
     ],
     element_justification="left",
 )
 
+# MAFs frame
+mafs_frame = sg.Frame(
+    key="-MAFS_FRAME-",
+    title="MAFs",
+    layout=[
+        [
+            sg.Text(
+                "None model loaded",
+                key="-MAFS_DISABLED_TEXT-",
+                text_color="grey",
+                tooltip="You need to have set the model before setting MAFs",
+                visible=True,  # Pending to be disabled when a model was loaded
+            ),
+        ]
+        + mafs_entries
+    ],
+    element_justification="center",
+)
+
 # Layout composition
 layout = [
     [menu],
     [model_frame],
-    [configuration_frame],
+    [prev_or_her_frame, mafs_frame],
     [
         sg.Button(
             "Calculate table",
@@ -169,8 +168,7 @@ window = sg.Window(
 )
 
 # Window style patches
-window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
-# window["-CONFIG_FRAME-"].expand(expand_x=True, expand_y=False)
+window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=True)
 
 
 # #########################################################
