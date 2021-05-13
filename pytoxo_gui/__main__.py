@@ -374,18 +374,22 @@ def main():
                     text_entries_to_check_keys, values
                 )
             except pytoxo.errors.BadFormedModelError:
+                window.Hide()  # Patch because popup modal function does not work in all platforms
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
                     "interpret it. Revise PyToxo's file format requirements.",
                     title="File parsing error",
                     font=window_general_font,
                 )
+                window.UnHide()
             except IOError:
+                window.Hide()  # Patch because popup modal function does not work in all platforms
                 sg.popup_ok(
                     f"Error trying to open '{filename}'.",
                     title="File opening error",
                     font=window_general_font,
                 )
+                window.UnHide()
 
         elif event == "Close model":
             # Load to the PyToxo context
@@ -554,23 +558,29 @@ def main():
                         ]
                     )
                 except pytoxo.errors.ResolutionError as e:
+                    window.Hide()  # Patch because popup modal function does not work in all platforms
                     sg.popup_ok(
                         e.message,
                         title="Resolution error",
                         font=window_general_font,
                     )
+                    window.UnHide()
                 except pytoxo.errors.UnsolvableModelError as e:
+                    window.Hide()  # Patch because popup modal function does not work in all platforms
                     sg.popup_ok(
                         e.message,
                         title="Unsolvable model error",
                         font=window_general_font,
                     )
+                    window.UnHide()
                 except ValueError as e:
+                    window.Hide()  # Patch because popup modal function does not work in all platforms
                     sg.popup_ok(
                         f"{e} Check input parameters.",
                         title="Input configuration validation error",
                         font=window_general_font,
                     )
+                    window.UnHide()
 
         # Finally, check if all is filled before go to the next interaction
         check_all_filled(window, values, text_entries_to_check_values)
