@@ -103,20 +103,13 @@ prev_or_her_frame = sg.Frame(
                 size=(10, 1),
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
-                visible=False,  # Pending to be disabled when a model was loaded
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
                 size=(5, 1),
                 enable_events=True,  # To refresh the loop and can check filled fields
-                visible=False,  # Pending to be disabled when a model was loaded
-            ),
-            sg.Text(
-                "None model loaded",
-                key="-PREV_OR_HER_DISABLED_TEXT-",
-                text_color="grey",
+                disabled=True,  # Pending to be disabled when a model was loaded
                 tooltip="You need to have set the model before setting this",
-                visible=True,  # Pending to be disabled when a model was loaded
             ),
         ],
     ],
@@ -323,9 +316,7 @@ def main():
                 of the model, which otherwise might not be available. It also
                 makes the user better understand the order in which the 
                 interface should be used."""
-                window[f"-PREV_OR_HER_CB-"].Update(visible=True)
-                window[f"-PREV_OR_HER_INPUT-"].Update(visible=True)
-                window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=False)
+                window[f"-PREV_OR_HER_INPUT-"].Update(disabled=False)
 
                 # Refresh text items to check
                 mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
@@ -374,13 +365,11 @@ def main():
             of the model, which otherwise might not be available. It also
             makes the user better understand the order in which the 
             interface should be used."""
-            window[f"-PREV_OR_HER_CB-"].Update(visible=False)
             values[f"-PREV_OR_HER_CB-"] = ""
             window[f"-PREV_OR_HER_CB-"].Update(value=values[f"-PREV_OR_HER_CB-"])
-            window[f"-PREV_OR_HER_INPUT-"].Update(visible=False)
+            window[f"-PREV_OR_HER_INPUT-"].Update(disabled=True)
             values[f"-PREV_OR_HER_INPUT-"] = ""
             window[f"-PREV_OR_HER_INPUT-"].Update(value=values[f"-PREV_OR_HER_INPUT-"])
-            window["-PREV_OR_HER_DISABLED_TEXT-"].Update(visible=True)
 
             # Refresh text items to check
             mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
