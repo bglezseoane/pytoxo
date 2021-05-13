@@ -118,30 +118,32 @@ info_banner_model_none_text = f"{info_banner_model_head_text}none"
 info_banner_order_none_text = f"{info_banner_order_head_text}none"
 info_banner_maximizing_none_text = f"{info_banner_maximizing_head_text}none"
 info_banner = [
-    sg.Text(
-        info_banner_model_none_text,
-        key="-INFO_MODEL-",
-        size=(INFO_BANNER_MAX_MODEL_NAME_LEN + len(info_banner_model_head_text), 1),
-        text_color=disabled_text_color,
-        justification="center",
-    ),
-    sg.Text(
-        info_banner_order_none_text,
-        key="-INFO_ORDER-",
-        text_color=disabled_text_color,
-        justification="center",
-    ),
-    sg.Text(
-        info_banner_maximizing_none_text,
-        key="-INFO_MAXIMIZING-",
-        size=(
-            len(max("prevalence", "heritability"))
-            + len(info_banner_maximizing_head_text),
-            1,
+    [
+        sg.Text(
+            info_banner_model_none_text,
+            key="-INFO_MODEL-",
+            size=(INFO_BANNER_MAX_MODEL_NAME_LEN + len(info_banner_model_head_text), 1),
+            text_color=disabled_text_color,
+            justification="center",
         ),
-        text_color=disabled_text_color,
-        justification="center",
-    ),
+        sg.Text(
+            info_banner_order_none_text,
+            key="-INFO_ORDER-",
+            text_color=disabled_text_color,
+            justification="center",
+        ),
+        sg.Text(
+            info_banner_maximizing_none_text,
+            key="-INFO_MAXIMIZING-",
+            size=(
+                len(max("prevalence", "heritability"))
+                + len(info_banner_maximizing_head_text),
+                1,
+            ),
+            text_color=disabled_text_color,
+            justification="center",
+        ),
+    ],
     sg.Text(
         "State: Ready",
         key="-INFO_STATE_READY-",
@@ -245,7 +247,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 600),
+    size=(650, 650),
     element_justification="center",
 )
 
