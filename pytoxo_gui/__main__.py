@@ -82,19 +82,10 @@ model_frame = sg.Frame(
     title="Epistatic model",
     layout=[
         [
-            sg.Text(
-                "None model loaded",
-                key="-MODEL_DISABLED_TEXT-",
-                visible=True,  # Pending to be disabled when a model was loaded
-                tooltip=tt_model_disabled_text,
-                size=(None, size_y_model_frame_component),
-                text_color=disabled_text_color,
-            ),
             sg.Table(
                 key="-MODEL_TABLE-",
                 headings=headings,
                 values=empty_rows,
-                visible=False,  # Pending to be enabled when a model was loaded
                 vertical_scroll_only=True,
                 justification="center",
                 num_rows=size_y_model_frame_component - 1,  # Due to header row
@@ -348,8 +339,6 @@ def main():
                 )  # It is important to update also this
 
                 # Print model in the GUI's table
-                window["-MODEL_DISABLED_TEXT-"].Update(visible=False)
-                window["-MODEL_TABLE-"].Update(visible=True)
                 window["-MODEL_TABLE-"].Update(
                     values=[
                         [g, p]
@@ -403,8 +392,6 @@ def main():
             pytoxo_context = PyToxoContext()  # Refresh with a new instance
 
             # Remove the previous model from the GUI
-            window["-MODEL_DISABLED_TEXT-"].Update(visible=True)
-            window["-MODEL_TABLE-"].Update(visible=False)
             window["-MODEL_TABLE-"].Update(values=empty_rows)
 
             # Disable MAFs and clean values
