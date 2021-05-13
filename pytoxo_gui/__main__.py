@@ -36,6 +36,14 @@ class PyToxoContext:
 sg.theme("SystemDefaultForReal")
 window_general_font = "Verdana, 13"
 
+# Tooltipis
+tt_model_disabled_text = (
+    "Use the menu to load a model from a file or enter one manually"
+)
+tt_prev_or_her_input_dis = "You need to have set the model before setting this"
+tt_mafs_disabled_text = "You need to have set the model before setting MAFs"
+tt_calculate_button_dis = "You need to have set all fields before calculating the table"
+
 # Main menu
 menu = sg.Menu(
     [
@@ -63,7 +71,7 @@ model_frame = sg.Frame(
                 "None model loaded",
                 key="-MODEL_DISABLED_TEXT-",
                 text_color="grey",
-                tooltip="Use the menu to load a model from a file or enter one manually",
+                tooltip=tt_model_disabled_text,
                 visible=True,  # Pending to be disabled when a model was loaded
             ),
             sg.Table(
@@ -109,7 +117,7 @@ prev_or_her_frame = sg.Frame(
                 size=(5, 1),
                 enable_events=True,  # To refresh the loop and can check filled fields
                 disabled=True,  # Pending to be disabled when a model was loaded
-                tooltip="You need to have set the model before setting this",
+                tooltip=tt_prev_or_her_input_dis,
             ),
         ],
     ],
@@ -126,7 +134,7 @@ mafs_frame = sg.Frame(
                 "None model loaded",
                 key="-MAFS_DISABLED_TEXT-",
                 text_color="grey",
-                tooltip="You need to have set the model before setting MAFs",
+                tooltip=tt_mafs_disabled_text,
                 visible=True,  # Pending to be disabled when a model was loaded
             ),
         ]
@@ -144,7 +152,7 @@ layout = [
         sg.Button(
             "Calculate table",
             disabled=True,
-            tooltip="You need to have set all fields before calculating the table",
+            tooltip=tt_calculate_button_dis,
         )
     ],
 ]
