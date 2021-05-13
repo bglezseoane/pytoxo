@@ -90,19 +90,6 @@ model_frame = sg.Frame(
     element_justification="center",
 )
 
-# MAFs frame text entries
-mafs_entries = []
-for i in range(1, MAX_ORDER_SUPPORTED + 1):
-    mafs_entries.append(
-        sg.InputText(
-            key=f"-MAFS_INPUT_{i}-",
-            size=(3, 1),
-            visible=False,  # Pending to be enabled when a model was loaded
-            enable_events=True,  # To refresh the loop and can check filled fields
-            tooltip=tt_mafs_input,
-        )
-    )
-
 # Prevalence or heritability frame
 prev_or_her_frame = sg.Frame(
     key="-PREV_OR_HER_FRAME-",
@@ -127,6 +114,19 @@ prev_or_her_frame = sg.Frame(
     ],
     element_justification="left",
 )
+
+# MAFs frame text entries
+mafs_entries = []
+for i in range(1, MAX_ORDER_SUPPORTED + 1):
+    mafs_entries.append(
+        sg.InputText(
+            key=f"-MAFS_INPUT_{i}-",
+            size=(3, 1),
+            visible=False,  # Pending to be enabled when a model was loaded
+            enable_events=True,  # To refresh the loop and can check filled fields
+            tooltip=tt_mafs_input,
+        )
+    )
 
 # MAFs frame
 mafs_frame = sg.Frame(
