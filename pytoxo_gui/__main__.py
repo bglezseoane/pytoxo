@@ -114,6 +114,14 @@ model_frame = sg.Frame(
     element_justification="center",
 )
 
+# Informative banner
+info_banner = [
+    sg.Text("Loaded model: None", text_color=disabled_text_color),
+    sg.Text("Order: None", text_color=disabled_text_color),
+    sg.Text("Maximizing: None", text_color=disabled_text_color),
+    sg.Text("State: Ready", text_color=disabled_text_color),
+]
+
 # Prevalence or heritability frame
 prev_or_her_frame = sg.Frame(
     key="-PREV_OR_HER_FRAME-",
@@ -184,6 +192,7 @@ mafs_frame = sg.Frame(
 layout = [
     [menu],
     [model_frame],
+    [info_banner],
     [prev_or_her_frame, mafs_frame],
     [
         sg.Button(
