@@ -310,6 +310,8 @@ def update_info_banner(window: sg.Window, key: str, new_info: str = None) -> Non
         window[key].Update(value=f"{info_banner_model_head_text}{new_info}")
     elif key == "-INFO_ORDER-":
         window[key].Update(value=f"{info_banner_order_head_text}{new_info}")
+    elif key == "-INFO_MAXIMIZING-":
+        window[key].Update(value=f"{info_banner_maximizing_head_text}{new_info}")
     elif key == "CLEAN":
         window["-INFO_MODEL-"].Update(value=f"{info_banner_model_none_text}")
         window["-INFO_ORDER-"].Update(value=f"{info_banner_model_none_text}")
@@ -522,6 +524,10 @@ def main():
                     pytoxo_context.ptable.write_to_file(
                         filename=filename, overwrite=True, format="csv"
                     )
+
+        elif event == "-PREV_OR_HER_CB-" and values[event] != "":
+            # Update informative banner
+            update_info_banner(window, "-INFO_MAXIMIZING-", values[event])
 
         elif (
             event == "-PREV_OR_HER_INPUT-"
