@@ -20,7 +20,7 @@ import pytoxo.errors
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
-INFO_BANNER_MAX_MODEL_NAME_LEN = 10
+INFO_BANNER_MAX_MODEL_NAME_LEN = 20
 
 
 class PyToxoContext:
