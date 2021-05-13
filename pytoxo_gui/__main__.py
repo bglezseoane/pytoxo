@@ -41,8 +41,11 @@ tt_model_disabled_text = (
     "Use the menu to load a model from a file or enter one manually"
 )
 tt_prev_or_her_input_dis = "You need to have set the model before setting this"
+tt_prev_or_her_input_en = "A probability value between 0 and 1"
 tt_mafs_disabled_text = "You need to have set the model before setting MAFs"
+tt_mafs_input = "The minor allele frequency, a value between 0 and 0.5"
 tt_calculate_button_dis = "You need to have set all fields before calculating the table"
+tt_calculate_button_en = "Calculate the table with the set configuration"
 
 # Main menu
 menu = sg.Menu(
@@ -96,6 +99,7 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
             size=(3, 1),
             visible=False,  # Pending to be enabled when a model was loaded
             enable_events=True,  # To refresh the loop and can check filled fields
+            tooltip=tt_mafs_input,
         )
     )
 
@@ -210,9 +214,11 @@ def check_all_filled(
         and "" not in [values["-PREV_OR_HER_CB-"]] + text_entries_to_check_values
     ):
         window["Calculate table"].Update(disabled=False)
+        window["Calculate table"].set_tooltip(tt_calculate_button_en)
         return True
     else:
         window["Calculate table"].Update(disabled=True)
+        window["Calculate table"].set_tooltip(tt_calculate_button_dis)
         return False
 
 
@@ -325,6 +331,7 @@ def main():
                 makes the user better understand the order in which the 
                 interface should be used."""
                 window[f"-PREV_OR_HER_INPUT-"].Update(disabled=False)
+                window["-PREV_OR_HER_INPUT-"].set_tooltip(tt_prev_or_her_input_en)
 
                 # Refresh text items to check
                 mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
@@ -376,6 +383,7 @@ def main():
             values[f"-PREV_OR_HER_CB-"] = ""
             window[f"-PREV_OR_HER_CB-"].Update(value=values[f"-PREV_OR_HER_CB-"])
             window[f"-PREV_OR_HER_INPUT-"].Update(disabled=True)
+            window["-PREV_OR_HER_INPUT-"].set_tooltip(tt_prev_or_her_input_dis)
             values[f"-PREV_OR_HER_INPUT-"] = ""
             window[f"-PREV_OR_HER_INPUT-"].Update(value=values[f"-PREV_OR_HER_INPUT-"])
 
