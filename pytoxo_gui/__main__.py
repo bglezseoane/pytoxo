@@ -113,9 +113,12 @@ model_frame = sg.Frame(
 # Informative banner
 info_banner_model_head_text = "Model: "
 info_banner_order_head_text = "Order: "
+info_banner_fixing_head_text = "Fixing: "
 info_banner_maximizing_head_text = "Maximizing: "
+info_banner_fixing_maximizing_options = ["prevalence", "heritability"]
 info_banner_model_none_text = f"{info_banner_model_head_text}none"
 info_banner_order_none_text = f"{info_banner_order_head_text}none"
+info_banner_fixing_none_text = f"{info_banner_fixing_head_text}none"
 info_banner_maximizing_none_text = f"{info_banner_maximizing_head_text}none"
 info_banner = [
     [
@@ -133,11 +136,22 @@ info_banner = [
             justification="center",
         ),
         sg.Text(
+            info_banner_fixing_none_text,
+            key="-INFO_FIXING-",
+            size=(
+                len(info_banner_fixing_head_text)
+                + len(max(info_banner_fixing_maximizing_options)),
+                1,
+            ),
+            text_color=disabled_text_color,
+            justification="center",
+        ),
+        sg.Text(
             info_banner_maximizing_none_text,
             key="-INFO_MAXIMIZING-",
             size=(
-                len(max("prevalence", "heritability"))
-                + len(info_banner_maximizing_head_text),
+                len(info_banner_maximizing_head_text)
+                + len(max(info_banner_fixing_maximizing_options)),
                 1,
             ),
             text_color=disabled_text_color,
@@ -161,13 +175,14 @@ info_banner = [
 ]
 
 # Prevalence or heritability frame
+prev_or_her_texts = ["Heritability", "Prevalence"]
 prev_or_her_frame = sg.Frame(
     key="-PREV_OR_HER_FRAME-",
-    title="Prevalence and heritability",
+    title="Fix prevalence or heritability",
     layout=[
         [
             sg.Combo(
-                ("Heritability", "Prevalence"),
+                prev_or_her_texts,
                 key="-PREV_OR_HER_CB-",
                 readonly=True,
                 enable_events=True,  # To refresh the loop and can check filled fields
@@ -301,20 +316,24 @@ def check_all_filled(
         return False
 
 
-def update_info_banner(window: sg.Window, key: str, new_info: str = None) -> None:
+def update_info_banner(window: sg.Window, key: str, *args: str) -> None:
     """Auxiliary function to update the informative banner. The different
     keys have different treatments. Supported keys are: `-INFO_MODEL-`,
-    `-INFO_ORDER-`, `-INFO_MAXIMIZING-`, `-INFO_STATE_READY-`,
+    `-INFO_ORDER-`, `-INFO_FIXING-`, `-INFO_MAXIMIZING-`, `-INFO_STATE_READY-`,
     `-INFO_STATE_CALCULATING-` and `CLEAN`. `CLEAN` key serves to clean the
     banner as default."""
     if key == "-INFO_MODEL-":
-        if len(new_info) > INFO_BANNER_MAX_MODEL_NAME_LEN:
-            new_info = new_info[:INFO_BANNER_MAX_MODEL_NAME_LEN]
-        window[key].Update(value=f"{info_banner_model_head_text}{new_info}")
+        if len(args[0]) > INFO_BANNER_MAX_MODEL_NAME_LEN:
+            name = args[0][:INFO_BANNER_MAX_MODEL_NAME_LEN]
+        else:
+            name = args[0]
+        window[key].Update(value=f"{info_banner_model_head_text}{name}")
     elif key == "-INFO_ORDER-":
-        window[key].Update(value=f"{info_banner_order_head_text}{new_info}")
+        window[key].Update(value=f"{info_banner_order_head_text}{args[0]}")
+    elif key == "-INFO_FIXING-":
+        window[key].Update(value=f"{info_banner_fixing_head_text}{args[0]}")
     elif key == "-INFO_MAXIMIZING-":
-        window[key].Update(value=f"{info_banner_maximizing_head_text}{new_info}")
+        window[key].Update(value=f"{info_banner_maximizing_head_text}{args[0]}")
     elif key == "-INFO_STATE_READY-":
         window[key].Update(visible=True)
         window["-INFO_STATE_CALCULATING-"].Update(visible=False)
@@ -544,7 +563,13 @@ def main():
 
         elif event == "-PREV_OR_HER_CB-" and values[event] != "":
             # Update informative banner
-            update_info_banner(window, "-INFO_MAXIMIZING-", values[event])
+            fixed_prev_or_her = values[event].lower()
+            if fixed_prev_or_her == info_banner_fixing_maximizing_options[0]:
+                maximized_prev_or_her = info_banner_fixing_maximizing_options[1]
+            else:
+                maximized_prev_or_her = info_banner_fixing_maximizing_options[0]
+            update_info_banner(window, "-INFO_FIXING-", fixed_prev_or_her)
+            update_info_banner(window, "-INFO_MAXIMIZING-", maximized_prev_or_her)
 
         elif (
             event == "-PREV_OR_HER_INPUT-"
