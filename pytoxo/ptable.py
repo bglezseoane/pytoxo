@@ -19,6 +19,7 @@ import numpy
 import sympy
 
 import pytoxo.calculations
+import pytoxo.errors
 
 
 class PTable:
@@ -261,11 +262,11 @@ class PTable:
                     mafs=self._mafs,
                     model_order=self._order,
                 )
-            except:
-                raise Exception(
+            except pytoxo.errors.GenericCalculationError as e:
+                raise pytoxo.errors.GenericCalculationError(
                     "It is no possible to calculate the "
-                    "prevalence or the heritability. Are you "
-                    "using the original used MAFs?"
+                    f"prevalence or the heritability using {e.function}."
+                    "Are you using the original used MAFs?"
                 )
 
             table = self._compound_table_as_gametes()
