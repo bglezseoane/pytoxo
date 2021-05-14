@@ -205,8 +205,8 @@ class PTable:
         mafs = "\t".join([f"{'{:.3f}'.format(maf)}" for maf in self._mafs])
         x = str(self._values[0])
         y = str(self._values[1])
-        prev = str(self._prevalence)
-        her = str(self._heritability)
+        prev = str(self._prevalence.evalf())
+        her = str(self._heritability.evalf())
         table = ", ".join([str(pen) for pen in self._penetrance_values])
 
         # Generate lines of the file with genotypes and its penetrances
