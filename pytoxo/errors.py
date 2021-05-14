@@ -124,3 +124,23 @@ class UnsolvableModelError(Exception):
                 self.message = f"{msg_header} This {model_msg_text} has not solution."
         else:
             self.message = f"{msg_header} {self.message}."
+
+
+class GenericCalculationError(Exception):
+    """Representation of a generic calculation error of PyToxo."""
+
+    def __init__(self, function: str = None):
+        """Creates a generic calculation error of PyToxo.
+
+        Parameters
+        ----------
+        function : str, optional
+            The name of the function when the error occurs.
+        """
+        msg_skeleton = "Calculation error produced in: '{}'"
+        self.function = function
+
+        if not self.function:
+            self.message = "Calculation error produced"
+        else:
+            self.message = msg_skeleton.format(self.function)
