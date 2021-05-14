@@ -67,7 +67,7 @@ menu = sg.Menu(
             ["Open model", "Close model and clean", "Save calculated table", "Exit"],
         ],
         # ["Edit", ["Paste", "Undo"]],  # TODO
-        # ["Help", "About PyToxo GUI"],  # TODO
+        ["Help", "About PyToxo GUI"],
     ]
 )
 
@@ -689,6 +689,28 @@ def main():
                 finally:
                     # Update informative banner
                     update_info_banner(window, "-INFO_STATE_READY-")
+
+        elif event == "About PyToxo GUI":
+            # No hide and un-hide window with this popup, because no modal
+            _ = sg.Window(
+                "About PyToxo GUI",
+                layout=[
+                    [
+                        sg.Text(
+                            "PyToxo GUI\nA graphical user interface for "
+                            "PyToxo\n\nPyToxo\nA Python library for "
+                            "calculating penetrance tables of any "
+                            "bivariate epistasis model\n\nCopyright 2021 Borja "
+                            "González Seoane\nUniversity of A Coruña\nContact: "
+                            "borja.gseoane@udc.es",
+                            justification="center",
+                        )
+                    ]
+                ],
+                font=window_general_font,
+                finalize=True,
+                element_justification="center",
+            )
 
         # Finally, check if all is filled before go to the next interaction
         check_all_filled(window, values, text_entries_to_check_values)
