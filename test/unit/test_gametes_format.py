@@ -14,6 +14,7 @@
 """PyToxo model unit test suite."""
 
 import os
+import re
 import unittest
 
 import pytoxo.errors
@@ -33,20 +34,45 @@ class GAMETESFormatTestSuite(unittest.TestCase):
 
         # Toxo contrast
         expected_output = (
-            "Attribute names:	P0	P1"
-            + "Minor allele frequencies:	0.250	0.250"
-            + "x: 0.09717040"
-            + "y: 0.79108624"
-            + "Prevalence: 0.20000000"
-            + "Heritability: 0.09238291"
-            + ""
-            + "Table:"
-            + ""
-            + "0.09717040, 0.17404057, 0.31172168"
-            + "0.17404057, 0.31172168, 0.55832041"
-            + "0.31172168, 0.55832041, 1.00000000"
+            "Attribute names:	P0	P1\n"
+            + "Minor allele frequencies:	0.250	0.250\n"
+            + "x: 0.09717040\n"
+            + "y: 0.79108624\n"
+            + "Prevalence: 0.20000000\n"
+            + "Heritability: 0.09238291\n"
+            + "\n"
+            + "Table:\n"
+            + "\n"
+            + "0.09717040, 0.17404057, 0.31172168\n"
+            + "0.17404057, 0.31172168, 0.55832041\n"
+            + "0.31172168, 0.55832041, 1.00000000\n"
             + ""
         )
 
         output = p._compound_table_as_gametes()
-        self.assertEqual(expected_output, output)
+
+        # Previous steps to compare
+        expected_output = expected_output.splitlines()
+        output = output.splitlines()
+
+        # Exactly equal rows
+        for row in [0, 1, 6, 7, 8]:
+            self.assertEqual(expected_output[row], output[row])
+
+        # Center region, where used decimals are different in Toxo and PyToxo
+        for row in [2, 3, 4, 5]:
+            self.assertTrue(output[row].startswith(expected_output[row]))
+
+        # Table content, where floats are filtered in both outputs to compare
+        floats_re = re.compile(r"\d+(?:\.\d*)")
+        expected_output_table_floats = [
+            row
+            for row in (", ".join(expected_output[9:])).split(", ")
+            if floats_re.match(row)
+        ]
+        output_table_floats = output[9].split(", ")
+
+        self.assertEqual(len(expected_output_table_floats), len(output_table_floats))
+        for v, ev in zip(output_table_floats, expected_output_table_floats):
+            print(f"{float(v)} -------- {float(ev)}")
+            self.assertAlmostEqual(float(ev), float(v))
