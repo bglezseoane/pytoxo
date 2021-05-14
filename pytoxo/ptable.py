@@ -66,18 +66,8 @@ class PTable:
         self._values = list(values.values())  # Only used to save to GAMETES
         self._model_name = model_name
         self._mafs = mafs  # Only used to save to GAMETES
-
-        # Calculate prevalence and heritability, needed to save as GAMETES format
-        if self._mafs:
-            self._prevalence = pytoxo.calculations.compute_prevalence(
-                penetrances=self._penetrance_values, mafs=mafs, model_order=self._order
-            )
-            self._heritability = pytoxo.calculations.compute_heritability(
-                penetrances=self._penetrance_values, mafs=self._mafs
-            )
-        else:
-            self._prevalence = None
-            self._heritability = None
+        self._prevalence = None  # Only used to save to GAMETES
+        self._heritability = None  # Only used to save to GAMETES
 
     ########################################
     # Getters and setters for properties
@@ -258,6 +248,26 @@ class PTable:
         if format == "csv":
             table = self._compound_table_as_text()
         else:
+            """Calculate prevalence and heritability. Do here to optimize,
+            because they are only needed to save as GAMETES format"""
+            try:
+                self._prevalence = pytoxo.calculations.compute_prevalence(
+                    penetrances=self._penetrance_values,
+                    mafs=self._mafs,
+                    model_order=self._order,
+                )
+                self._heritability = pytoxo.calculations.compute_heritability(
+                    penetrances=self._penetrance_values,
+                    mafs=self._mafs,
+                    model_order=self._order,
+                )
+            except:
+                raise Exception(
+                    "It is no possible to calculate the "
+                    "prevalence or the heritability. Are you "
+                    "using the original used MAFs?"
+                )
+
             table = self._compound_table_as_gametes()
 
         # Write file
