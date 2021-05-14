@@ -207,7 +207,7 @@ class PTable:
         y = str(self._values[1])
         prev = str(self._prevalence)
         her = str(self._heritability)
-        table = ", ".join(self._penetrance_values)
+        table = ", ".join([str(pen) for pen in self._penetrance_values])
 
         # Generate lines of the file with genotypes and its penetrances
         return gametes_skeleton.format(attribute_names, mafs, x, y, prev, her, table)
