@@ -202,7 +202,7 @@ class PTable:
 
         # Prepare fields to fill
         attribute_names = "\t".join([f"P{i}" for i in range(0, self.order)])
-        mafs = "\t".join([f"{maf}\t" for maf in self._mafs])
+        mafs = "\t".join([f"{'{:.3f}'.format(maf)}" for maf in self._mafs])
         x = str(self._values[0])
         y = str(self._values[1])
         prev = str(self._prevalence)
