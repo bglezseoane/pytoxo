@@ -168,7 +168,32 @@ class PTable:
         -------
         str
             The penetrance table formatted as a text string.
+
+        Raises
+        ------
+        GenericCalculationError
+            Failing to calculate prevalence or heritability to save as GAMETES.
         """
+        """Calculate prevalence and heritability. Do here to optimize,
+            because they are only needed to save as GAMETES format"""
+        try:
+            self._prevalence = pytoxo.calculations.compute_prevalence(
+                penetrances=self._penetrance_values,
+                mafs=self._mafs,
+                model_order=self._order,
+            )
+            self._heritability = pytoxo.calculations.compute_heritability(
+                penetrances=self._penetrance_values,
+                mafs=self._mafs,
+                model_order=self._order,
+            )
+        except pytoxo.errors.GenericCalculationError as e:
+            raise pytoxo.errors.GenericCalculationError(
+                "It is no possible to calculate the "
+                f"prevalence or the heritability using {e.function}."
+                "Are you using the original used MAFs?"
+            )
+
         gametes_skeleton = (
             "Attribute names:\t{}\nMinor allele "
             "frequencies:\t{}\nx: {}\ny: {}\nPrevalence: {"
@@ -220,6 +245,8 @@ class PTable:
             passed as true.
         IsADirectoryError
             If `filename` is a existent directory.
+        GenericCalculationError
+            Failing to calculate prevalence or heritability to save as GAMETES.
         """
         supported_formats = ["csv", "gametes"]
 
@@ -249,26 +276,6 @@ class PTable:
         if format == "csv":
             table = self._compound_table_as_text()
         else:
-            """Calculate prevalence and heritability. Do here to optimize,
-            because they are only needed to save as GAMETES format"""
-            try:
-                self._prevalence = pytoxo.calculations.compute_prevalence(
-                    penetrances=self._penetrance_values,
-                    mafs=self._mafs,
-                    model_order=self._order,
-                )
-                self._heritability = pytoxo.calculations.compute_heritability(
-                    penetrances=self._penetrance_values,
-                    mafs=self._mafs,
-                    model_order=self._order,
-                )
-            except pytoxo.errors.GenericCalculationError as e:
-                raise pytoxo.errors.GenericCalculationError(
-                    "It is no possible to calculate the "
-                    f"prevalence or the heritability using {e.function}."
-                    "Are you using the original used MAFs?"
-                )
-
             table = self._compound_table_as_gametes()
 
         # Write file
