@@ -20,7 +20,7 @@ import pytoxo.errors
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
-INFO_BANNER_MAX_MODEL_NAME_LEN = 20
+INFO_BANNER_MAX_MODEL_NAME_LEN = 18
 
 
 class PyToxoContext:
@@ -111,13 +111,11 @@ model_frame = sg.Frame(
 )
 
 # Informative banner
-info_banner_model_head_text = "Model: "
-info_banner_order_head_text = "Order: "
+info_banner_model_skeleton_text = "Model: {} (order {})"
 info_banner_fixing_head_text = "Fixing: "
 info_banner_maximizing_head_text = "Maximizing: "
 info_banner_fixing_maximizing_options = ["prevalence", "heritability"]
-info_banner_model_none_text = f"{info_banner_model_head_text}none"
-info_banner_order_none_text = f"{info_banner_order_head_text}none"
+info_banner_model_none_text = f"{info_banner_model_skeleton_text.format('none','none')}"
 info_banner_fixing_none_text = f"{info_banner_fixing_head_text}none"
 info_banner_maximizing_none_text = f"{info_banner_maximizing_head_text}none"
 info_banner = [
@@ -125,35 +123,21 @@ info_banner = [
         sg.Text(
             info_banner_model_none_text,
             key="-INFO_MODEL-",
-            size=(INFO_BANNER_MAX_MODEL_NAME_LEN + len(info_banner_model_head_text), 1),
-            text_color=disabled_text_color,
-            justification="center",
-        ),
-        sg.Text(
-            info_banner_order_none_text,
-            key="-INFO_ORDER-",
+            size=(25, 1),
             text_color=disabled_text_color,
             justification="center",
         ),
         sg.Text(
             info_banner_fixing_none_text,
             key="-INFO_FIXING-",
-            size=(
-                len(info_banner_fixing_head_text)
-                + len(max(info_banner_fixing_maximizing_options)),
-                1,
-            ),
+            size=(20, 1),
             text_color=disabled_text_color,
             justification="center",
         ),
         sg.Text(
             info_banner_maximizing_none_text,
             key="-INFO_MAXIMIZING-",
-            size=(
-                len(info_banner_maximizing_head_text)
-                + len(max(info_banner_fixing_maximizing_options)),
-                1,
-            ),
+            size=(25, 1),
             text_color=disabled_text_color,
             justification="center",
         ),
@@ -319,17 +303,17 @@ def check_all_filled(
 def update_info_banner(window: sg.Window, key: str, *args: str) -> None:
     """Auxiliary function to update the informative banner. The different
     keys have different treatments. Supported keys are: `-INFO_MODEL-`,
-    `-INFO_ORDER-`, `-INFO_FIXING-`, `-INFO_MAXIMIZING-`, `-INFO_STATE_READY-`,
+    `-INFO_FIXING-`, `-INFO_MAXIMIZING-`, `-INFO_STATE_READY-`,
     `-INFO_STATE_CALCULATING-` and `CLEAN`. `CLEAN` key serves to clean the
     banner as default."""
     if key == "-INFO_MODEL-":
         if len(args[0]) > INFO_BANNER_MAX_MODEL_NAME_LEN:
-            name = args[0][:INFO_BANNER_MAX_MODEL_NAME_LEN]
+            name = f"{args[0][:INFO_BANNER_MAX_MODEL_NAME_LEN-3]}..."
         else:
             name = args[0]
-        window[key].Update(value=f"{info_banner_model_head_text}{name}")
-    elif key == "-INFO_ORDER-":
-        window[key].Update(value=f"{info_banner_order_head_text}{args[0]}")
+        window[key].Update(
+            value=f"{info_banner_model_skeleton_text.format(name,args[1])}"
+        )
     elif key == "-INFO_FIXING-":
         window[key].Update(value=f"{info_banner_fixing_head_text}{args[0]}")
     elif key == "-INFO_MAXIMIZING-":
@@ -343,7 +327,6 @@ def update_info_banner(window: sg.Window, key: str, *args: str) -> None:
         window.refresh()  # Needed here because it does not go through the loop
     elif key == "CLEAN":
         window["-INFO_MODEL-"].Update(value=f"{info_banner_model_none_text}")
-        window["-INFO_ORDER-"].Update(value=f"{info_banner_model_none_text}")
         window.refresh()  # Needed here because it does not go through the loop
     else:
         raise ValueError(key)
@@ -459,8 +442,12 @@ def main():
                 window["-PREV_OR_HER_INPUT-"].set_tooltip(tt_prev_or_her_input_en)
 
                 # Update informative banner
-                update_info_banner(window, "-INFO_MODEL-", pytoxo_context.model.name)
-                update_info_banner(window, "-INFO_ORDER-", str(pytoxo_context.order))
+                update_info_banner(
+                    window,
+                    "-INFO_MODEL-",
+                    pytoxo_context.model.name,
+                    str(pytoxo_context.order),
+                )
 
                 # Refresh text items to check
                 mafs_entries_to_check_keys = refresh_mafs_entries_to_check_keys(
