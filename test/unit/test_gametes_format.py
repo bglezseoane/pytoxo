@@ -336,16 +336,24 @@ class GAMETESFormatTestSuite(unittest.TestCase):
         # Check the headers
         test.assertEqual(expected_output_mafs, output_mafs)
         test.assertAlmostEqual(
-            expected_output_h, output_h, sys.float_info.dig - test_order
+            expected_output_h,
+            output_h,
+            places=7 - test_order,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
-            expected_output_p, output_p, sys.float_info.dig - test_order
+            expected_output_p,
+            output_p,
+            places=7 - test_order,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
-            expected_output_x, output_x, sys.float_info.dig - test_order
+            expected_output_x,
+            output_x,
+            places=7 - test_order,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
-            expected_output_y, output_y, sys.float_info.dig - test_order
+            expected_output_y,
+            output_y,
+            places=7 - test_order,  # Loose, accuracy is not checked here
         )
 
         # Check the table disposition and values
