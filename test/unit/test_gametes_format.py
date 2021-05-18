@@ -64,15 +64,17 @@ class GAMETESFormatTestSuite(unittest.TestCase):
             self.assertTrue(output[row].startswith(expected_output[row]))
 
         # Table content, where floats are filtered in both outputs to compare
-        floats_re = re.compile(r"\d+(?:\.\d*)")
-        expected_output_table_floats = [
-            row
-            for row in (", ".join(expected_output[9:])).split(", ")
-            if floats_re.match(row)
-        ]
-        output_table_floats = output[9].split(", ")
+        expected_output_table = [
+            l for l in expected_output[9:] if l.strip() != ""
+        ]  # Discard empty lines
+        output_table = [l for l in output[9:] if l.strip() != ""]  # Discard empty lines
 
-        self.assertEqual(len(expected_output_table_floats), len(output_table_floats))
-        for v, ev in zip(output_table_floats, expected_output_table_floats):
-            print(f"{float(v)} -------- {float(ev)}")
-            self.assertAlmostEqual(float(ev), float(v))
+        self.assertEqual(len(expected_output_table), len(output_table))
+
+        for expected_output_table_line, output_table_line in zip(
+            expected_output_table, output_table
+        ):
+            for ev, v in zip(
+                expected_output_table_line.split(","), output_table_line.split(",")
+            ):
+                self.assertAlmostEqual(float(ev), float(v))
