@@ -222,6 +222,7 @@ class PTable:
                 f"{self._penetrance_values[i+7]}, "
                 f"{self._penetrance_values[i+8]}\n\n"
             )
+        table = table[:-1]
 
         # Fill skeleton and return
         return gametes_skeleton.format(attribute_names, mafs, x, y, prev, her, table)
