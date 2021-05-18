@@ -202,8 +202,15 @@ class GAMETESFormatTestSuite(unittest.TestCase):
         comparing with a Toxo generated file to the same input. Compares both
         the table disposition and the values. More exhaustive than
         `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
-        test_order = 2  # Determine the sources to use in this particular test
+        self._helper_toxo_contrast_find_tables(self, 2)
 
+    @staticmethod
+    def _helper_toxo_contrast_find_tables(test, test_order):
+        """Helper method with the test skeleton for the test of
+        the composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
         sample_filename = os.path.join(
             "test", "unit", "gametes_output_samples", f"toxo_{test_order}.txt"
         )
@@ -278,20 +285,20 @@ class GAMETESFormatTestSuite(unittest.TestCase):
                 break
 
         # Check the headers
-        self.assertEqual(expected_output_mafs, output_mafs)
-        self.assertAlmostEqual(expected_output_h, output_h)
-        self.assertAlmostEqual(expected_output_p, output_p)
-        self.assertAlmostEqual(expected_output_x, output_x)
-        self.assertAlmostEqual(expected_output_y, output_y)
+        test.assertEqual(expected_output_mafs, output_mafs)
+        test.assertAlmostEqual(expected_output_h, output_h)
+        test.assertAlmostEqual(expected_output_p, output_p)
+        test.assertAlmostEqual(expected_output_x, output_x)
+        test.assertAlmostEqual(expected_output_y, output_y)
 
         # Check the table disposition and values
         for expected_output_table_line, output_table_line in zip(
             expected_output_table, output_table
         ):
             if expected_output_table_line == "\n":
-                self.assertEqual(expected_output_table_line, output_table_line)
+                test.assertEqual(expected_output_table_line, output_table_line)
             else:
                 for ev, v in zip(
                     expected_output_table_line.split(","), output_table_line.split(",")
                 ):
-                    self.assertAlmostEqual(float(ev), float(v))
+                    test.assertAlmostEqual(float(ev), float(v))
