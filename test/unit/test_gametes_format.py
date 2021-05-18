@@ -299,8 +299,8 @@ class GAMETESFormatTestSuite(unittest.TestCase):
         m = pytoxo.model.Model(
             os.path.join("models", f"additive_{test_order}.csv")  # Known
         )
-        pt = m.find_max_prevalence_table(
-            mafs=expected_output_mafs, h=expected_output_h, check=False
+        pt = m.find_max_heritability_table(
+            mafs=expected_output_mafs, p=expected_output_p, check=False
         )
         pt_as_gametes = pt._compound_table_as_gametes().splitlines(keepends=True)
 
