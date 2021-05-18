@@ -14,7 +14,7 @@
 """PyToxo model unit test suite."""
 
 import os
-import re
+import sys
 import unittest
 
 import pytoxo.errors
@@ -204,6 +204,55 @@ class GAMETESFormatTestSuite(unittest.TestCase):
         `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
         self._helper_toxo_contrast_find_tables(self, 2)
 
+    def test_ptable_as_gametes_check_all_as_toxo_2(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 2)
+
+    def test_ptable_as_gametes_check_all_as_toxo_3(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 3)
+
+    def test_ptable_as_gametes_check_all_as_toxo_4(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 4)
+
+    def test_ptable_as_gametes_check_all_as_toxo_5(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 5)
+
+    def test_ptable_as_gametes_check_all_as_toxo_6(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 6)
+
+    def test_ptable_as_gametes_check_all_as_toxo_7(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 7)
+
+    def test_ptable_as_gametes_check_all_as_toxo_8(self):
+        """Test composition of the `PTable` formatted as GAMETES format,
+        comparing with a Toxo generated file to the same input. Compares both
+        the table disposition and the values. More exhaustive than
+        `test_ptable_as_gametes_check_disposition_as_unknown_*` test."""
+        self._helper_toxo_contrast_find_tables(self, 8)
+
     @staticmethod
     def _helper_toxo_contrast_find_tables(test, test_order):
         """Helper method with the test skeleton for the test of
@@ -286,10 +335,18 @@ class GAMETESFormatTestSuite(unittest.TestCase):
 
         # Check the headers
         test.assertEqual(expected_output_mafs, output_mafs)
-        test.assertAlmostEqual(expected_output_h, output_h)
-        test.assertAlmostEqual(expected_output_p, output_p)
-        test.assertAlmostEqual(expected_output_x, output_x)
-        test.assertAlmostEqual(expected_output_y, output_y)
+        test.assertAlmostEqual(
+            expected_output_h, output_h, sys.float_info.dig - test_order
+        )
+        test.assertAlmostEqual(
+            expected_output_p, output_p, sys.float_info.dig - test_order
+        )
+        test.assertAlmostEqual(
+            expected_output_x, output_x, sys.float_info.dig - test_order
+        )
+        test.assertAlmostEqual(
+            expected_output_y, output_y, sys.float_info.dig - test_order
+        )
 
         # Check the table disposition and values
         for expected_output_table_line, output_table_line in zip(
