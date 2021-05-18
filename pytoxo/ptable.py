@@ -279,7 +279,7 @@ class PTable:
             table = self._compound_table_as_gametes()
 
         # Write file
-        if overwrite:
+        if overwrite and os.path.exists(filename):
             os.remove(filename)
         with open(filename, "x") as f:
             f.write(table)
