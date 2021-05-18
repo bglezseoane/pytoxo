@@ -207,9 +207,23 @@ class PTable:
         y = str(self._values[1])
         prev = str(self._prevalence.evalf())
         her = str(self._heritability.evalf())
-        table = ", ".join([str(pen) for pen in self._penetrance_values])
 
-        # Generate lines of the file with genotypes and its penetrances
+        # Prepare table to fill
+        table = ""
+        for i in range(0, len(self._penetrance_values), 9):
+            table += (
+                f"{self._penetrance_values[i]}, "
+                f"{self._penetrance_values[i+1]}, "
+                f"{self._penetrance_values[i+2]}\n"
+                f"{self._penetrance_values[i+3]}, "
+                f"{self._penetrance_values[i+4]}, "
+                f"{self._penetrance_values[i+5]}\n"
+                f"{self._penetrance_values[i+6]}, "
+                f"{self._penetrance_values[i+7]}, "
+                f"{self._penetrance_values[i+8]}\n\n"
+            )
+
+        # Fill skeleton and return
         return gametes_skeleton.format(attribute_names, mafs, x, y, prev, her, table)
 
     def print_table(self) -> None:
