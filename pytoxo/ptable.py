@@ -135,8 +135,8 @@ class PTable:
             + hash(self._values)
             + hash(self._model_name)
             + hash(self._mafs)
-            + self._prevalence
-            + self._heritability
+            + hash(self._prevalence)
+            + hash(self._heritability)
         )
 
     def __eq__(self, other):
@@ -162,7 +162,7 @@ class PTable:
         """Compound the penetrance table as GAMETES format, to save it into a
         file.
 
-        Attributes `mafs`, `prevalence` and `heritability` must be filled.
+        Attributes `mafs` must be filled.
 
         Returns
         -------
@@ -237,8 +237,7 @@ class PTable:
         """Write the penetrance table into a file.
 
         Currently formats CSV and GAMETES are available. To use GAMETES,
-        this object has to be filled the attributes `mafs`, `prevalence`
-        and `heritability`.
+        this object has to be filled the attribute `mafs`.
 
         Parameters
         ----------
@@ -271,9 +270,7 @@ class PTable:
             ValueError(f"Unsupported '{format}' format")
 
         # Check if is possible to use GAMETES
-        if format == "gametes" and (
-            not self._mafs or not self._prevalence or not self._heritability
-        ):
+        if format == "gametes" and self._mafs is None:
             raise ValueError(
                 f"The '{format}' format requires to be filled the "
                 f"attributes `mafs`, `prevalence`and `heritability`."
