@@ -1345,7 +1345,7 @@ class ToxoContrastTestSuite(unittest.TestCase):
                 output_root,
                 f"{os.path.basename(model_file)}_{maf}_{her_or_prev_key}{her_or_prev}.csv",
             )
-            ptable.write_to_file(output_file)
+            ptable.write_to_file(output_file, format="csv")
 
             # Compare Toxo and PyToxo outputs
             with open(expected_output_file, "r") as f:
