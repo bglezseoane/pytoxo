@@ -227,9 +227,46 @@ class PTable:
         # Fill skeleton and return
         return gametes_skeleton.format(attribute_names, mafs, x, y, prev, her, table)
 
-    def print_table(self) -> None:
-        """Print the penetrance as raw text."""
-        print(self._compound_table_as_text())
+    def print_table(self, format: str = "csv") -> None:
+        """Print the penetrance as raw text.
+
+        Currently formats CSV and GAMETES are available. To use GAMETES,
+        this object has to be filled the attribute `mafs`.
+
+        Parameters
+        ----------
+        format : str (default "csv")
+            The format of the final print. Currently CSV format (`csv`
+            flag) and GAMETES (`gametes` flag) are supported. Default is
+            CSV.
+
+        Raises
+        ------
+        ValueError
+            If unsupported format tentative.
+        GenericCalculationError
+            Failing to calculate prevalence or heritability to print as GAMETES.
+        """
+        supported_formats = ["csv", "gametes"]
+
+        # Input handling and checks
+        format = format.lower()  # Defer
+        if format not in supported_formats:
+            ValueError(f"Unsupported '{format}' format")
+
+        # Check if is possible to use GAMETES
+        if format == "gametes" and self._mafs is None:
+            raise ValueError(
+                f"The '{format}' format requires to be filled the attribute `mafs`."
+            )
+
+        # Generate the table
+        if format == "csv":
+            table = self._compound_table_as_text()
+        else:
+            table = self._compound_table_as_gametes()
+
+        print(table)
 
     def write_to_file(
         self, filename: str, overwrite: bool = False, format: str = "gametes"
@@ -273,7 +310,7 @@ class PTable:
         # Check if is possible to use GAMETES
         if format == "gametes" and self._mafs is None:
             raise ValueError(
-                f"The '{format}' format requires to be filled the " f"attribute `mafs`."
+                f"The '{format}' format requires to be filled the attribute `mafs`."
             )
 
         # Calculate final filename
