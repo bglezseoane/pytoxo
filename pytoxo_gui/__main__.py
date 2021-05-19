@@ -248,7 +248,7 @@ layout = [
             key="-FORMATS_CB-",
             readonly=True,
             default_value=output_formats[0],
-            size=(8, 1),
+            size=(9, 1),
             text_color=text_inputs_text_color,
             background_color=text_inputs_background_color,
         ),
