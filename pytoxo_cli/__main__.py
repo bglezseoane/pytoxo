@@ -33,7 +33,7 @@ def main():
         prog="pytoxo",
         description="PyToxo: A Python library for calculating penetrance "
         "tables of any bivariate epistasis model.",
-        epilog="Copyright 2021 Borja González Seoane.",
+        epilog="PyToxo CLI. Copyright 2021 Borja González Seoane",
         exit_on_error=False,
     )
     parser.add_argument(
@@ -53,7 +53,7 @@ def main():
     prev_or_her_flag.add_argument(
         "--max_her",
         action="store_true",
-        help="This flag set PyToxo to maximize the prevalence, so the "
+        help="This flag set PyToxo to maximize the heritability, so the "
         "'PREV_OR_HER' argument will be considered as prevalence.",
     )
     parser.add_argument(
@@ -61,7 +61,9 @@ def main():
         metavar="PREV_OR_HER",
         type=float,
         nargs=1,
-        help="The heritability or prevalence to use, depending of the used flag.",
+        help="The heritability or prevalence to fix, depending of the used "
+        "flag. Maximizing prevalence, this argument will be interpreted "
+        "as heritability; and maximizing heritability, as prevalence.",
     )
     parser.add_argument(
         "mafs",
