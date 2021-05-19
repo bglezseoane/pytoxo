@@ -252,7 +252,7 @@ class PTable:
         # Input handling and checks
         format = format.lower()  # Defer
         if format not in supported_formats:
-            ValueError(f"Unsupported '{format}' format")
+            raise ValueError(f"Unsupported '{format}' format")
 
         # Check if is possible to use GAMETES
         if format == "gametes" and self._mafs is None:
@@ -305,7 +305,7 @@ class PTable:
         # Input handling and checks
         format = format.lower()  # Defer
         if format not in supported_formats:
-            ValueError(f"Unsupported '{format}' format")
+            raise ValueError(f"Unsupported '{format}' format")
 
         # Check if is possible to use GAMETES
         if format == "gametes" and self._mafs is None:
