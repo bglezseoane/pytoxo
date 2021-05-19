@@ -122,11 +122,8 @@ def main():
     # Print the penetrance table to can integrate it in a typical Shell routine
     try:
         ptable.print_table(format=output_format)
-    except pytoxo.errors.GenericCalculationError as e:
+    except pytoxo.errors.GenericCalculationError as e:  # Improvable exception
         print(f"{error_hd} {e.message}")
-        sys.exit(1)
-    except ValueError as e:  # Improvable, because formats are restricted
-        print(f"{error_hd} {e}")
         sys.exit(1)
 
 
