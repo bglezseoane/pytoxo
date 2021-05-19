@@ -232,7 +232,7 @@ class PTable:
         print(self._compound_table_as_text())
 
     def write_to_file(
-        self, filename: str, overwrite: bool = False, format: str = "csv"
+        self, filename: str, overwrite: bool = False, format: str = "gametes"
     ) -> None:
         """Write the penetrance table into a file.
 
@@ -246,9 +246,10 @@ class PTable:
         overwrite : bool (default False)
             A flag that should be passed as true to overwrite the final file
             if it already exists.
-        format : str
+        format : str (default "gametes")
             The format of the final file. Currently CSV format (`csv`
-            flag) and GAMETES (`gametes` flag) are supported. Default is CSV.
+            flag) and GAMETES (`gametes` flag) are supported. Default is
+            GAMETES.
 
         Raises
         ------
@@ -262,7 +263,7 @@ class PTable:
         GenericCalculationError
             Failing to calculate prevalence or heritability to save as GAMETES.
         """
-        supported_formats = ["csv", "gametes"]
+        supported_formats = ["gametes", "csv"]
 
         # Input handling and checks
         format = format.lower()  # Defer
@@ -272,8 +273,7 @@ class PTable:
         # Check if is possible to use GAMETES
         if format == "gametes" and self._mafs is None:
             raise ValueError(
-                f"The '{format}' format requires to be filled the "
-                f"attributes `mafs`, `prevalence`and `heritability`."
+                f"The '{format}' format requires to be filled the " f"attribute `mafs`."
             )
 
         # Calculate final filename
@@ -285,10 +285,10 @@ class PTable:
             raise IsADirectoryError(filename)
 
         # Generate the table
-        if format == "csv":
-            table = self._compound_table_as_text()
-        else:
+        if format == "gametes":
             table = self._compound_table_as_gametes()
+        else:
+            table = self._compound_table_as_text()
 
         # Write file
         if overwrite and os.path.exists(filename):
