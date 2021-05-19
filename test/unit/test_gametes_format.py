@@ -14,7 +14,6 @@
 """PyToxo model unit test suite."""
 
 import os
-import sys
 import unittest
 
 import pytoxo.errors
@@ -338,22 +337,22 @@ class GAMETESFormatTestSuite(unittest.TestCase):
         test.assertAlmostEqual(
             expected_output_h,
             output_h,
-            places=7 - test_order,  # Loose, accuracy is not checked here
+            places=5,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
             expected_output_p,
             output_p,
-            places=7 - test_order,  # Loose, accuracy is not checked here
+            places=5,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
             expected_output_x,
             output_x,
-            places=7 - test_order,  # Loose, accuracy is not checked here
+            places=5,  # Loose, accuracy is not checked here
         )
         test.assertAlmostEqual(
             expected_output_y,
             output_y,
-            places=7 - test_order,  # Loose, accuracy is not checked here
+            places=5,  # Loose, accuracy is not checked here
         )
 
         # Check the table disposition and values
