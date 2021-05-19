@@ -4,6 +4,8 @@
 ## 
 ## In this simple shell script we illustrate the use of PyToxo, as command line 
 ## interface (CLI), with some of the models saved within this repository.
+## 
+## Warning: run this script from the directory that contains it.
 
 
 ## EDIT HERE
@@ -37,3 +39,8 @@ rm "$tmp_file"  # Clean
 echo
 echo "Example 3: 'pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4':"
 pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4
+
+# Example 4
+echo
+echo "Example 4, using GAMETES format: 'pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4 --gametes':"
+pytoxo models/threshold_5.csv 0.98 --max_prev 0.1 0.2 0.3 0.25 0.4 --gametes

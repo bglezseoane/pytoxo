@@ -135,8 +135,8 @@ class PTable:
             + hash(self._values)
             + hash(self._model_name)
             + hash(self._mafs)
-            + self._prevalence
-            + self._heritability
+            + hash(self._prevalence)
+            + hash(self._heritability)
         )
 
     def __eq__(self, other):
@@ -162,7 +162,7 @@ class PTable:
         """Compound the penetrance table as GAMETES format, to save it into a
         file.
 
-        Attributes `mafs`, `prevalence` and `heritability` must be filled.
+        Attributes `mafs` must be filled.
 
         Returns
         -------
@@ -227,18 +227,54 @@ class PTable:
         # Fill skeleton and return
         return gametes_skeleton.format(attribute_names, mafs, x, y, prev, her, table)
 
-    def print_table(self) -> None:
-        """Print the penetrance as raw text."""
-        print(self._compound_table_as_text())
+    def print_table(self, format: str = "csv") -> None:
+        """Print the penetrance as raw text.
+
+        Currently formats CSV and GAMETES are available. To use GAMETES,
+        this object has to be filled the attribute `mafs`.
+
+        Parameters
+        ----------
+        format : str (default "csv")
+            The format of the final print. Currently CSV format (`csv`
+            flag) and GAMETES (`gametes` flag) are supported. Default is
+            CSV.
+
+        Raises
+        ------
+        ValueError
+            If unsupported format tentative.
+        GenericCalculationError
+            Failing to calculate prevalence or heritability to print as GAMETES.
+        """
+        supported_formats = ["csv", "gametes"]
+
+        # Input handling and checks
+        format = format.lower()  # Defer
+        if format not in supported_formats:
+            raise ValueError(f"Unsupported '{format}' format")
+
+        # Check if is possible to use GAMETES
+        if format == "gametes" and self._mafs is None:
+            raise ValueError(
+                f"The '{format}' format requires to be filled the attribute `mafs`."
+            )
+
+        # Generate the table
+        if format == "csv":
+            table = self._compound_table_as_text()
+        else:
+            table = self._compound_table_as_gametes()
+
+        print(table)
 
     def write_to_file(
-        self, filename: str, overwrite: bool = False, format: str = "csv"
+        self, filename: str, overwrite: bool = False, format: str = "gametes"
     ) -> None:
         """Write the penetrance table into a file.
 
         Currently formats CSV and GAMETES are available. To use GAMETES,
-        this object has to be filled the attributes `mafs`, `prevalence`
-        and `heritability`.
+        this object has to be filled the attribute `mafs`.
 
         Parameters
         ----------
@@ -247,9 +283,10 @@ class PTable:
         overwrite : bool (default False)
             A flag that should be passed as true to overwrite the final file
             if it already exists.
-        format : str
+        format : str (default "gametes")
             The format of the final file. Currently CSV format (`csv`
-            flag) and GAMETES (`gametes` flag) are supported. Default is CSV.
+            flag) and GAMETES (`gametes` flag) are supported. Default is
+            GAMETES.
 
         Raises
         ------
@@ -263,20 +300,17 @@ class PTable:
         GenericCalculationError
             Failing to calculate prevalence or heritability to save as GAMETES.
         """
-        supported_formats = ["csv", "gametes"]
+        supported_formats = ["gametes", "csv"]
 
         # Input handling and checks
         format = format.lower()  # Defer
         if format not in supported_formats:
-            ValueError(f"Unsupported '{format}' format")
+            raise ValueError(f"Unsupported '{format}' format")
 
         # Check if is possible to use GAMETES
-        if format == "gametes" and (
-            not self._mafs or not self._prevalence or not self._heritability
-        ):
+        if format == "gametes" and self._mafs is None:
             raise ValueError(
-                f"The '{format}' format requires to be filled the "
-                f"attributes `mafs`, `prevalence`and `heritability`."
+                f"The '{format}' format requires to be filled the attribute `mafs`."
             )
 
         # Calculate final filename
@@ -288,10 +322,10 @@ class PTable:
             raise IsADirectoryError(filename)
 
         # Generate the table
-        if format == "csv":
-            table = self._compound_table_as_text()
-        else:
+        if format == "gametes":
             table = self._compound_table_as_gametes()
+        else:
+            table = self._compound_table_as_text()
 
         # Write file
         if overwrite and os.path.exists(filename):
