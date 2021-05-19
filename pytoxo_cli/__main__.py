@@ -43,6 +43,12 @@ def main():
         nargs=1,
         help="The path to the epistatic model CSV file.",
     )
+    parser.add_argument(
+        "--gametes",
+        action="store_true",
+        help="This flag is to use GAMETES format to print the final table, "
+        "instead of default CSV format.",
+    )
     prev_or_her_flag = parser.add_mutually_exclusive_group(required=True)
     prev_or_her_flag.add_argument(
         "--max_prev",
@@ -88,6 +94,10 @@ def main():
     else:
         calc_target = pytoxo.Model.find_max_heritability_table
     prev_or_her = args.prev_or_her_arg[0]
+    if args.gametes:
+        output_format = "gametes"
+    else:
+        output_format = "csv"  # Default
 
     # Try to build model
     try:
@@ -109,8 +119,15 @@ def main():
         print(f"{error_hd} {e.message}")
         sys.exit(1)
 
-    # Print the penetrance table to can integrate it in a typical shell routine
-    ptable.print_table()
+    # Print the penetrance table to can integrate it in a typical Shell routine
+    try:
+        ptable.print_table(format=output_format)
+    except pytoxo.errors.GenericCalculationError as e:
+        print(f"{error_hd} {e.message}")
+        sys.exit(1)
+    except ValueError as e:  # Improvable, because formats are restricted
+        print(f"{error_hd} {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
