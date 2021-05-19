@@ -816,6 +816,7 @@ class Model:
                 self._variables[0]: sol[self._variables[0]],
                 self._variables[1]: sol[self._variables[1]],
             },
+            mafs=mafs,
         )
 
     def _build_max_heritability_system(
@@ -909,6 +910,7 @@ class Model:
                 self._variables[0]: sol[self._variables[0]],
                 self._variables[1]: sol[self._variables[1]],
             },
+            mafs=mafs,
         )
 
     def check_find_table_parameters(
