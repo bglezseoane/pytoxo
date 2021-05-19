@@ -225,6 +225,9 @@ mafs_frame = sg.Frame(
     element_justification="center",
 )
 
+# Available output formats
+output_formats = ["GAMETES", "CSV"]
+
 # Layout composition
 layout = [
     [menu],
@@ -236,7 +239,19 @@ layout = [
             "Calculate table",
             disabled=True,
             tooltip=tt_calculate_button_dis,
-        )
+        ),
+    ],
+    [
+        sg.Text("Save calculated table as"),
+        sg.Combo(
+            output_formats,
+            key="-FORMATS_CB-",
+            readonly=True,
+            default_value=output_formats[0],
+            size=(8, 1),
+            text_color=text_inputs_text_color,
+            background_color=text_inputs_background_color,
+        ),
     ],
 ]
 
@@ -246,7 +261,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 650),
+    size=(650, 700),
     element_justification="center",
 )
 
@@ -406,6 +421,7 @@ def main():
                 "Open model",
                 no_window=True,  # To use a native approach
                 file_types=(("Comma separated values", "*.csv"),),
+                modal=True,  # Work in all platforms (native approach)
             )
             if not filename:
                 continue  # The operation has been canceled
@@ -530,19 +546,42 @@ def main():
                 )
                 window.UnHide()
             else:
+                # Get configured output format
+                output_format = values["-FORMATS_CB-"].lower()
+                # Calculate default output file extension attending to output format
+                if output_format == "gametes":
+                    output_default_extension = ".txt"
+                else:
+                    output_default_extension = ".csv"
+
                 filename = sg.popup_get_file(
                     "Save calculated table",
                     save_as=True,
-                    default_extension="csv",
+                    default_extension=output_default_extension,
                     no_window=True,  # To use a native approach
-                    file_types=(("Comma separated values", "*.csv"),),
+                    modal=True,  # Work in all platforms (native approach)
                 )
                 if not filename:
                     continue  # The operation has been canceled
                 else:
-                    pytoxo_context.ptable.write_to_file(
-                        filename=filename, overwrite=True, format="csv"
-                    )
+                    try:
+                        pytoxo_context.ptable.write_to_file(
+                            filename=filename, overwrite=True, format=output_format
+                        )
+                    except pytoxo.errors.GenericCalculationError as e:  # Improvable exception
+                        # Format error message
+                        msg = e.__str__()
+                        if not msg.endswith("."):
+                            msg = f"{e}."
+                        msg = msg.capitalize()
+
+                        window.Hide()  # Patch because popup modal function does not work in all platforms
+                        sg.popup_ok(
+                            f"{msg} Revise this field.",
+                            title="Saving error",
+                            font=window_general_font,
+                        )
+                        window.UnHide()
 
         elif event == "-MODEL_TABLE-":
             # Intercept the event to refresh window when click on the table

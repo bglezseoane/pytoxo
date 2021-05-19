@@ -19,11 +19,14 @@ built-ins for optimization.
 """
 
 import functools
+import inspect
 import itertools
 import typing
 
 import timeout_decorator
 from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify, simplify
+
+from pytoxo.errors import GenericCalculationError
 
 
 def genotype_probabilities(
@@ -60,32 +63,44 @@ def genotype_probabilities(
     typing.Union[list[Rational], list[Expr]]
         Array with the probabilities of all possible allele combinations as
         rational numbers.
+
+    Raises
+    ------
+    GenericCalculationError
+        On any error situation.
     """
-    mafs = [nsimplify(m) for m in mafs]  # Assert rationals
+    try:
+        mafs = [nsimplify(m) for m in mafs]  # Assert rationals
 
-    af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
-    for maf in mafs:
-        m = maf
-        M = Add(Integer(1), Mul(Integer(-1), maf))
-        af_zip.append((m, M))
+        af_zip = []  # Zip with pairs of alleles frequencies as `(m, M)` tuples
+        for maf in mafs:
+            m = maf
+            M = Add(Integer(1), Mul(Integer(-1), maf))
+            af_zip.append((m, M))
 
-    gen_probs = []  # Genotype probabilities as `[M ** 2, 2 * M * m, m ** 2]` sub-lists
-    for allele_pair in af_zip:
-        m = allele_pair[0]
-        M = allele_pair[1]
-        gen_probs.append(
-            [Pow(M, Integer(2)), Mul(Integer(2), M, m), Pow(m, Integer(2))]
-        )
+        gen_probs = (
+            []
+        )  # Genotype probabilities as `[M ** 2, 2 * M * m, m ** 2]` sub-lists
+        for allele_pair in af_zip:
+            m = allele_pair[0]
+            M = allele_pair[1]
+            gen_probs.append(
+                [Pow(M, Integer(2)), Mul(Integer(2), M, m), Pow(m, Integer(2))]
+            )
 
-    # Cartesian product of the probabilities
-    gen_probs_cps = list(itertools.product(*gen_probs))
+        # Cartesian product of the probabilities
+        gen_probs_cps = list(itertools.product(*gen_probs))
 
-    # Reduction of the cartesian product with a multiplication for each sub-list
-    gen_probs_cp_red = []
-    for gen_probs_cp in gen_probs_cps:
-        gen_probs_cp_red.append(functools.reduce(Mul, gen_probs_cp, Integer(1)))
+        # Reduction of the cartesian product with a multiplication for each sub-list
+        gen_probs_cp_red = []
+        for gen_probs_cp in gen_probs_cps:
+            gen_probs_cp_red.append(functools.reduce(Mul, gen_probs_cp, Integer(1)))
 
-    return gen_probs_cp_red
+        return gen_probs_cp_red
+
+    except:
+        frame = inspect.currentframe()
+        raise GenericCalculationError(inspect.getframeinfo(frame).function)
 
 
 def compute_prevalence(
@@ -121,34 +136,44 @@ def compute_prevalence(
     ------
     ValueError
         If none of `mafs` and `gp` are passed as parameter.
+
+    Raises
+    ------
+    GenericCalculationError
+        On any error situation.
     """
-    if not gp:
-        if not mafs:
-            raise ValueError(
-                "One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored."
-            )
+    try:
+        if not gp:
+            if not mafs:
+                raise ValueError(
+                    "One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored."
+                )
+            else:
+                gp = genotype_probabilities(mafs)
         else:
-            gp = genotype_probabilities(mafs)
-    else:
-        gp = [nsimplify(p) for p in gp]  # Assert rationals
+            gp = [nsimplify(p) for p in gp]  # Assert rationals
 
-    penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
+        penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
 
-    # `penetrances .* gp`
-    prods = []
-    for pen, prob in zip(penetrances, gp):
-        prods.append(Mul(pen, prob))
+        # `penetrances .* gp`
+        prods = []
+        for pen, prob in zip(penetrances, gp):
+            prods.append(Mul(pen, prob))
 
-    addition = Add(*prods)  # Addition of all the elements of the product array
+        addition = Add(*prods)  # Addition of all the elements of the product array
 
-    """Try to solve. Innocuous if the expression is still symbolic and saves a
-    lot of time if we are dealing with an expression that is already reducible 
-    to a numeric value"""
-    addition = addition.evalf().nsimplify()
+        """Try to solve. Innocuous if the expression is still symbolic and saves a
+        lot of time if we are dealing with an expression that is already reducible 
+        to a numeric value"""
+        addition = addition.evalf().nsimplify()
 
-    return _try_to_simplify(
-        addition, model_order
-    )  # Return simplified to optimize next steps
+        return _try_to_simplify(
+            addition, model_order
+        )  # Return simplified to optimize next steps
+
+    except:
+        frame = inspect.currentframe()
+        raise GenericCalculationError(inspect.getframeinfo(frame).function)
 
 
 def compute_heritability(
@@ -175,33 +200,43 @@ def compute_heritability(
     typing.Union[Rational, Expr]
         Heritability of the penetrance table. Returns a rational if it is
         possible to solve the expression numerically and the expression if not.
+
+    Raises
+    ------
+    GenericCalculationError
+        On any error situation.
     """
-    penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
+    try:
+        penetrances = [nsimplify(p) for p in penetrances]  # Assert rationals
 
-    gp = genotype_probabilities(mafs)
-    p = compute_prevalence(penetrances, mafs, gp)
+        gp = genotype_probabilities(mafs)
+        p = compute_prevalence(penetrances, mafs, gp)
 
-    # `(penetrances - p).^2 .* gp`
-    prods = []
-    for pen, prob in zip(penetrances, gp):
-        prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
+        # `(penetrances - p).^2 .* gp`
+        prods = []
+        for pen, prob in zip(penetrances, gp):
+            prods.append(Mul(Pow(Add(pen, Mul(Integer(-1), p)), Integer(2)), prob))
 
-    # Denominator of the final expression
-    denom = _try_to_simplify(
-        Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1), model_order)
-    )
+        # Denominator of the final expression
+        denom = _try_to_simplify(
+            Pow(Mul(p, Add(Integer(1), Mul(Integer(-1), p))), Integer(-1), model_order)
+        )
 
-    # `prods / denom`, because `denom` is a negative pow
-    mult = Mul(Add(*prods), denom)
+        # `prods / denom`, because `denom` is a negative pow
+        mult = Mul(Add(*prods), denom)
 
-    """Try to solve. Innocuous if the expression is still symbolic and saves a
-    lot of time if we are dealing with an expression that is already reducible 
-    to a numeric value"""
-    mult = mult.evalf().nsimplify()
+        """Try to solve. Innocuous if the expression is still symbolic and saves a
+        lot of time if we are dealing with an expression that is already reducible 
+        to a numeric value"""
+        mult = mult.evalf().nsimplify()
 
-    return _try_to_simplify(
-        mult, model_order
-    )  # Return simplified to optimize next steps
+        return _try_to_simplify(
+            mult, model_order
+        )  # Return simplified to optimize next steps
+
+    except:
+        frame = inspect.currentframe()
+        raise GenericCalculationError(inspect.getframeinfo(frame).function)
 
 
 def _try_to_simplify(expr: Expr, timeout: int = 60, model_order: int = None):
