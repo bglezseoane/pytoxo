@@ -43,7 +43,7 @@ pytoxo_main_color = "#044343"
 sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
     "BACKGROUND": pytoxo_main_color,
     "TEXT": "#e4e4e4",
-    "INPUT": "#045757",
+    "INPUT": "white",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -57,7 +57,7 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
 sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
     "BACKGROUND": "#a8c1b4",
     "TEXT": pytoxo_main_color,
-    "INPUT": "#045757",
+    "INPUT": "white",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -104,7 +104,6 @@ disabled_text_color = disabled_text_color_depending_of_style
 
 # Other style settings: background colors
 table_background_color = "white"
-text_inputs_background_color = "white"
 table_alternating_background_color = "lightgrey"
 
 # Other style settings: highlight colors
@@ -268,7 +267,6 @@ prev_or_her_frame = sg.Frame(
                 enable_events=True,  # To refresh the loop and can check filled fields
                 size=(9, 1),
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
@@ -277,7 +275,6 @@ prev_or_her_frame = sg.Frame(
                 tooltip=tt_prev_or_her_input_dis,
                 size=(4, 1),
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             ),
         ],
     ],
@@ -297,7 +294,6 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
                 size=(4, 1),
                 pad=(1, 3),  # 3 seems to be the default
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             )
         )
     )
@@ -347,7 +343,6 @@ layout = [
             default_value=output_formats[0],
             size=(9, 1),
             text_color=text_inputs_text_color,
-            background_color=text_inputs_background_color,
         ),
     ],
 ]
