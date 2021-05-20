@@ -13,6 +13,11 @@
 
 """Graphical user interface entry point."""
 
+import base64
+import io
+import os
+
+import PIL.Image
 import PySimpleGUI as sg
 
 import pytoxo
@@ -33,22 +38,78 @@ class PyToxoContext:
 
 
 # ####################### GUI DESIGN ######################
-# General style settings
-sg.theme("DarkGreen4")
+# Main style settings
+pytoxo_main_color = "#044343"
+sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
+    "BACKGROUND": "#4f7b7b",
+    "TEXT": "#e4e4e4",
+    "INPUT": "white",
+    "TEXT_INPUT": "#e4e4e4",
+    "SCROLL": "#045757",
+    "BUTTON": ("#e4e4e4", pytoxo_main_color),
+    "PROGRESS": ("#000000", "#000000"),
+    "BORDER": 1,
+    "SLIDER_DEPTH": 0,
+    "PROGRESS_DEPTH": 0,
+    "COLOR_LIST": ["#222222", pytoxo_main_color, "#045757", "#e4e4e4"],
+    "DESCRIPTION": ["#000000", "Turquoise", "Grey", "Dark"],
+}  # Custom window style for PyToxo
+sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
+    "BACKGROUND": "#a7bdbd",
+    "TEXT": pytoxo_main_color,
+    "INPUT": "white",
+    "TEXT_INPUT": "#e4e4e4",
+    "SCROLL": "#045757",
+    "BUTTON": ("#e4e4e4", pytoxo_main_color),
+    "PROGRESS": ("#000000", "#000000"),
+    "BORDER": 1,
+    "SLIDER_DEPTH": 0,
+    "PROGRESS_DEPTH": 0,
+    "COLOR_LIST": ["#222222", pytoxo_main_color, "#045757", "#e4e4e4"],
+    "DESCRIPTION": ["#000000", "Turquoise", "Grey", "Dark"],
+}  # Custom window style for PyToxo, light alternative
+
+# ########## THEME SELECTION ##########
+# Uncomment desired style between:
+# Dark style
+sg.theme("PyToxoTheme")
+disabled_text_color_depending_of_style = "grey"
+state_ready_color_depending_of_style = "#1bff1B"
+state_calculating_color_depending_of_style = "#e59400"
+logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_white.gif")
+logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
+# # Light style
+# sg.theme("PyToxoLightTheme")
+# disabled_text_color_depending_of_style = "#656b6b"
+# state_ready_color_depending_of_style = "#8cff19"
+# state_calculating_color_depending_of_style = "#ee683b"
+# logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_green.gif")
+# logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
+# #####################################
+
+# Other style settings: fonts
 window_general_font = "13"
 table_font = ("Courier", "15")
-main_background_color = "#044343"  # Default of `DarkGreen4` theme
-table_font_color = "black"
 table_headers_font = window_general_font
+state_ready_font = ("", "15", "bold")
+state_calculating_font = ("", "15", "bold")
+
+# Other style settings: font colors
+table_font_color = "black"
 table_headers_font_color = "white"
+text_inputs_text_color = "black"
+state_ready_color = state_ready_color_depending_of_style
+state_calculating_color = state_calculating_color_depending_of_style
+disabled_text_color = disabled_text_color_depending_of_style
+
+# Other style settings: background colors
 table_background_color = "white"
 table_alternating_background_color = "lightgrey"
-text_inputs_text_color = "black"
-text_inputs_background_color = "white"
-selection_colors = ("black", "#c6dffc")
-disabled_text_color = "grey"
 
-# Tooltipis
+# Other style settings: highlight colors
+selection_colors = ("black", "#c6dffc")
+
+# Tooltipis messages
 tt_model_disabled_text = (
     "Use the menu to load a model from a file or enter one manually"
 )
@@ -70,6 +131,37 @@ menu = sg.Menu(
         ["Help", "About PyToxo GUI"],
     ]
 )
+
+# Logo preparation for the main window
+logo = PIL.Image.open(logo_pytoxo_depending_of_style)
+logo_size_x, logo_size_y = logo.size
+logo_new_size_x = 450
+logo_new_size = (logo_new_size_x, (logo_size_y * logo_new_size_x) // logo_size_x)
+logo = logo.resize(logo_new_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_b64 = base64.b64encode(buffered.getvalue())
+
+# Logo preparation for the about pop-up
+logo_popup_size_x = 300
+logo_popup_size = (logo_popup_size_x, (logo_size_y * logo_popup_size_x) // logo_size_x)
+logo = logo.resize(logo_popup_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_b64_popup = base64.b64encode(buffered.getvalue())
+
+# UDC's logo preparation for the about pop-up
+logo_udc = PIL.Image.open(logo_udc_depending_of_style)
+logo_udc_size_x, logo_udc_size_y = logo_udc.size
+logo_udc_new_size_x = 300
+logo_udc_new_size = (
+    logo_udc_new_size_x,
+    (logo_udc_size_y * logo_udc_new_size_x) // logo_udc_size_x,
+)
+logo_udc = logo_udc.resize(logo_udc_new_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo_udc.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_udc_b64 = base64.b64encode(buffered.getvalue())
 
 # Epistatic model table
 headings = [
@@ -99,6 +191,7 @@ model_frame = sg.Frame(
                 auto_size_columns=True,
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
+                header_background_color=pytoxo_main_color,
                 font=table_font,
                 text_color=table_font_color,
                 background_color=table_background_color,
@@ -146,14 +239,16 @@ info_banner = [
         "State: Ready",
         key="-INFO_STATE_READY-",
         visible=True,
-        text_color="green",
+        font=state_ready_font,
+        text_color=state_ready_color,
         justification="center",
     ),
     sg.Text(
         "State: Calculating...",
         key="-INFO_STATE_CALCULATING-",
         visible=False,
-        text_color="#f29114",
+        font=state_calculating_font,
+        text_color=state_calculating_color,
         justification="center",
     ),
 ]
@@ -172,7 +267,6 @@ prev_or_her_frame = sg.Frame(
                 enable_events=True,  # To refresh the loop and can check filled fields
                 size=(9, 1),
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             ),
             sg.InputText(
                 key="-PREV_OR_HER_INPUT-",
@@ -181,7 +275,6 @@ prev_or_her_frame = sg.Frame(
                 tooltip=tt_prev_or_her_input_dis,
                 size=(4, 1),
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             ),
         ],
     ],
@@ -201,7 +294,6 @@ for i in range(1, MAX_ORDER_SUPPORTED + 1):
                 size=(4, 1),
                 pad=(1, 3),  # 3 seems to be the default
                 text_color=text_inputs_text_color,
-                background_color=text_inputs_background_color,
             )
         )
     )
@@ -231,6 +323,7 @@ output_formats = ["GAMETES", "CSV"]
 # Layout composition
 layout = [
     [menu],
+    [sg.Image(data=logo_b64, key="-LOGO-")],
     [model_frame],
     [info_banner],
     [prev_or_her_frame, mafs_frame],
@@ -248,9 +341,8 @@ layout = [
             key="-FORMATS_CB-",
             readonly=True,
             default_value=output_formats[0],
-            size=(8, 1),
+            size=(9, 1),
             text_color=text_inputs_text_color,
-            background_color=text_inputs_background_color,
         ),
     ],
 ]
@@ -261,7 +353,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 700),
+    size=(650, 800),
     element_justification="center",
 )
 
@@ -442,9 +534,12 @@ def main():
                         )
                     ]
                 )
-                # Enable MAFs
+                """Enable MAFs assuring to prevent from being enabled too 
+                many when changing from a larger model to a smaller one"""
                 for i in range(1, pytoxo_context.model.order + 1):
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
+                for i in range(pytoxo_context.model.order + 1, MAX_ORDER_SUPPORTED + 1):
+                    window[f"-MAFS_INPUT_{i}-"].Update(visible=False)
                 window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
 
                 # Enable prevalence or heritability entry
@@ -736,15 +831,22 @@ def main():
                 layout=[
                     [
                         sg.Text(
-                            "PyToxo GUI\nA graphical user interface for "
-                            "PyToxo\n\nPyToxo\nA Python library for "
+                            "PyToxo GUI\nA graphical user interface for " "PyToxo\n",
+                            justification="center",
+                        )
+                    ],
+                    [sg.Image(data=logo_b64_popup)],
+                    [
+                        sg.Text(
+                            "PyToxo\nA Python library for "
                             "calculating penetrance tables of any "
                             "bivariate epistasis model\n\nCopyright 2021 Borja "
                             "González Seoane\nUniversity of A Coruña\nContact: "
                             "borja.gseoane@udc.es",
                             justification="center",
                         )
-                    ]
+                    ],
+                    [sg.Image(data=logo_udc_b64)],
                 ],
                 font=window_general_font,
                 finalize=True,
