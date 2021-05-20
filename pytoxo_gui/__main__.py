@@ -81,7 +81,7 @@ logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
 # # Light style
 # sg.theme("PyToxoLightTheme")
 # disabled_text_color_depending_of_style = "#656b6b"
-# state_ready_color_depending_of_style = "#00ff7f"
+# state_ready_color_depending_of_style = "#8cff19"
 # state_calculating_color_depending_of_style = "#ee683b"
 # logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_green.gif")
 # logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
