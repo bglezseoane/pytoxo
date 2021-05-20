@@ -33,22 +33,75 @@ class PyToxoContext:
 
 
 # ####################### GUI DESIGN ######################
-# General style settings
-sg.theme("DarkGreen4")
+# Main style settings
+pytoxo_main_color = "#044343"
+sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
+    "BACKGROUND": pytoxo_main_color,
+    "TEXT": "#e4e4e4",
+    "INPUT": "#045757",
+    "TEXT_INPUT": "#e4e4e4",
+    "SCROLL": "#045757",
+    "BUTTON": ("#e4e4e4", "#045757"),
+    "PROGRESS": ("#000000", "#000000"),
+    "BORDER": 1,
+    "SLIDER_DEPTH": 0,
+    "PROGRESS_DEPTH": 0,
+    "COLOR_LIST": ["#222222", pytoxo_main_color, "#045757", "#e4e4e4"],
+    "DESCRIPTION": ["#000000", "Turquoise", "Grey", "Dark"],
+}  # Custom window style for PyToxo
+sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
+    "BACKGROUND": "#a8c1b4",
+    "TEXT": pytoxo_main_color,
+    "INPUT": "#045757",
+    "TEXT_INPUT": "#e4e4e4",
+    "SCROLL": "#045757",
+    "BUTTON": ("#e4e4e4", "#045757"),
+    "PROGRESS": ("#000000", "#000000"),
+    "BORDER": 1,
+    "SLIDER_DEPTH": 0,
+    "PROGRESS_DEPTH": 0,
+    "COLOR_LIST": ["#222222", pytoxo_main_color, "#045757", "#e4e4e4"],
+    "DESCRIPTION": ["#000000", "Turquoise", "Grey", "Dark"],
+}  # Custom window style for PyToxo, light alternative
+
+# ########## THEME SELECTION ##########
+# Uncomment desired style between:
+# Dark style
+sg.theme("PyToxoTheme")
+disabled_text_color_depending_of_style = "grey"
+logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_white.gif")
+logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
+# # Light style
+# sg.theme("PyToxoLightTheme")
+# disabled_text_color_depending_of_style = pytoxo_main_color
+# logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_green.gif")
+# logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
+# #####################################
+
+# Other style settings: fonts
 window_general_font = "13"
 table_font = ("Courier", "15")
-main_background_color = "#044343"  # Default of `DarkGreen4` theme
-table_font_color = "black"
 table_headers_font = window_general_font
-table_headers_font_color = "white"
-table_background_color = "white"
-table_alternating_background_color = "lightgrey"
-text_inputs_text_color = "black"
-text_inputs_background_color = "white"
-selection_colors = ("black", "#c6dffc")
-disabled_text_color = "grey"
+state_ready_font = ("", "15", "bold")
+state_calculating_font = ("", "15", "bold")
 
-# Tooltipis
+# Other style settings: font colors
+table_font_color = "black"
+table_headers_font_color = "white"
+text_inputs_text_color = "black"
+state_ready_color = "#1bff1B"
+state_calculating_color = "#e59400"
+disabled_text_color = disabled_text_color_depending_of_style
+
+# Other style settings: background colors
+table_background_color = "white"
+text_inputs_background_color = "white"
+table_alternating_background_color = "lightgrey"
+
+# Other style settings: highlight colors
+selection_colors = ("black", "#c6dffc")
+
+# Tooltipis messages
 tt_model_disabled_text = (
     "Use the menu to load a model from a file or enter one manually"
 )
@@ -99,6 +152,7 @@ model_frame = sg.Frame(
                 auto_size_columns=True,
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
+                header_background_color=pytoxo_main_color,
                 font=table_font,
                 text_color=table_font_color,
                 background_color=table_background_color,
@@ -146,14 +200,16 @@ info_banner = [
         "State: Ready",
         key="-INFO_STATE_READY-",
         visible=True,
-        text_color="green",
+        font=state_ready_font,
+        text_color=state_ready_color,
         justification="center",
     ),
     sg.Text(
         "State: Calculating...",
         key="-INFO_STATE_CALCULATING-",
         visible=False,
-        text_color="#f29114",
+        font=state_calculating_font,
+        text_color=state_calculating_color,
         justification="center",
     ),
 ]
