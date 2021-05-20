@@ -55,7 +55,7 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
     "DESCRIPTION": ["#000000", "Turquoise", "Grey", "Dark"],
 }  # Custom window style for PyToxo
 sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
-    "BACKGROUND": "#a8c1b4",
+    "BACKGROUND": "#a7bdbd",
     "TEXT": pytoxo_main_color,
     "INPUT": "white",
     "TEXT_INPUT": "#e4e4e4",
