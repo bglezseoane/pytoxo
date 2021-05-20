@@ -13,6 +13,11 @@
 
 """Graphical user interface entry point."""
 
+import base64
+import io
+import os
+
+import PIL.Image
 import PySimpleGUI as sg
 
 import pytoxo
@@ -123,6 +128,37 @@ menu = sg.Menu(
         ["Help", "About PyToxo GUI"],
     ]
 )
+
+# Logo preparation for the main window
+logo = PIL.Image.open(logo_pytoxo_depending_of_style)
+logo_size_x, logo_size_y = logo.size
+logo_new_size_x = 450
+logo_new_size = (logo_new_size_x, (logo_size_y * logo_new_size_x) // logo_size_x)
+logo = logo.resize(logo_new_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_b64 = base64.b64encode(buffered.getvalue())
+
+# Logo preparation for the about pop-up
+logo_popup_size_x = 300
+logo_popup_size = (logo_popup_size_x, (logo_size_y * logo_popup_size_x) // logo_size_x)
+logo = logo.resize(logo_popup_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_b64_popup = base64.b64encode(buffered.getvalue())
+
+# UDC's logo preparation for the about pop-up
+logo_udc = PIL.Image.open(logo_udc_depending_of_style)
+logo_udc_size_x, logo_udc_size_y = logo_udc.size
+logo_udc_new_size_x = 300
+logo_udc_new_size = (
+    logo_udc_new_size_x,
+    (logo_udc_size_y * logo_udc_new_size_x) // logo_udc_size_x,
+)
+logo_udc = logo_udc.resize(logo_udc_new_size, PIL.Image.ANTIALIAS)
+buffered = io.BytesIO()
+logo_udc.save(buffered, format="GIF")  # GIF is the best format for Tkinter
+logo_udc_b64 = base64.b64encode(buffered.getvalue())
 
 # Epistatic model table
 headings = [
@@ -287,6 +323,7 @@ output_formats = ["GAMETES", "CSV"]
 # Layout composition
 layout = [
     [menu],
+    [sg.Image(data=logo_b64, key="-LOGO-")],
     [model_frame],
     [info_banner],
     [prev_or_her_frame, mafs_frame],
@@ -317,7 +354,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 700),
+    size=(650, 800),
     element_justification="center",
 )
 
@@ -795,15 +832,22 @@ def main():
                 layout=[
                     [
                         sg.Text(
-                            "PyToxo GUI\nA graphical user interface for "
-                            "PyToxo\n\nPyToxo\nA Python library for "
+                            "PyToxo GUI\nA graphical user interface for " "PyToxo\n",
+                            justification="center",
+                        )
+                    ],
+                    [sg.Image(data=logo_b64_popup)],
+                    [
+                        sg.Text(
+                            "PyToxo\nA Python library for "
                             "calculating penetrance tables of any "
                             "bivariate epistasis model\n\nCopyright 2021 Borja "
                             "González Seoane\nUniversity of A Coruña\nContact: "
                             "borja.gseoane@udc.es",
                             justification="center",
                         )
-                    ]
+                    ],
+                    [sg.Image(data=logo_udc_b64)],
                 ],
                 font=window_general_font,
                 finalize=True,
