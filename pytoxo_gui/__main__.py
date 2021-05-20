@@ -74,11 +74,15 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
 # Dark style
 sg.theme("PyToxoTheme")
 disabled_text_color_depending_of_style = "grey"
+state_ready_color_depending_of_style = "#1bff1B"
+state_calculating_color_depending_of_style = "#e59400"
 logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_white.gif")
 logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
 # # Light style
 # sg.theme("PyToxoLightTheme")
 # disabled_text_color_depending_of_style = pytoxo_main_color
+# state_ready_color_depending_of_style = "#00ff7f"
+# state_calculating_color_depending_of_style = "#ee683b"
 # logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_green.gif")
 # logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
 # #####################################
@@ -94,8 +98,8 @@ state_calculating_font = ("", "15", "bold")
 table_font_color = "black"
 table_headers_font_color = "white"
 text_inputs_text_color = "black"
-state_ready_color = "#1bff1B"
-state_calculating_color = "#e59400"
+state_ready_color = state_ready_color_depending_of_style
+state_calculating_color = state_calculating_color_depending_of_style
 disabled_text_color = disabled_text_color_depending_of_style
 
 # Other style settings: background colors
