@@ -41,7 +41,7 @@ class PyToxoContext:
 # Main style settings
 pytoxo_main_color = "#044343"
 sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
-    "BACKGROUND": pytoxo_main_color,
+    "BACKGROUND": "#4f7b7b",
     "TEXT": "#e4e4e4",
     "INPUT": "white",
     "TEXT_INPUT": "#e4e4e4",
