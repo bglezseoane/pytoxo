@@ -549,7 +549,7 @@ class Model:
 
     def _solve(
         self, eq_system: List[sympy.Eq], solve_timeout: Union[int, bool] = True
-    ) -> dict[sympy.Symbol : float]:
+    ) -> Dict[sympy.Symbol, float]:
         """Assumes the responsibility of solving the system of equations that
         will define the values of the variables for the generation of the
         penetrance table.
@@ -687,7 +687,7 @@ class Model:
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
 
     def _check_solution(
-        self, eq_system: List[sympy.Eq], sol: dict[sympy.Symbol : float]
+        self, eq_system: List[sympy.Eq], sol: Dict[sympy.Symbol, float]
     ) -> Tuple[bool, float]:
         """Check if an achieved solution is correct.
 
