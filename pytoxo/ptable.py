@@ -65,7 +65,7 @@ class PTable:
         self._penetrance_values = [
             p.subs(values) for p in model_penetrances
         ]  # Try to substitute `y` in expression `x` does not cause errors, simply are ignored
-        self._values = List(values.values())  # Only used to save to GAMETES
+        self._values = list(values.values())  # Only used to save to GAMETES
         self._model_name = model_name
         self._mafs = mafs  # Only used to save to GAMETES
         self._prevalence = None  # Only used to save to GAMETES
