@@ -12,10 +12,11 @@
 ###########################################################
 
 """Epistasis model definition."""
+
 import itertools
 import os
 import string
-import typing
+from typing import Dict, List, Tuple, Union
 
 import mpmath
 import numpy
@@ -37,9 +38,9 @@ class Model:
     def __init__(
         self,
         filename: str = None,
-        genotypes_dict: dict[str, str] = None,
-        definitions: typing.Union[list[str], numpy.array] = None,
-        probabilities: typing.Union[list[str], numpy.array] = None,
+        genotypes_dict: Dict[str, str] = None,
+        definitions: Union[List[str], numpy.array] = None,
+        probabilities: Union[List[str], numpy.array] = None,
         model_name: str = None,
     ):
         """Initializes a model object.
@@ -120,10 +121,10 @@ class Model:
             The path of the text file with the model.
         genotypes_dict : dict[str, str], optional
             Dict with genotypes definitions and its associated probabilities.
-        definitions: typing.Union[list[str], numpy.array], optional
+        definitions: Union[list[str], numpy.array], optional
             List ot Numpy array with the genotype definitions as strings.
             Should be used with `probabilities` parameter.
-        probabilities: typing.Union[list[str], numpy.array], optional
+        probabilities: Union[list[str], numpy.array], optional
             List ot Numpy array with the genotype probabilities as strings.
             Should be used with `definitions` parameter.
         model_name: str, optional
@@ -255,7 +256,7 @@ class Model:
         except:  # Generic drain for unchecked parsing errors
             raise pytoxo.errors.BadFormedModelError(filename)
 
-    def _parse_genotypes_dict(self, genotypes_dict: dict[str, str]) -> None:
+    def _parse_genotypes_dict(self, genotypes_dict: Dict[str, str]) -> None:
         """Takes the responsibility of the initializer to parse the
         genotypes dict.
 
@@ -298,8 +299,8 @@ class Model:
 
     def _parse_genotypes_sets(
         self,
-        definitions: typing.Union[list[str], numpy.array],
-        probabilities: typing.Union[list[str], numpy.array],
+        definitions: Union[List[str], numpy.array],
+        probabilities: Union[List[str], numpy.array],
     ) -> None:
         """Takes the responsibility of the initializer to parse the
         two sets with genotype definitions and probabilities.
@@ -323,10 +324,10 @@ class Model:
 
         Parameters
         ----------
-        definitions: typing.Union[list[str], numpy.array]
+        definitions: Union[list[str], numpy.array]
             List ot Numpy array with the genotype definitions as strings.
             Should be used with `probabilities` parameter.
-        probabilities: typing.Union[list[str], numpy.array]
+        probabilities: Union[list[str], numpy.array]
             List ot Numpy array with the genotype probabilities as strings.
             Should be used with `definitions` parameter.
 
@@ -360,9 +361,9 @@ class Model:
 
     def _parse_helper(
         self,
-        genotypes: list[str],
-        probabilities: list[str],
-        exception_object_to_raise: typing.Union[str, dict[str, str], tuple[list, list]],
+        genotypes: List[str],
+        probabilities: List[str],
+        exception_object_to_raise: Union[str, Dict[str, str], Tuple[list, list]],
     ) -> None:
         """Complete the parse process doing the needed checks and
         transformations.
@@ -373,7 +374,7 @@ class Model:
             List with the genotype definitions as strings.
         probabilities: list[str]
             List with the genotype associated probability expressions as strings.
-        exception_object_to_raise: typing.Union[str, dict[str, str], tuple[list, list]]
+        exception_object_to_raise: Union[str, dict[str, str], tuple[list, list]]
             Object to add to the exception body.
 
         Raises
@@ -479,11 +480,11 @@ class Model:
         return self._order
 
     @property
-    def penetrances(self) -> list[typing.Union[float, sympy.Expr]]:
+    def penetrances(self) -> List[Union[float, sympy.Expr]]:
         return self._penetrances
 
     @property
-    def variables(self) -> list[sympy.Symbol]:
+    def variables(self) -> List[sympy.Symbol]:
         return self._variables
 
     @property
@@ -504,7 +505,7 @@ class Model:
     def __eq__(self, other):
         return hash(self) == hash(other)
 
-    def calculate_genotypes(self) -> list[str]:
+    def calculate_genotypes(self) -> List[str]:
         """Calculate the list of genotypes to the given model attending to
         the model order.
 
@@ -547,7 +548,7 @@ class Model:
         return unique_penetrances[reductions.index((max(reductions)))]
 
     def _solve(
-        self, eq_system: list[sympy.Eq], solve_timeout: typing.Union[int, bool] = True
+        self, eq_system: List[sympy.Eq], solve_timeout: Union[int, bool] = True
     ) -> dict[sympy.Symbol : float]:
         """Assumes the responsibility of solving the system of equations that
         will define the values of the variables for the generation of the
@@ -560,7 +561,7 @@ class Model:
         ----------
         eq_system : list[sympy.Eq]
             Input equations to solve.
-        solve_timeout : typing.Union[int, bool], optional (default `True`)
+        solve_timeout : Union[int, bool], optional (default `True`)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed since an heuristic method related
@@ -587,7 +588,7 @@ class Model:
 
         # TODO: Consider add assumptions to vars real and greather than 0
 
-        def try_to_solve(relax_dps: int = None) -> typing.Union[tuple[float], None]:
+        def try_to_solve(relax_dps: int = None) -> Union[Tuple[float], None]:
             """Tries solve the given `eq_system` equations with Sympy and
             returns solutions, filtering unreal and negative ones. The call
             to the solver is protected with a timeout to prevent
@@ -686,8 +687,8 @@ class Model:
         return {self._variables[0]: sol[0], self._variables[1]: sol[1]}
 
     def _check_solution(
-        self, eq_system: list[sympy.Eq], sol: dict[sympy.Symbol : float]
-    ) -> tuple[bool, float]:
+        self, eq_system: List[sympy.Eq], sol: dict[sympy.Symbol : float]
+    ) -> Tuple[bool, float]:
         """Check if an achieved solution is correct.
 
         Parameters
@@ -725,8 +726,8 @@ class Model:
             return True, 0
 
     def _build_max_prevalence_system(
-        self, mafs: list[float], h: float
-    ) -> list[sympy.Eq]:
+        self, mafs: List[float], h: float
+    ) -> List[sympy.Eq]:
         """Builds the system of equations for this model, for a maximum
         prevalence, for the given MAFs and heritability.
 
@@ -755,9 +756,9 @@ class Model:
 
     def find_max_prevalence_table(
         self,
-        mafs: list[float],
+        mafs: List[float],
         h: float,
-        solve_timeout: typing.Union[int, bool] = True,
+        solve_timeout: Union[int, bool] = True,
         check: bool = True,
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose prevalence is maximum for the given MAFs
@@ -769,7 +770,7 @@ class Model:
             Array of floats representing the MAF of each locus.
         h : float
             Heritability of the table.
-        solve_timeout : typing.Union[int, bool], optional (default True)
+        solve_timeout : Union[int, bool], optional (default True)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed heuristically. Pass as 'False' or
@@ -820,8 +821,8 @@ class Model:
         )
 
     def _build_max_heritability_system(
-        self, mafs: list[float], p: float
-    ) -> list[sympy.Eq]:
+        self, mafs: List[float], p: float
+    ) -> List[sympy.Eq]:
         """Builds the system of equations for this model, for a maximum
         heritability, for the given MAFs and prevalence.
 
@@ -849,9 +850,9 @@ class Model:
 
     def find_max_heritability_table(
         self,
-        mafs: list[float],
+        mafs: List[float],
         p: float,
-        solve_timeout: typing.Union[int, bool] = True,
+        solve_timeout: Union[int, bool] = True,
         check: bool = True,
     ) -> pytoxo.ptable.PTable:
         """Computes the table whose heritability is maximum for the given MAFs
@@ -863,7 +864,7 @@ class Model:
             Array of floats representing the MAF of each locus.
         p : float
             Prevalence of the table.
-        solve_timeout : typing.Union[int, bool], optional (default True)
+        solve_timeout : Union[int, bool], optional (default True)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed heuristically. Pass as 'False' or
@@ -915,9 +916,9 @@ class Model:
 
     def check_find_table_parameters(
         self,
-        mafs: list[float],
+        mafs: List[float],
         h_or_p: float,
-        solve_timeout: typing.Union[int, bool] = True,
+        solve_timeout: Union[int, bool] = True,
         check: bool = True,
     ) -> None:
         """Check the input parameters for a find table operation.
@@ -928,7 +929,7 @@ class Model:
             Array of floats representing the MAF of each locus.
         h_or_p : float
             Heritability or prevalence of the table.
-        solve_timeout : typing.Union[int, bool], optional (default True)
+        solve_timeout : Union[int, bool], optional (default True)
             A maximum timeout, as seconds, for the solver to try to resolve the
             model. If it is exceeded, the operation will be aborted. Default
             (passed as 'True') is assumed heuristically. Pass as 'False' or

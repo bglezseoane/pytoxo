@@ -19,6 +19,7 @@ import os
 
 import PIL.Image
 import PySimpleGUI as sg
+from typing import List
 
 import pytoxo
 import pytoxo.errors
@@ -365,30 +366,30 @@ window["-MODEL_FRAME-"].expand(expand_x=True)
 
 
 # ################## AUXILIARY FUNCTIONS ##################
-def refresh_mafs_entries_to_check_keys(pytoxo_context: PyToxoContext) -> list[str]:
+def refresh_mafs_entries_to_check_keys(pytoxo_context: PyToxoContext) -> List[str]:
     """Auxiliary function to refresh contents used in several times within
     the GUI main loop."""
     return [f"-MAFS_INPUT_" f"{i}-" for i in range(1, pytoxo_context.order + 1)]
 
 
 def refresh_text_entries_to_check_keys(
-    mafs_entries_to_check_keys: list[str],
-) -> list[str]:
+    mafs_entries_to_check_keys: List[str],
+) -> List[str]:
     """Auxiliary function to refresh contents used in several times within
     the GUI main loop."""
     return ["-PREV_OR_HER_INPUT-"] + mafs_entries_to_check_keys
 
 
 def refresh_text_entries_to_check_values(
-    text_entries_to_check_keys: list[str], values: dict
-) -> list[str]:
+    text_entries_to_check_keys: List[str], values: dict
+) -> List[str]:
     """Auxiliary function to refresh contents used in several times within
     the GUI main loop."""
     return [values[k] for k in text_entries_to_check_keys]
 
 
 def check_all_filled(
-    window: sg.Window, values: dict, text_entries_to_check_values: list[str]
+    window: sg.Window, values: dict, text_entries_to_check_values: List[str]
 ) -> bool:
     """Check current values state: if all configuration is filled, enable
     calculate button, else disable it. Also returns a bool about the all
