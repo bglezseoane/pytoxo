@@ -77,14 +77,14 @@ sg.theme("PyToxoTheme")
 disabled_text_color_depending_of_style = "grey"
 state_ready_color_depending_of_style = "#1bff1B"
 state_calculating_color_depending_of_style = "#e59400"
-logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_white.gif")
+logo_pytoxo_depending_of_style = os.path.abspath("img/logo_white.gif")
 logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
 # # Light style
 # sg.theme("PyToxoLightTheme")
 # disabled_text_color_depending_of_style = "#656b6b"
 # state_ready_color_depending_of_style = "#8cff19"
 # state_calculating_color_depending_of_style = "#ee683b"
-# logo_pytoxo_depending_of_style = os.path.abspath("img/logo_all_green.gif")
+# logo_pytoxo_depending_of_style = os.path.abspath("img/logo.gif")
 # logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
 # #####################################
 
