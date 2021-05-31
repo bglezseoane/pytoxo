@@ -117,6 +117,9 @@ def main():
     except pytoxo.errors.UnsolvableModelError as e:
         print(f"{error_hd} {e.message}")
         sys.exit(1)
+    except ValueError as e:
+        print(f"{error_hd} Bad parameter configuration. {e.__str__()}")
+        sys.exit(1)
 
     # Print the penetrance table to can integrate it in a typical Shell routine
     try:
