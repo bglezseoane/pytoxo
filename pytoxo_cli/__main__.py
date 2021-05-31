@@ -34,7 +34,6 @@ def main():
         description="PyToxo: A Python library for calculating penetrance "
         "tables of any bivariate epistasis model.",
         epilog="PyToxo CLI. Copyright 2021 Borja González Seoane",
-        exit_on_error=False,
     )
     parser.add_argument(
         "model",

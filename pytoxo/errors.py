@@ -13,7 +13,7 @@
 
 """PyToxo error definitions."""
 
-import typing
+from typing import Dict, Tuple, Union
 
 
 class BadFormedModelError(Exception):
@@ -21,14 +21,14 @@ class BadFormedModelError(Exception):
 
     def __init__(
         self,
-        error_object: typing.Union[str, dict[str, str], tuple[list, list]],
+        error_object: Union[str, Dict[str, str], Tuple[list, list]],
         cause: str = "Bad formed model",
     ):
         """Creates an exception of a parse error with an epistatic model.
 
         Parameters
         ----------
-        error_object : typing.Union[str, dict[str, str], (list, list)]
+        error_object : Union[str, dict[str, str], (list, list)]
             The input model which causes the error in one of its possible forms.
         cause : str, optional
             The error cause during parsing process (default "Bad formed file").

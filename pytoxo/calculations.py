@@ -21,7 +21,7 @@ built-ins for optimization.
 import functools
 import inspect
 import itertools
-import typing
+from typing import List, Union
 
 import timeout_decorator
 from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify, simplify
@@ -30,8 +30,8 @@ from pytoxo.errors import GenericCalculationError
 
 
 def genotype_probabilities(
-    mafs: typing.Union[list[Rational], list[float]], model_order: int = None
-) -> typing.Union[list[Rational], list[Expr]]:
+    mafs: Union[List[Rational], List[float]], model_order: int = None
+) -> Union[List[Rational], List[Expr]]:
     """Computes the probabilities associated with all genotype combinations
     given each MAF (minor allele frequency).
 
@@ -51,7 +51,7 @@ def genotype_probabilities(
 
     Parameters
     ----------
-    mafs : typing.Union[list[Rational], list[float]]
+    mafs : Union[list[Rational], list[float]]
         Minor allele frequencies array. Accept rationals and floats.
     model_order : int, optional
         The order of the implicated model. This optional parameter is used to
@@ -60,7 +60,7 @@ def genotype_probabilities(
 
     Returns
     -------
-    typing.Union[list[Rational], list[Expr]]
+    Union[list[Rational], list[Expr]]
         Array with the probabilities of all possible allele combinations as
         rational numbers.
 
@@ -104,22 +104,22 @@ def genotype_probabilities(
 
 
 def compute_prevalence(
-    penetrances: typing.Union[list[Expr], list[Rational], list[float]],
-    mafs: typing.Union[list[Rational], list[float]] = None,
-    gp: typing.Union[list[Rational], list[float]] = None,
+    penetrances: Union[List[Expr], List[Rational], List[float]],
+    mafs: Union[List[Rational], List[float]] = None,
+    gp: Union[List[Rational], List[float]] = None,
     model_order: int = None,
-) -> typing.Union[Rational, Expr]:
+) -> Union[Rational, Expr]:
     """Tries to compute the prevalence for a given penetrance list.
 
     One of `mafs` and `gp` is required. Is the both are used, `mafs` is ignored.
 
     Parameters
     ----------
-    penetrances : typing.Union[list[Expr], list[Rational], list[float]]
+    penetrances : Union[list[Expr], list[Rational], list[float]]
         Penetrance values array.
-    mafs : typing.Union[list[Rational], list[float]], optional
+    mafs : Union[list[Rational], list[float]], optional
         Minor allele frequencies array. Ignored if `gp` is used.
-    gp : typing.Union[list[Rational], list[float]], optional
+    gp : Union[list[Rational], list[float]], optional
         Genotype probabilities array.
     model_order : int, optional
         The order of the implicated model. This optional parameter is used to
@@ -128,7 +128,7 @@ def compute_prevalence(
 
     Returns
     -------
-    typing.Union[Rational, Expr]
+    Union[Rational, Expr]
         Prevalence of the penetrance table. Returns a rational if it is
         possible to solve the expression numerically and the expression if not.
 
@@ -177,18 +177,18 @@ def compute_prevalence(
 
 
 def compute_heritability(
-    penetrances: typing.Union[list[Expr], list[Rational], list[float]],
-    mafs: typing.Union[list[Rational], list[float]],
+    penetrances: Union[List[Expr], List[Rational], List[float]],
+    mafs: Union[List[Rational], List[float]],
     model_order: int = None,
-) -> typing.Union[Rational, Expr]:
+) -> Union[Rational, Expr]:
     """Tries to compute the heritability for a given penetrance table
     defined by its values.
 
     Parameters
     ----------
-    penetrances : typing.Union[list[Expr], list[Rational], list[float]]
+    penetrances : Union[list[Expr], list[Rational], list[float]]
         Penetrance values array.
-    mafs : typing.Union[list[Rational], list[float]], optional
+    mafs : Union[list[Rational], list[float]], optional
         Minor allele frequencies array.
     model_order : int, optional
         The order of the implicated model. This optional parameter is used to
@@ -197,7 +197,7 @@ def compute_heritability(
 
     Returns
     -------
-    typing.Union[Rational, Expr]
+    Union[Rational, Expr]
         Heritability of the penetrance table. Returns a rational if it is
         possible to solve the expression numerically and the expression if not.
 

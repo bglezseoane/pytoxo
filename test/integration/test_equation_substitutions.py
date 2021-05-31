@@ -14,7 +14,6 @@
 """Part of PyToxo integration test suite."""
 
 import os
-import random
 import sys
 import unittest
 
