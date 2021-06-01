@@ -919,33 +919,50 @@ def main():
                     update_info_banner(window, "-INFO_STATE_READY-")
 
         elif event == "About PyToxo GUI":
-            # No hide and un-hide window with this popup, because no modal
-            _ = sg.Window(
-                "About PyToxo GUI",
-                layout=[
-                    [
-                        sg.Text(
-                            "PyToxo GUI\nA graphical user interface for " "PyToxo\n",
-                            justification="center",
-                        )
+            """This patch is to emulate window modal behaviour on Mac OS. In
+            Linux and Windows, this is innocuous, because the "about" window is
+            modal and the main window will be unresponsive still close the other
+            one. In Mac OS, modal windows are not supported, and previously
+            approach used with popups does not work here. It is also not
+            possible to use popups here, because they do not admit a layout.
+            So, with this patch, at least is limited the opnening of several
+            "about" windows in all platforms. In Mac OS still will be
+            possible to use the main window with the "about" window opened, but
+            it is not very important"""
+            try:
+                # In Mac OS, hide and unhide works, focus doesn't work
+                # noinspection PyUnboundLocalVariable
+                about_popup.Hide()
+                about_popup.UnHide()
+            except:
+                about_popup = sg.Window(
+                    "About PyToxo GUI",
+                    layout=[
+                        [
+                            sg.Text(
+                                "PyToxo GUI\nA graphical user interface for "
+                                "PyToxo\n",
+                                justification="center",
+                            )
+                        ],
+                        [sg.Image(data=logo_b64_popup)],
+                        [
+                            sg.Text(
+                                "PyToxo\nA Python library for "
+                                "calculating penetrance tables of any "
+                                "bivariate epistasis model\n\nCopyright 2021 Borja "
+                                "González Seoane\nUniversity of A Coruña\nContact: "
+                                "borja.gseoane@udc.es",
+                                justification="center",
+                            )
+                        ],
+                        [sg.Image(data=logo_udc_b64)],
                     ],
-                    [sg.Image(data=logo_b64_popup)],
-                    [
-                        sg.Text(
-                            "PyToxo\nA Python library for "
-                            "calculating penetrance tables of any "
-                            "bivariate epistasis model\n\nCopyright 2021 Borja "
-                            "González Seoane\nUniversity of A Coruña\nContact: "
-                            "borja.gseoane@udc.es",
-                            justification="center",
-                        )
-                    ],
-                    [sg.Image(data=logo_udc_b64)],
-                ],
-                font=window_general_font,
-                finalize=True,
-                element_justification="center",
-            )
+                    font=window_general_font,
+                    finalize=True,
+                    modal=True,
+                    element_justification="center",
+                )
 
         # Finally, check if all is filled before go to the next interaction
         check_all_filled(window, values, text_entries_to_check_values)
