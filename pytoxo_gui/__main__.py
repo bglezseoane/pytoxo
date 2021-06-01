@@ -58,7 +58,6 @@ if detected_platform == "Darwin":  # Mac OS
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 800)
-    table_col_size_dep_of_platform = 21
     model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Linux":
     window_general_font_dep_of_platform = ("", "10")
@@ -68,7 +67,6 @@ elif detected_platform == "Linux":
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
-    table_col_size_dep_of_platform = 21
     model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Windows":
     window_general_font_dep_of_platform = ("", "10")
@@ -78,7 +76,6 @@ elif detected_platform == "Windows":
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
-    table_col_size_dep_of_platform = 21
     model_frame_size_y_dep_of_platform = 24
 
 # Main style settings
@@ -232,7 +229,7 @@ model_frame = sg.Frame(
                 display_row_numbers=True,
                 hide_vertical_scroll=True,
                 auto_size_columns=False,
-                col_widths=[table_col_size_dep_of_platform] * len(headings),
+                col_widths=[21] * len(headings),
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
                 header_background_color=pytoxo_main_color,
