@@ -49,7 +49,7 @@ class PyToxoContext:
 
 
 # ####################### GUI DESIGN ######################
-# Detect platform, to adapt some patches depending of it
+# Adapt some patches depending of the detected platform
 if detected_platform == "Darwin":  # Mac OS
     window_general_font_dep_of_platform = ("", "13")
     state_ready_font_size_dep_of_platform = 15
@@ -57,6 +57,9 @@ if detected_platform == "Darwin":  # Mac OS
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 800)
     model_frame_size_y_dep_of_platform = 27
+    """Modal windows are not supported on Mac OS, so this patch a used to 
+    emulate them hiding and un-hiding the main window"""
+    hide_windows_to_emulate_modal_dep_of_platform = True
 elif detected_platform == "Linux":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -64,6 +67,7 @@ elif detected_platform == "Linux":
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 27
+    hide_windows_to_emulate_modal_dep_of_platform = False
 elif detected_platform == "Windows":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -71,6 +75,7 @@ elif detected_platform == "Windows":
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 24
+    hide_windows_to_emulate_modal_dep_of_platform = False
 else:
     raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
 
@@ -608,22 +613,26 @@ def main():
                     text_entries_to_check_keys, values
                 )
             except pytoxo.errors.BadFormedModelError:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
                     "interpret it. Revise PyToxo's file format requirements.",
                     title="File parsing error",
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
             except IOError:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"Error trying to open '{filename}'.",
                     title="File opening error",
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
         elif event == "Close model and clean":
             # Load to the PyToxo context
@@ -669,14 +678,16 @@ def main():
 
         elif event == "Save calculated table":
             if not pytoxo_context.ptable:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"There is not a calculated penetrance table. Calculate "
                     f"the table before trying to save it.",
                     title="No penetrance table",
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
             else:
                 # Get configured output format
                 output_format = values["-FORMATS_CB-"].lower()
@@ -707,13 +718,15 @@ def main():
                             msg = f"{e}."
                         msg = msg.capitalize()
 
-                        window.Hide()  # Patch because popup modal function does not work in all platforms
+                        if hide_windows_to_emulate_modal_dep_of_platform:
+                            window.Hide()
                         sg.popup_ok(
                             f"{msg} Revise this field.",
                             title="Saving error",
                             font=window_general_font,
                         )
-                        window.UnHide()
+                        if hide_windows_to_emulate_modal_dep_of_platform:
+                            window.UnHide()
 
         elif event == "-MODEL_TABLE-":
             # Intercept the event to refresh window when click on the table
@@ -753,13 +766,15 @@ def main():
                     msg = f"{e}."
                 msg = msg.capitalize()
 
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
                 # Remove value
                 window[event].Update(value="")
@@ -786,13 +801,15 @@ def main():
                     msg = f"{e}."
                 msg = msg.capitalize()
 
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
                 # Remove value
                 window[event].Update(value="")
@@ -834,29 +851,35 @@ def main():
                         ]
                     )
                 except pytoxo.errors.ResolutionError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         e.message,
                         title="Resolution error",
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 except pytoxo.errors.UnsolvableModelError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         e.message,
                         title="Unsolvable model error",
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 except ValueError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         f"{e} Check input parameters.",
                         title="Input configuration validation error",
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 finally:
                     # Update informative banner
                     update_info_banner(window, "-INFO_STATE_READY-")
