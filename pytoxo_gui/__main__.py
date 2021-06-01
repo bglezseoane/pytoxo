@@ -17,6 +17,7 @@ import base64
 import io
 import os
 import platform
+import subprocess
 from typing import List
 
 import PIL.Image
@@ -60,6 +61,18 @@ if detected_platform == "Darwin":  # Mac OS
     """Modal windows are not supported on Mac OS, so this patch a used to 
     emulate them hiding and un-hiding the main window"""
     hide_windows_to_emulate_modal_dep_of_platform = True
+    """With Mac OS the menu is located in the upper menu bar, and it is 
+    sensitive to the theme that is being used in the system, so it is consulted
+    below"""
+    p = subprocess.Popen(
+        "defaults read -g AppleInterfaceStyle", shell=True, stdout=subprocess.PIPE
+    )
+    output, _ = p.communicate()
+    macos_current_theme = output.decode("UTF-8").strip()
+    if macos_current_theme == "Dark":
+        menu_text_color_dep_of_platform = "white"
+    else:
+        menu_text_color_dep_of_platform = "black"
 elif detected_platform == "Linux":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -68,6 +81,7 @@ elif detected_platform == "Linux":
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 27
     hide_windows_to_emulate_modal_dep_of_platform = False
+    menu_text_color_dep_of_platform = "black"
 elif detected_platform == "Windows":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -76,6 +90,7 @@ elif detected_platform == "Windows":
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 24
     hide_windows_to_emulate_modal_dep_of_platform = False
+    menu_text_color_dep_of_platform = "black"
 else:
     raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
 
@@ -170,7 +185,8 @@ menu = sg.Menu(
         ],
         # ["Edit", ["Paste", "Undo"]],  # TODO
         ["Help", "About PyToxo GUI"],
-    ]
+    ],
+    text_color=menu_text_color_dep_of_platform,
 )
 
 # Logo preparation for the main window
