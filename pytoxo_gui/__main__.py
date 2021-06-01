@@ -16,10 +16,11 @@
 import base64
 import io
 import os
+import platform
+from typing import List
 
 import PIL.Image
 import PySimpleGUI as sg
-from typing import List
 
 import pytoxo
 import pytoxo.errors
@@ -39,6 +40,44 @@ class PyToxoContext:
 
 
 # ####################### GUI DESIGN ######################
+# Detect platform, to adapt some patches depending of it
+if platform.system() == "Darwin":  # Mac OS
+    window_general_font_depending_of_platform = ("", "13")
+    state_ready_font_size_depending_of_platform = (
+        int(window_general_font_depending_of_platform[1]) + 2
+    )
+    state_calculating_font_size_depending_of_platform = (
+        state_ready_font_size_depending_of_platform
+    )
+    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
+    window_size_depending_of_platform = (650, 800)
+    table_col_size_depending_of_platform = 21
+    model_frame_size_y_depending_of_platform = 27
+elif platform.system() == "Linux":
+    window_general_font_depending_of_platform = ("", "10")
+    state_ready_font_size_depending_of_platform = (
+        int(window_general_font_depending_of_platform[1]) + 1
+    )
+    state_calculating_font_size_depending_of_platform = (
+        state_ready_font_size_depending_of_platform
+    )
+    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
+    window_size_depending_of_platform = (650, 780)
+    table_col_size_depending_of_platform = 21
+    model_frame_size_y_depending_of_platform = 27
+elif platform.system() == "Windows":
+    window_general_font_depending_of_platform = ("", "10")
+    state_ready_font_size_depending_of_platform = (
+        int(window_general_font_depending_of_platform[1]) + 1
+    )
+    state_calculating_font_size_depending_of_platform = (
+        state_ready_font_size_depending_of_platform
+    )
+    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
+    window_size_depending_of_platform = (650, 780)
+    table_col_size_depending_of_platform = 21
+    model_frame_size_y_depending_of_platform = 24
+
 # Main style settings
 pytoxo_main_color = "#044343"
 sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
@@ -74,7 +113,7 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
 # Uncomment desired style between:
 # Dark style
 sg.theme("PyToxoTheme")
-disabled_text_color_depending_of_style = "grey"
+disabled_text_color_depending_of_style = "#dbdbdb"
 state_ready_color_depending_of_style = "#1bff1B"
 state_calculating_color_depending_of_style = "#e59400"
 logo_pytoxo_depending_of_style = os.path.abspath("img/logo_white.gif")
@@ -89,11 +128,11 @@ logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
 # #####################################
 
 # Other style settings: fonts
-window_general_font = "13"
-table_font = ("Courier", "15")
+window_general_font = window_general_font_depending_of_platform
+table_font = ("Courier", table_font_size_depending_of_platform)
 table_headers_font = window_general_font
-state_ready_font = ("", "15", "bold")
-state_calculating_font = ("", "15", "bold")
+state_ready_font = ("", state_ready_font_size_depending_of_platform, "bold")
+state_calculating_font = ("", state_calculating_font_size_depending_of_platform, "bold")
 
 # Other style settings: font colors
 table_font_color = "black"
@@ -166,14 +205,14 @@ logo_udc_b64 = base64.b64encode(buffered.getvalue())
 
 # Epistatic model table
 headings = [
-    " Genotype definition ",
+    "Genotype definition",
     "Penetrance expression",
     "Calculated penetrance",
 ]
 empty_rows = [["" for col in range(len(headings))]]
 
 # Model frame
-size_y_model_frame_component = 28  # Used by the disabled text or the table
+model_frame_size_y = model_frame_size_y_depending_of_platform
 model_frame = sg.Frame(
     key="-MODEL_FRAME-",
     title="Epistatic model",
@@ -185,11 +224,12 @@ model_frame = sg.Frame(
                 values=empty_rows,
                 enable_events=True,
                 vertical_scroll_only=True,
-                num_rows=size_y_model_frame_component - 1,  # Due to header row
+                num_rows=model_frame_size_y - 1,  # Due to header row
                 justification="center",
                 display_row_numbers=True,
                 hide_vertical_scroll=True,
-                auto_size_columns=True,
+                auto_size_columns=False,
+                col_widths=[table_col_size_depending_of_platform] * len(headings),
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
                 header_background_color=pytoxo_main_color,
@@ -354,12 +394,12 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 800),
+    size=window_size_depending_of_platform,
     element_justification="center",
 )
 
 # Window style patches
-window["-MODEL_FRAME-"].expand(expand_x=True)
+# window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
 
 
 # #########################################################
