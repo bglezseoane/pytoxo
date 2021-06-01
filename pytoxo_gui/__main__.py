@@ -20,10 +20,19 @@ import platform
 from typing import List
 
 import PIL.Image
-import PySimpleGUI as sg
 
 import pytoxo
 import pytoxo.errors
+
+# Detect the platform where the GUI is going to be used
+detected_platform = platform.system()
+
+"""PySimpleGUI imports Tk, and this fail if Tk is not correctly installed in 
+the platform"""
+try:
+    import PySimpleGUI as sg
+except ImportError:
+    raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
@@ -41,7 +50,7 @@ class PyToxoContext:
 
 # ####################### GUI DESIGN ######################
 # Detect platform, to adapt some patches depending of it
-if platform.system() == "Darwin":  # Mac OS
+if detected_platform == "Darwin":  # Mac OS
     window_general_font_depending_of_platform = ("", "13")
     state_ready_font_size_depending_of_platform = (
         int(window_general_font_depending_of_platform[1]) + 2
@@ -53,7 +62,7 @@ if platform.system() == "Darwin":  # Mac OS
     window_size_depending_of_platform = (650, 800)
     table_col_size_depending_of_platform = 21
     model_frame_size_y_depending_of_platform = 27
-elif platform.system() == "Linux":
+elif detected_platform == "Linux":
     window_general_font_depending_of_platform = ("", "10")
     state_ready_font_size_depending_of_platform = (
         int(window_general_font_depending_of_platform[1]) + 1
@@ -65,7 +74,7 @@ elif platform.system() == "Linux":
     window_size_depending_of_platform = (650, 780)
     table_col_size_depending_of_platform = 21
     model_frame_size_y_depending_of_platform = 27
-elif platform.system() == "Windows":
+elif detected_platform == "Windows":
     window_general_font_depending_of_platform = ("", "10")
     state_ready_font_size_depending_of_platform = (
         int(window_general_font_depending_of_platform[1]) + 1
