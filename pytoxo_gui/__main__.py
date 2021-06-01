@@ -70,9 +70,9 @@ if detected_platform == "Darwin":  # Mac OS
     output, _ = p.communicate()
     macos_current_theme = output.decode("UTF-8").strip()
     if macos_current_theme == "Dark":
-        menu_text_color_dep_of_platform = "white"
+        menu_text_color_dep_of_platform = "#ffffff"
     else:
-        menu_text_color_dep_of_platform = "black"
+        menu_text_color_dep_of_platform = "#000000"
 elif detected_platform == "Linux":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -81,7 +81,7 @@ elif detected_platform == "Linux":
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 27
     hide_windows_to_emulate_modal_dep_of_platform = False
-    menu_text_color_dep_of_platform = "black"
+    menu_text_color_dep_of_platform = "#000000"
 elif detected_platform == "Windows":
     window_general_font_dep_of_platform = ("", "10")
     state_ready_font_size_dep_of_platform = 11
@@ -90,7 +90,7 @@ elif detected_platform == "Windows":
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 24
     hide_windows_to_emulate_modal_dep_of_platform = False
-    menu_text_color_dep_of_platform = "black"
+    menu_text_color_dep_of_platform = "#000000"
 else:
     raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
 
@@ -99,7 +99,7 @@ pytoxo_main_color = "#044343"
 sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
     "BACKGROUND": "#4f7b7b",
     "TEXT": "#e4e4e4",
-    "INPUT": "white",
+    "INPUT": "#ffffff",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -113,7 +113,7 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
 sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
     "BACKGROUND": "#a7bdbd",
     "TEXT": pytoxo_main_color,
-    "INPUT": "white",
+    "INPUT": "#ffffff",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -151,19 +151,19 @@ state_ready_font = ("", state_ready_font_size_dep_of_platform, "bold")
 state_calculating_font = ("", state_calculating_font_size_dep_of_platform, "bold")
 
 # Other style settings: font colors
-table_font_color = "black"
-table_headers_font_color = "white"
-text_inputs_text_color = "black"
+table_font_color = "#000000"
+table_headers_font_color = "#ffffff"
+text_inputs_text_color = "#000000"
 state_ready_color = state_ready_color_dep_of_style
 state_calculating_color = state_calculating_color_dep_of_style
 disabled_text_color = disabled_text_color_dep_of_style
 
 # Other style settings: background colors
-table_background_color = "white"
-table_alternating_background_color = "lightgrey"
+table_background_color = "#ffffff"
+table_alternating_background_color = "#d3d3d3"
 
 # Other style settings: highlight colors
-selection_colors = ("black", "#c6dffc")
+selection_colors = ("#000000", "#c6dffc")
 
 # Tooltipis messages
 tt_model_disabled_text = (
