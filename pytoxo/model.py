@@ -21,7 +21,7 @@ from typing import Dict, List, Tuple, Union
 import mpmath
 import numpy
 import sympy
-import timeout_decorator
+import wrapt_timeout_decorator
 
 import pytoxo.calculations
 import pytoxo.errors
@@ -609,7 +609,7 @@ class Model:
                 calculations could get corrupted.
             """
 
-            @timeout_decorator.timeout_decorator.timeout(
+            @wrapt_timeout_decorator.wrapt_timeout_decorator.timeout(
                 solve_timeout, timeout_exception=TimeoutError
             )
             def solver_call():
