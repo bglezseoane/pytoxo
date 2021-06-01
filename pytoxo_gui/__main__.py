@@ -294,7 +294,7 @@ info_banner = [
         ),
     ],
     sg.Text(
-        "State: Ready",
+        "Ready",
         key="-INFO_STATE_READY-",
         visible=True,
         font=state_ready_font,
@@ -302,7 +302,7 @@ info_banner = [
         justification="center",
     ),
     sg.Text(
-        "State: Calculating...",
+        "Calculating...",
         key="-INFO_STATE_CALCULATING-",
         visible=False,
         font=state_calculating_font,
