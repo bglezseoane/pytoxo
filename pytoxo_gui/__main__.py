@@ -51,41 +51,35 @@ class PyToxoContext:
 # ####################### GUI DESIGN ######################
 # Detect platform, to adapt some patches depending of it
 if detected_platform == "Darwin":  # Mac OS
-    window_general_font_depending_of_platform = ("", "13")
-    state_ready_font_size_depending_of_platform = (
-        int(window_general_font_depending_of_platform[1]) + 2
+    window_general_font_dep_of_platform = ("", "13")
+    state_ready_font_size_dep_of_platform = (
+        int(window_general_font_dep_of_platform[1]) + 2
     )
-    state_calculating_font_size_depending_of_platform = (
-        state_ready_font_size_depending_of_platform
-    )
-    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
-    window_size_depending_of_platform = (650, 800)
-    table_col_size_depending_of_platform = 21
-    model_frame_size_y_depending_of_platform = 27
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 800)
+    table_col_size_dep_of_platform = 21
+    model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Linux":
-    window_general_font_depending_of_platform = ("", "10")
-    state_ready_font_size_depending_of_platform = (
-        int(window_general_font_depending_of_platform[1]) + 1
+    window_general_font_dep_of_platform = ("", "10")
+    state_ready_font_size_dep_of_platform = (
+        int(window_general_font_dep_of_platform[1]) + 1
     )
-    state_calculating_font_size_depending_of_platform = (
-        state_ready_font_size_depending_of_platform
-    )
-    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
-    window_size_depending_of_platform = (650, 780)
-    table_col_size_depending_of_platform = 21
-    model_frame_size_y_depending_of_platform = 27
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 780)
+    table_col_size_dep_of_platform = 21
+    model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Windows":
-    window_general_font_depending_of_platform = ("", "10")
-    state_ready_font_size_depending_of_platform = (
-        int(window_general_font_depending_of_platform[1]) + 1
+    window_general_font_dep_of_platform = ("", "10")
+    state_ready_font_size_dep_of_platform = (
+        int(window_general_font_dep_of_platform[1]) + 1
     )
-    state_calculating_font_size_depending_of_platform = (
-        state_ready_font_size_depending_of_platform
-    )
-    table_font_size_depending_of_platform = state_ready_font_size_depending_of_platform
-    window_size_depending_of_platform = (650, 780)
-    table_col_size_depending_of_platform = 21
-    model_frame_size_y_depending_of_platform = 24
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 780)
+    table_col_size_dep_of_platform = 21
+    model_frame_size_y_dep_of_platform = 24
 
 # Main style settings
 pytoxo_main_color = "#044343"
@@ -122,34 +116,34 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
 # Uncomment desired style between:
 # Dark style
 sg.theme("PyToxoTheme")
-disabled_text_color_depending_of_style = "#dbdbdb"
-state_ready_color_depending_of_style = "#1bff1B"
-state_calculating_color_depending_of_style = "#e59400"
-logo_pytoxo_depending_of_style = os.path.abspath("img/logo_white.gif")
-logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
+disabled_text_color_dep_of_style = "#dbdbdb"
+state_ready_color_dep_of_style = "#1bff1B"
+state_calculating_color_dep_of_style = "#e59400"
+logo_pytoxo_dep_of_style = os.path.abspath("img/logo_white.gif")
+logo_udc_dep_of_style = os.path.abspath("img/logo_udc.gif")
 # # Light style
 # sg.theme("PyToxoLightTheme")
-# disabled_text_color_depending_of_style = "#656b6b"
-# state_ready_color_depending_of_style = "#8cff19"
-# state_calculating_color_depending_of_style = "#ee683b"
-# logo_pytoxo_depending_of_style = os.path.abspath("img/logo.gif")
-# logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
+# disabled_text_color_dep_of_style = "#656b6b"
+# state_ready_color_dep_of_style = "#8cff19"
+# state_calculating_color_dep_of_style = "#ee683b"
+# logo_pytoxo_dep_of_style = os.path.abspath("img/logo.gif")
+# logo_udc_dep_of_style =os.path.abspath("img/logo_udc_green.gif")
 # #####################################
 
 # Other style settings: fonts
-window_general_font = window_general_font_depending_of_platform
-table_font = ("Courier", table_font_size_depending_of_platform)
+window_general_font = window_general_font_dep_of_platform
+table_font = ("Courier", table_font_size_dep_of_platform)
 table_headers_font = window_general_font
-state_ready_font = ("", state_ready_font_size_depending_of_platform, "bold")
-state_calculating_font = ("", state_calculating_font_size_depending_of_platform, "bold")
+state_ready_font = ("", state_ready_font_size_dep_of_platform, "bold")
+state_calculating_font = ("", state_calculating_font_size_dep_of_platform, "bold")
 
 # Other style settings: font colors
 table_font_color = "black"
 table_headers_font_color = "white"
 text_inputs_text_color = "black"
-state_ready_color = state_ready_color_depending_of_style
-state_calculating_color = state_calculating_color_depending_of_style
-disabled_text_color = disabled_text_color_depending_of_style
+state_ready_color = state_ready_color_dep_of_style
+state_calculating_color = state_calculating_color_dep_of_style
+disabled_text_color = disabled_text_color_dep_of_style
 
 # Other style settings: background colors
 table_background_color = "white"
@@ -182,7 +176,7 @@ menu = sg.Menu(
 )
 
 # Logo preparation for the main window
-logo = PIL.Image.open(logo_pytoxo_depending_of_style)
+logo = PIL.Image.open(logo_pytoxo_dep_of_style)
 logo_size_x, logo_size_y = logo.size
 logo_new_size_x = 450
 logo_new_size = (logo_new_size_x, (logo_size_y * logo_new_size_x) // logo_size_x)
@@ -200,7 +194,7 @@ logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
 logo_b64_popup = base64.b64encode(buffered.getvalue())
 
 # UDC's logo preparation for the about pop-up
-logo_udc = PIL.Image.open(logo_udc_depending_of_style)
+logo_udc = PIL.Image.open(logo_udc_dep_of_style)
 logo_udc_size_x, logo_udc_size_y = logo_udc.size
 logo_udc_new_size_x = 300
 logo_udc_new_size = (
@@ -221,7 +215,7 @@ headings = [
 empty_rows = [["" for col in range(len(headings))]]
 
 # Model frame
-model_frame_size_y = model_frame_size_y_depending_of_platform
+model_frame_size_y = model_frame_size_y_dep_of_platform
 model_frame = sg.Frame(
     key="-MODEL_FRAME-",
     title="Epistatic model",
@@ -238,7 +232,7 @@ model_frame = sg.Frame(
                 display_row_numbers=True,
                 hide_vertical_scroll=True,
                 auto_size_columns=False,
-                col_widths=[table_col_size_depending_of_platform] * len(headings),
+                col_widths=[table_col_size_dep_of_platform] * len(headings),
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
                 header_background_color=pytoxo_main_color,
@@ -403,7 +397,7 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=window_size_depending_of_platform,
+    size=window_size_dep_of_platform,
     element_justification="center",
 )
 
