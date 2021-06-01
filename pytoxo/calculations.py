@@ -23,9 +23,9 @@ import inspect
 import itertools
 from typing import List, Union
 
-import wrapt_timeout_decorator
 from sympy import Integer, Rational, Expr, Add, Mul, Pow, nsimplify, simplify
 
+import pytoxo.util
 from pytoxo.errors import GenericCalculationError
 
 
@@ -269,9 +269,7 @@ def _try_to_simplify(expr: Expr, timeout: int = 60, model_order: int = None):
     if model_order:
         timeout = model_order * 60  # Seconds
 
-    @wrapt_timeout_decorator.wrapt_timeout_decorator.timeout(
-        timeout, timeout_exception=TimeoutError
-    )
+    @pytoxo.util.timeout(timeout)
     def simplify_call():
         return simplify(expr)
 
