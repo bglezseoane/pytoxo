@@ -577,11 +577,20 @@ def main():
                     ]
                 )
                 """Enable MAFs assuring to prevent from being enabled too 
-                many when changing from a larger model to a smaller one"""
+                many when changing from a larger model to a smaller one. 
+                Assure also that MAFs are all empty"""
                 for i in range(1, pytoxo_context.model.order + 1):
+                    values[f"-MAFS_INPUT_{i}-"] = ""
+                    window[f"-MAFS_INPUT_{i}-"].Update(
+                        value=values[f"-MAFS_INPUT_{i}-"]
+                    )
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
                 for i in range(pytoxo_context.model.order + 1, MAX_ORDER_SUPPORTED + 1):
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=False)
+                    values[f"-MAFS_INPUT_{i}-"] = ""
+                    window[f"-MAFS_INPUT_{i}-"].Update(
+                        value=values[f"-MAFS_INPUT_{i}-"]
+                    )
                 window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
 
                 # Enable prevalence or heritability entry
