@@ -415,9 +415,6 @@ window = sg.Window(
     element_justification="center",
 )
 
-# Window style patches
-# window["-MODEL_FRAME-"].expand(expand_x=True, expand_y=False)
-
 
 # #########################################################
 
