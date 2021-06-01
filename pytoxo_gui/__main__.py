@@ -644,6 +644,7 @@ def main():
                     "The file contains a bad formed model. PyToxo cannot "
                     "interpret it. Revise PyToxo's file format requirements.",
                     title="File parsing error",
+                    modal=True,
                     font=window_general_font,
                 )
                 if hide_windows_to_emulate_modal_dep_of_platform:
@@ -654,6 +655,7 @@ def main():
                 sg.popup_ok(
                     f"Error trying to open '{filename}'.",
                     title="File opening error",
+                    modal=True,
                     font=window_general_font,
                 )
                 if hide_windows_to_emulate_modal_dep_of_platform:
@@ -709,6 +711,7 @@ def main():
                     f"There is not a calculated penetrance table. Calculate "
                     f"the table before trying to save it.",
                     title="No penetrance table",
+                    modal=True,
                     font=window_general_font,
                 )
                 if hide_windows_to_emulate_modal_dep_of_platform:
@@ -748,6 +751,7 @@ def main():
                         sg.popup_ok(
                             f"{msg} Revise this field.",
                             title="Saving error",
+                            modal=True,
                             font=window_general_font,
                         )
                         if hide_windows_to_emulate_modal_dep_of_platform:
@@ -796,6 +800,7 @@ def main():
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
+                    modal=True,
                     font=window_general_font,
                 )
                 if hide_windows_to_emulate_modal_dep_of_platform:
@@ -831,6 +836,7 @@ def main():
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
+                    modal=True,
                     font=window_general_font,
                 )
                 if hide_windows_to_emulate_modal_dep_of_platform:
@@ -881,6 +887,7 @@ def main():
                     sg.popup_ok(
                         e.message,
                         title="Resolution error",
+                        modal=True,
                         font=window_general_font,
                     )
                     if hide_windows_to_emulate_modal_dep_of_platform:
@@ -891,6 +898,7 @@ def main():
                     sg.popup_ok(
                         e.message,
                         title="Unsolvable model error",
+                        modal=True,
                         font=window_general_font,
                     )
                     if hide_windows_to_emulate_modal_dep_of_platform:
@@ -901,6 +909,7 @@ def main():
                     sg.popup_ok(
                         f"{e} Check input parameters.",
                         title="Input configuration validation error",
+                        modal=True,
                         font=window_general_font,
                     )
                     if hide_windows_to_emulate_modal_dep_of_platform:
