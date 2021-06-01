@@ -71,6 +71,8 @@ elif detected_platform == "Windows":
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 24
+else:
+    raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
 
 # Main style settings
 pytoxo_main_color = "#044343"
