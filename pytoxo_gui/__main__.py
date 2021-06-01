@@ -52,27 +52,21 @@ class PyToxoContext:
 # Detect platform, to adapt some patches depending of it
 if detected_platform == "Darwin":  # Mac OS
     window_general_font_dep_of_platform = ("", "13")
-    state_ready_font_size_dep_of_platform = (
-        int(window_general_font_dep_of_platform[1]) + 2
-    )
+    state_ready_font_size_dep_of_platform = 15
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 800)
     model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Linux":
     window_general_font_dep_of_platform = ("", "10")
-    state_ready_font_size_dep_of_platform = (
-        int(window_general_font_dep_of_platform[1]) + 1
-    )
+    state_ready_font_size_dep_of_platform = 11
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
     model_frame_size_y_dep_of_platform = 27
 elif detected_platform == "Windows":
     window_general_font_dep_of_platform = ("", "10")
-    state_ready_font_size_dep_of_platform = (
-        int(window_general_font_dep_of_platform[1]) + 1
-    )
+    state_ready_font_size_dep_of_platform = 11
     state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
     window_size_dep_of_platform = (650, 780)
