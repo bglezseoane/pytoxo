@@ -164,7 +164,7 @@ class GUIUnsupportedPlatformError(Exception):
                 f"but something is wrong... Please, check you have Tk and "
                 f"its Python binders installed and correctly reachable. "
                 f"You can usually install them with the command:"
-                f"\n\tsudo apt install python3-tk"
+                f"\n\n\tsudo apt install python3-tk"
             )
         elif platform == "Darwin" or platform == "Windows":
             self.message = (
