@@ -742,7 +742,6 @@ def main():
                         msg = e.__str__()
                         if not msg.endswith("."):
                             msg = f"{e}."
-                        msg = msg.capitalize()
 
                         if hide_windows_to_emulate_modal_dep_of_platform:
                             window.Hide()
@@ -791,7 +790,6 @@ def main():
                 msg = e.__str__()
                 if not msg.endswith("."):
                     msg = f"{e}."
-                msg = msg.capitalize()
 
                 if hide_windows_to_emulate_modal_dep_of_platform:
                     window.Hide()
@@ -827,7 +825,6 @@ def main():
                 msg = e.__str__()
                 if not msg.endswith("."):
                     msg = f"{e}."
-                msg = msg.capitalize()
 
                 if hide_windows_to_emulate_modal_dep_of_platform:
                     window.Hide()
