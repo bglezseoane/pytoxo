@@ -99,7 +99,13 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     eq_system = model._build_max_prevalence_system(maf, heritability)
 
                     # Get the equation system PyToxo solution
-                    vars_sol = model._solve(eq_system, solve_timeout=False)
+                    try:
+                        vars_sol = model._solve(eq_system, solve_timeout=False)
+                    except pytoxo.errors.UnsolvableModelError or pytoxo.errors.ResolutionError:
+                        """If resolution tentative fails, simple go to next
+                        case. This test has not the responsibility to check
+                        model solubility, only accuracy."""
+                        continue
 
                     """Build the table a specified number of 
                     repetitions, to time the calculation time. This step is 
