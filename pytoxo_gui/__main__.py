@@ -33,7 +33,8 @@ the platform"""
 try:
     import PySimpleGUI as sg
 except ImportError:
-    raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
+    print(pytoxo.errors.GUIUnsupportedPlatformError(detected_platform).message)
+    exit(1)
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
