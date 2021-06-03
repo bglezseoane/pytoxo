@@ -26,13 +26,18 @@ import platform
 import time
 import unittest
 
-import git
 import psutil
 import tabulate
 
 import pytoxo
 import pytoxo.errors
 import pytoxo.model
+
+# Flag to control when the generated reports should be saved
+print_reports = False
+
+if print_reports:
+    import git
 
 _TEST_REPETITIONS = 3  # To confirm computation times with an average
 
@@ -44,9 +49,6 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
 
     This test maximizes prevalence.
     """
-
-    # Flag to control when the generated reports should be saved
-    print_reports = False
 
     def test_variables_accuracy(self):
         models = [
@@ -169,7 +171,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if self.print_reports:
+        if print_reports:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
@@ -339,7 +341,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if self.print_reports:
+        if print_reports:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
