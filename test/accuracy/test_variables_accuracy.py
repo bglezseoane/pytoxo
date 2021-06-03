@@ -60,7 +60,6 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "multiplicative_2",
             "multiplicative_3",
             "multiplicative_4",
-            "multiplicative_5",
             "threshold_2",
             "threshold_3",
             "threshold_4",
@@ -238,6 +237,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
         expensive to always check them. Enable the test for an exhaustive
         check."""
         models = [
+            "multiplicative_5",
             "multiplicative_6",
             "multiplicative_7",
             "multiplicative_8",
