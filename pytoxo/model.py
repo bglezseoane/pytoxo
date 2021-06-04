@@ -174,7 +174,6 @@ class Model:
         self._variables = (
             []
         )  # List of symbolic variable names used throughout the model
-        self._tolerable_solution_error_delta = None
 
         # Check custom model name
         if model_name:
