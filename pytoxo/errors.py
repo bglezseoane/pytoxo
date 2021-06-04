@@ -144,3 +144,36 @@ class GenericCalculationError(Exception):
             self.message = "Calculation error produced"
         else:
             self.message = msg_skeleton.format(self.function)
+
+
+class GUIUnsupportedPlatformError(Exception):
+    """Representation of a GUI platform support error of PyToxo."""
+
+    def __init__(self, platform: str):
+        """Creates a GUI platform support error of PyToxo.
+
+        Parameters
+        ----------
+        platform : str
+            The name of the platform where the GUI is used: Darwin, Linux,
+            Windows or other unsupported one.
+        """
+        if platform == "Linux":
+            self.message = (
+                f"Your plaform (detected {platform}) supports PyToxo's GUI, "
+                f"but something is wrong... Please, check you have Tk and "
+                f"its Python binders installed and correctly reachable. "
+                f"You can usually install them with the command:"
+                f"\n\n\tsudo apt install python3-tk"
+            )
+        elif platform == "Darwin" or platform == "Windows":
+            self.message = (
+                f"Your plaform (detected {platform}) supports PyToxo's GUI, "
+                f"but something is wrong... Please, check you have Tk and "
+                f"its Python binders installed and correctly reachable."
+            )
+        else:
+            self.message = (
+                f"Your platform (detected {platform}) does not support the "
+                f"PyToxo's GUI. Please, try the CLI instead."
+            )

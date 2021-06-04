@@ -21,11 +21,11 @@ from typing import Dict, List, Tuple, Union
 import mpmath
 import numpy
 import sympy
-import timeout_decorator
 
 import pytoxo.calculations
 import pytoxo.errors
 import pytoxo.ptable
+import pytoxo.util
 
 _MPMATH_DEFAULT_DPS = 15
 _TOLERABLE_SOLUTION_ERROR_BASE_DELTA = 1e-16  # It is fitted then to model's order
@@ -582,7 +582,7 @@ class Model:
         """
         # Check timeout
         if not solve_timeout:
-            solve_timeout = None  # `timeout_decorator` requires exactly `None`
+            solve_timeout = None  # Required exactly `None`
         elif type(solve_timeout) == bool and solve_timeout == True:
             solve_timeout = (self._order + 1) ** 2 * 60  # Seconds
 
@@ -609,9 +609,7 @@ class Model:
                 calculations could get corrupted.
             """
 
-            @timeout_decorator.timeout_decorator.timeout(
-                solve_timeout, timeout_exception=TimeoutError
-            )
+            @pytoxo.util.timeout(solve_timeout)
             def solver_call():
                 """Help function which encapsulate the call to the solver
                 with a timeout decorator to abort futile executions of

@@ -16,10 +16,14 @@
 import argparse
 import sys
 
+import colorama
 import termcolor
 
 import pytoxo
 import pytoxo.errors
+
+# Necessary to use colors in Windows machines
+colorama.init()
 
 # Some predefined printing chunks
 ok_hd = f"{termcolor.colored('[OK]', 'green', attrs=['bold'])}:"

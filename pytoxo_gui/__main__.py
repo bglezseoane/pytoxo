@@ -16,13 +16,25 @@
 import base64
 import io
 import os
+import platform
+import subprocess
+from typing import List
 
 import PIL.Image
-import PySimpleGUI as sg
-from typing import List
 
 import pytoxo
 import pytoxo.errors
+
+# Detect the platform where the GUI is going to be used
+detected_platform = platform.system()
+
+"""PySimpleGUI imports Tk, and this fail if Tk is not correctly installed in 
+the platform"""
+try:
+    import PySimpleGUI as sg
+except ImportError:
+    print(pytoxo.errors.GUIUnsupportedPlatformError(detected_platform).message)
+    exit(1)
 
 MAX_ORDER_SUPPORTED = 12  # The interface would need some fixes to support bigger orders
 MAX_NUMERICAL_INPUT_LEN = 20
@@ -39,12 +51,56 @@ class PyToxoContext:
 
 
 # ####################### GUI DESIGN ######################
+# Adapt some patches depending of the detected platform
+if detected_platform == "Darwin":  # Mac OS
+    window_general_font_dep_of_platform = ("", "13")
+    state_ready_font_size_dep_of_platform = 15
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 800)
+    model_frame_size_y_dep_of_platform = 27
+    """Modal windows are not supported on Mac OS, so this patch a used to 
+    emulate them hiding and un-hiding the main window"""
+    hide_windows_to_emulate_modal_dep_of_platform = True
+    """With Mac OS the menu is located in the upper menu bar, and it is 
+    sensitive to the theme that is being used in the system, so it is consulted
+    below"""
+    p = subprocess.Popen(
+        "defaults read -g AppleInterfaceStyle", shell=True, stdout=subprocess.PIPE
+    )
+    output, _ = p.communicate()
+    macos_current_theme = output.decode("UTF-8").strip()
+    if macos_current_theme == "Dark":
+        menu_text_color_dep_of_platform = "#ffffff"
+    else:
+        menu_text_color_dep_of_platform = "#000000"
+elif detected_platform == "Linux":
+    window_general_font_dep_of_platform = ("", "10")
+    state_ready_font_size_dep_of_platform = 11
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 780)
+    model_frame_size_y_dep_of_platform = 27
+    hide_windows_to_emulate_modal_dep_of_platform = False
+    menu_text_color_dep_of_platform = "#000000"
+elif detected_platform == "Windows":
+    window_general_font_dep_of_platform = ("", "10")
+    state_ready_font_size_dep_of_platform = 11
+    state_calculating_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    table_font_size_dep_of_platform = state_ready_font_size_dep_of_platform
+    window_size_dep_of_platform = (650, 780)
+    model_frame_size_y_dep_of_platform = 24
+    hide_windows_to_emulate_modal_dep_of_platform = False
+    menu_text_color_dep_of_platform = "#000000"
+else:
+    raise pytoxo.errors.GUIUnsupportedPlatformError(detected_platform)
+
 # Main style settings
 pytoxo_main_color = "#044343"
 sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
     "BACKGROUND": "#4f7b7b",
     "TEXT": "#e4e4e4",
-    "INPUT": "white",
+    "INPUT": "#ffffff",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -58,7 +114,7 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoTheme"] = {
 sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
     "BACKGROUND": "#a7bdbd",
     "TEXT": pytoxo_main_color,
-    "INPUT": "white",
+    "INPUT": "#ffffff",
     "TEXT_INPUT": "#e4e4e4",
     "SCROLL": "#045757",
     "BUTTON": ("#e4e4e4", pytoxo_main_color),
@@ -74,41 +130,41 @@ sg.LOOK_AND_FEEL_TABLE["PyToxoLightTheme"] = {
 # Uncomment desired style between:
 # Dark style
 sg.theme("PyToxoTheme")
-disabled_text_color_depending_of_style = "grey"
-state_ready_color_depending_of_style = "#1bff1B"
-state_calculating_color_depending_of_style = "#e59400"
-logo_pytoxo_depending_of_style = os.path.abspath("img/logo_white.gif")
-logo_udc_depending_of_style = os.path.abspath("img/logo_udc.gif")
+disabled_text_color_dep_of_style = "#dbdbdb"
+state_ready_color_dep_of_style = "#1bff1B"
+state_calculating_color_dep_of_style = "#e59400"
+logo_pytoxo_dep_of_style = os.path.abspath("img/logo_white.gif")
+logo_udc_dep_of_style = os.path.abspath("img/logo_udc.gif")
 # # Light style
 # sg.theme("PyToxoLightTheme")
-# disabled_text_color_depending_of_style = "#656b6b"
-# state_ready_color_depending_of_style = "#8cff19"
-# state_calculating_color_depending_of_style = "#ee683b"
-# logo_pytoxo_depending_of_style = os.path.abspath("img/logo.gif")
-# logo_udc_depending_of_style =os.path.abspath("img/logo_udc_green.gif")
+# disabled_text_color_dep_of_style = "#656b6b"
+# state_ready_color_dep_of_style = "#8cff19"
+# state_calculating_color_dep_of_style = "#ee683b"
+# logo_pytoxo_dep_of_style = os.path.abspath("img/logo.gif")
+# logo_udc_dep_of_style =os.path.abspath("img/logo_udc_green.gif")
 # #####################################
 
 # Other style settings: fonts
-window_general_font = "13"
-table_font = ("Courier", "15")
+window_general_font = window_general_font_dep_of_platform
+table_font = ("Courier", table_font_size_dep_of_platform)
 table_headers_font = window_general_font
-state_ready_font = ("", "15", "bold")
-state_calculating_font = ("", "15", "bold")
+state_ready_font = ("", state_ready_font_size_dep_of_platform, "bold")
+state_calculating_font = ("", state_calculating_font_size_dep_of_platform, "bold")
 
 # Other style settings: font colors
-table_font_color = "black"
-table_headers_font_color = "white"
-text_inputs_text_color = "black"
-state_ready_color = state_ready_color_depending_of_style
-state_calculating_color = state_calculating_color_depending_of_style
-disabled_text_color = disabled_text_color_depending_of_style
+table_font_color = "#000000"
+table_headers_font_color = "#ffffff"
+text_inputs_text_color = "#000000"
+state_ready_color = state_ready_color_dep_of_style
+state_calculating_color = state_calculating_color_dep_of_style
+disabled_text_color = disabled_text_color_dep_of_style
 
 # Other style settings: background colors
-table_background_color = "white"
-table_alternating_background_color = "lightgrey"
+table_background_color = "#ffffff"
+table_alternating_background_color = "#d3d3d3"
 
 # Other style settings: highlight colors
-selection_colors = ("black", "#c6dffc")
+selection_colors = ("#000000", "#c6dffc")
 
 # Tooltipis messages
 tt_model_disabled_text = (
@@ -130,11 +186,12 @@ menu = sg.Menu(
         ],
         # ["Edit", ["Paste", "Undo"]],  # TODO
         ["Help", "About PyToxo GUI"],
-    ]
+    ],
+    text_color=menu_text_color_dep_of_platform,
 )
 
 # Logo preparation for the main window
-logo = PIL.Image.open(logo_pytoxo_depending_of_style)
+logo = PIL.Image.open(logo_pytoxo_dep_of_style)
 logo_size_x, logo_size_y = logo.size
 logo_new_size_x = 450
 logo_new_size = (logo_new_size_x, (logo_size_y * logo_new_size_x) // logo_size_x)
@@ -152,7 +209,7 @@ logo.save(buffered, format="GIF")  # GIF is the best format for Tkinter
 logo_b64_popup = base64.b64encode(buffered.getvalue())
 
 # UDC's logo preparation for the about pop-up
-logo_udc = PIL.Image.open(logo_udc_depending_of_style)
+logo_udc = PIL.Image.open(logo_udc_dep_of_style)
 logo_udc_size_x, logo_udc_size_y = logo_udc.size
 logo_udc_new_size_x = 300
 logo_udc_new_size = (
@@ -166,14 +223,14 @@ logo_udc_b64 = base64.b64encode(buffered.getvalue())
 
 # Epistatic model table
 headings = [
-    " Genotype definition ",
+    "Genotype definition",
     "Penetrance expression",
     "Calculated penetrance",
 ]
 empty_rows = [["" for col in range(len(headings))]]
 
 # Model frame
-size_y_model_frame_component = 28  # Used by the disabled text or the table
+model_frame_size_y = model_frame_size_y_dep_of_platform
 model_frame = sg.Frame(
     key="-MODEL_FRAME-",
     title="Epistatic model",
@@ -185,11 +242,12 @@ model_frame = sg.Frame(
                 values=empty_rows,
                 enable_events=True,
                 vertical_scroll_only=True,
-                num_rows=size_y_model_frame_component - 1,  # Due to header row
+                num_rows=model_frame_size_y - 1,  # Due to header row
                 justification="center",
                 display_row_numbers=True,
                 hide_vertical_scroll=True,
-                auto_size_columns=True,
+                auto_size_columns=False,
+                col_widths=[21] * len(headings),
                 header_font=table_headers_font,
                 header_text_color=table_headers_font_color,
                 header_background_color=pytoxo_main_color,
@@ -237,7 +295,7 @@ info_banner = [
         ),
     ],
     sg.Text(
-        "State: Ready",
+        "Ready",
         key="-INFO_STATE_READY-",
         visible=True,
         font=state_ready_font,
@@ -245,7 +303,7 @@ info_banner = [
         justification="center",
     ),
     sg.Text(
-        "State: Calculating...",
+        "Calculating...",
         key="-INFO_STATE_CALCULATING-",
         visible=False,
         font=state_calculating_font,
@@ -354,12 +412,9 @@ window = sg.Window(
     layout,
     font=window_general_font,
     finalize=True,
-    size=(650, 800),
+    size=window_size_dep_of_platform,
     element_justification="center",
 )
-
-# Window style patches
-window["-MODEL_FRAME-"].expand(expand_x=True)
 
 
 # #########################################################
@@ -536,11 +591,20 @@ def main():
                     ]
                 )
                 """Enable MAFs assuring to prevent from being enabled too 
-                many when changing from a larger model to a smaller one"""
+                many when changing from a larger model to a smaller one. 
+                Assure also that MAFs are all empty"""
                 for i in range(1, pytoxo_context.model.order + 1):
+                    values[f"-MAFS_INPUT_{i}-"] = ""
+                    window[f"-MAFS_INPUT_{i}-"].Update(
+                        value=values[f"-MAFS_INPUT_{i}-"]
+                    )
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=True)
                 for i in range(pytoxo_context.model.order + 1, MAX_ORDER_SUPPORTED + 1):
                     window[f"-MAFS_INPUT_{i}-"].Update(visible=False)
+                    values[f"-MAFS_INPUT_{i}-"] = ""
+                    window[f"-MAFS_INPUT_{i}-"].Update(
+                        value=values[f"-MAFS_INPUT_{i}-"]
+                    )
                 window["-MAFS_DISABLED_TEXT-"].Update(visible=False)
 
                 # Enable prevalence or heritability entry
@@ -572,22 +636,28 @@ def main():
                     text_entries_to_check_keys, values
                 )
             except pytoxo.errors.BadFormedModelError:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     "The file contains a bad formed model. PyToxo cannot "
                     "interpret it. Revise PyToxo's file format requirements.",
                     title="File parsing error",
+                    modal=True,
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
             except IOError:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"Error trying to open '{filename}'.",
                     title="File opening error",
+                    modal=True,
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
         elif event == "Close model and clean":
             # Load to the PyToxo context
@@ -633,14 +703,17 @@ def main():
 
         elif event == "Save calculated table":
             if not pytoxo_context.ptable:
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"There is not a calculated penetrance table. Calculate "
                     f"the table before trying to save it.",
                     title="No penetrance table",
+                    modal=True,
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
             else:
                 # Get configured output format
                 output_format = values["-FORMATS_CB-"].lower()
@@ -669,15 +742,17 @@ def main():
                         msg = e.__str__()
                         if not msg.endswith("."):
                             msg = f"{e}."
-                        msg = msg.capitalize()
 
-                        window.Hide()  # Patch because popup modal function does not work in all platforms
+                        if hide_windows_to_emulate_modal_dep_of_platform:
+                            window.Hide()
                         sg.popup_ok(
                             f"{msg} Revise this field.",
                             title="Saving error",
+                            modal=True,
                             font=window_general_font,
                         )
-                        window.UnHide()
+                        if hide_windows_to_emulate_modal_dep_of_platform:
+                            window.UnHide()
 
         elif event == "-MODEL_TABLE-":
             # Intercept the event to refresh window when click on the table
@@ -715,15 +790,17 @@ def main():
                 msg = e.__str__()
                 if not msg.endswith("."):
                     msg = f"{e}."
-                msg = msg.capitalize()
 
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
+                    modal=True,
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
                 # Remove value
                 window[event].Update(value="")
@@ -748,15 +825,17 @@ def main():
                 msg = e.__str__()
                 if not msg.endswith("."):
                     msg = f"{e}."
-                msg = msg.capitalize()
 
-                window.Hide()  # Patch because popup modal function does not work in all platforms
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.Hide()
                 sg.popup_ok(
                     f"{msg} Revise this field.",
                     title="Input configuration validation error",
+                    modal=True,
                     font=window_general_font,
                 )
-                window.UnHide()
+                if hide_windows_to_emulate_modal_dep_of_platform:
+                    window.UnHide()
 
                 # Remove value
                 window[event].Update(value="")
@@ -798,61 +877,87 @@ def main():
                         ]
                     )
                 except pytoxo.errors.ResolutionError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         e.message,
                         title="Resolution error",
+                        modal=True,
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 except pytoxo.errors.UnsolvableModelError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         e.message,
                         title="Unsolvable model error",
+                        modal=True,
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 except ValueError as e:
-                    window.Hide()  # Patch because popup modal function does not work in all platforms
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.Hide()
                     sg.popup_ok(
                         f"{e} Check input parameters.",
                         title="Input configuration validation error",
+                        modal=True,
                         font=window_general_font,
                     )
-                    window.UnHide()
+                    if hide_windows_to_emulate_modal_dep_of_platform:
+                        window.UnHide()
                 finally:
                     # Update informative banner
                     update_info_banner(window, "-INFO_STATE_READY-")
 
         elif event == "About PyToxo GUI":
-            # No hide and un-hide window with this popup, because no modal
-            _ = sg.Window(
-                "About PyToxo GUI",
-                layout=[
-                    [
-                        sg.Text(
-                            "PyToxo GUI\nA graphical user interface for " "PyToxo\n",
-                            justification="center",
-                        )
+            """This patch is to emulate window modal behaviour on Mac OS. In
+            Linux and Windows, this is innocuous, because the "about" window is
+            modal and the main window will be unresponsive still close the other
+            one. In Mac OS, modal windows are not supported, and previously
+            approach used with popups does not work here. It is also not
+            possible to use popups here, because they do not admit a layout.
+            So, with this patch, at least is limited the opnening of several
+            "about" windows in all platforms. In Mac OS still will be
+            possible to use the main window with the "about" window opened, but
+            it is not very important"""
+            try:
+                # In Mac OS, hide and unhide works, focus doesn't work
+                # noinspection PyUnboundLocalVariable
+                about_popup.Hide()
+                about_popup.UnHide()
+            except:
+                about_popup = sg.Window(
+                    "About PyToxo GUI",
+                    layout=[
+                        [
+                            sg.Text(
+                                "PyToxo GUI\nA graphical user interface for "
+                                "PyToxo\n",
+                                justification="center",
+                            )
+                        ],
+                        [sg.Image(data=logo_b64_popup)],
+                        [
+                            sg.Text(
+                                "PyToxo\nA Python library for "
+                                "calculating penetrance tables of any "
+                                "bivariate epistasis model\n\nCopyright 2021 Borja "
+                                "González Seoane\nUniversity of A Coruña\nContact: "
+                                "borja.gseoane@udc.es",
+                                justification="center",
+                            )
+                        ],
+                        [sg.Image(data=logo_udc_b64)],
                     ],
-                    [sg.Image(data=logo_b64_popup)],
-                    [
-                        sg.Text(
-                            "PyToxo\nA Python library for "
-                            "calculating penetrance tables of any "
-                            "bivariate epistasis model\n\nCopyright 2021 Borja "
-                            "González Seoane\nUniversity of A Coruña\nContact: "
-                            "borja.gseoane@udc.es",
-                            justification="center",
-                        )
-                    ],
-                    [sg.Image(data=logo_udc_b64)],
-                ],
-                font=window_general_font,
-                finalize=True,
-                element_justification="center",
-            )
+                    font=window_general_font,
+                    finalize=True,
+                    modal=True,
+                    element_justification="center",
+                )
 
         # Finally, check if all is filled before go to the next interaction
         check_all_filled(window, values, text_entries_to_check_values)

@@ -26,13 +26,18 @@ import platform
 import time
 import unittest
 
-import git
 import psutil
 import tabulate
 
 import pytoxo
 import pytoxo.errors
 import pytoxo.model
+
+# Flag to control when the generated reports should be saved
+print_reports = False
+
+if print_reports:
+    import git
 
 _TEST_REPETITIONS = 3  # To confirm computation times with an average
 
@@ -44,9 +49,6 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
 
     This test maximizes prevalence.
     """
-
-    # Flag to control when the generated reports should be saved
-    print_reports = False
 
     def test_variables_accuracy(self):
         models = [
@@ -60,7 +62,6 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "multiplicative_2",
             "multiplicative_3",
             "multiplicative_4",
-            "multiplicative_5",
             "threshold_2",
             "threshold_3",
             "threshold_4",
@@ -99,7 +100,13 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     eq_system = model._build_max_prevalence_system(maf, heritability)
 
                     # Get the equation system PyToxo solution
-                    vars_sol = model._solve(eq_system, solve_timeout=False)
+                    try:
+                        vars_sol = model._solve(eq_system, solve_timeout=False)
+                    except pytoxo.errors.UnsolvableModelError or pytoxo.errors.ResolutionError:
+                        """If resolution tentative fails, simple go to next
+                        case. This test has not the responsibility to check
+                        model solubility, only accuracy."""
+                        continue
 
                     """Build the table a specified number of 
                     repetitions, to time the calculation time. This step is 
@@ -164,7 +171,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if self.print_reports:
+        if print_reports:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
@@ -232,6 +239,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
         expensive to always check them. Enable the test for an exhaustive
         check."""
         models = [
+            "multiplicative_5",
             "multiplicative_6",
             "multiplicative_7",
             "multiplicative_8",
@@ -333,7 +341,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if self.print_reports:
+        if print_reports:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
