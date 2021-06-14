@@ -90,6 +90,7 @@ for output in outputs:
     for output_penetrance in output_penetrances:
         if float(output_penetrance) > 1 or float(output_penetrance) < 0:
             cases_to_check.append(output)
+cases_to_check = list(dict.fromkeys(cases_to_check))  # Remove duplicates
 
 # Latex table report content
 table_content = []
