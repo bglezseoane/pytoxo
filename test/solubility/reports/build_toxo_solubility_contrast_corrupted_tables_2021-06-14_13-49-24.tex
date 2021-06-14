@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{float}
+\usepackage{longtable}
+\begin{document}
+\section*{PyToxo Test Suite Report}
+\subsection*{\texttt{build\_toxo\_solubility\_contrast\_corrupted\_tables}}
+Generated report:
+
+\begin{longtable}[H]{lrrr}
+\hline
+ Model      &   Order &   MAF &   Heritability \\
+\hline
+ Additive\_4 &       4 &   0.2 &            0.8 \\
+ Additive\_5 &       5 &   0.1 &            0.9 \\
+ Additive\_5 &       5 &   0.2 &            0.9 \\
+ Additive\_5 &       5 &   0.3 &            0.4 \\
+ Additive\_5 &       5 &   0.3 &            0.6 \\
+ Additive\_5 &       5 &   0.4 &            0.7 \\
+ Additive\_5 &       5 &   0.5 &            0.6 \\
+ Additive\_6 &       6 &   0.1 &            0.8 \\
+ Additive\_6 &       6 &   0.4 &            0.3 \\
+ Additive\_6 &       6 &   0.5 &            0.6 \\
+ Additive\_7 &       7 &   0.4 &            0.7 \\
+ Additive\_7 &       7 &   0.5 &            0.3 \\
+ Additive\_8 &       8 &   0.1 &            0.6 \\
+ Additive\_8 &       8 &   0.1 &            0.7 \\
+ Additive\_8 &       8 &   0.2 &            0.1 \\
+ Additive\_8 &       8 &   0.2 &            0.1 \\
+ Additive\_8 &       8 &   0.2 &            0.3 \\
+ Additive\_8 &       8 &   0.2 &            0.4 \\
+ Additive\_8 &       8 &   0.4 &            0.1 \\
+ Additive\_8 &       8 &   0.4 &            0.5 \\
+\hline
+
+\caption{List with some models that Toxo cannot solve (calculates a corrupted table) but PyToxo yes. This experiment was executed using an initial population of 20 Toxo outputs with corrupted penetrance values. Maximizing prevalence}
+\end{longtable}
+Datetime: 2021-06-14\_13-49-24
+
+Machine: \texttt{macOS-10.16-x86\_64-i386-64bit, 6 core, 6 physical core, 3700.00 MHz max freq.}
+
+Git commit hash: \texttt{17c50c527730f47438dbbcdbc4a605e013d13137}
+
+\end{document}
