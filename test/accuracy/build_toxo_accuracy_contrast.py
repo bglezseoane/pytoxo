@@ -125,9 +125,13 @@ for model_filename in models:
 
     """Check if the penetrances are correct. If not, discard this case, 
     because Toxo cannot calculate it"""
+    abort_case = False  # To break outside loop
     for penetrance in penetrances:
         if penetrance > 1 or penetrance < 0:
-            continue
+            abort_case = True
+            break
+    if abort_case:
+        continue  # Next case
 
     # Generate PyToxo model
     model = pytoxo.model.Model(os.path.join("models", f"{model_name}.csv"))
