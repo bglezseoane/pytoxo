@@ -445,18 +445,18 @@ class Model:
         )
 
     def calculate_tolerable_solution_error_delta(self) -> float:
-        """Calculates the error delta to tolerate during model resolution,
-        fitted to the current model order. If the fitted delta is greater
-        than the max delta, return the max delta. This last avoid absurd error
-        delta for very big models.
+        """Calculates the error delta to be tolerated during the model
+        resolution, adjusted to the current model order. If the adjusted
+        delta is greater than the maximum delta, returns the maximum delta.
+        The latter avoid absurd delta error for very large models.
 
-        Uses the constants: `_TOLERABLE_SOLUTION_ERROR_BASE_DELTA` and
+        Uses the constants `_TOLERABLE_SOLUTION_ERROR_BASE_DELTA` and
         `_TOLERABLE_SOLUTION_ERROR_MAX_DELTA` to calculate the fitted delta.
 
         Returns
         -------
         float
-            The calculated solution error delta to tolerate.
+            The resolution error delta to tolerate.
         """
         return min(
             _TOLERABLE_SOLUTION_ERROR_BASE_DELTA * pow(10, self._order),
