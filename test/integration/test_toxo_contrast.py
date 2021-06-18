@@ -21,10 +21,10 @@ import pytoxo.calculations
 import pytoxo.model
 
 _TOXO_MAX_HERITABILITY_OUTPUTS_FOLDER = os.path.join(
-    "test", "toxo_outputs", "calculate_all_tables_with_times_max_h"
+    "toxo_outputs", "calculate_all_tables_with_times_max_h"
 )
 _TOXO_MAX_PREVALENCE_OUTPUTS_FOLDER = os.path.join(
-    "test", "toxo_outputs", "calculate_all_tables_with_times_max_p"
+    "toxo_outputs", "calculate_all_tables_with_times_max_p"
 )
 
 

@@ -25,8 +25,8 @@ import pytoxo.errors
 class ModelsSolubilityTestSuite(unittest.TestCase):
     """This test focuses on verifying that PyToxo is capable of solving at
     least the same models as Toxo. For this, go to the Toxo outputs folders
-    (`test/toxo_outputs/calculate_all_tables_with_times_max_p` and
-    `test/toxo_outputs/calculate_all_tables_with_times_max_h`) and get all
+    (`toxo_outputs/calculate_all_tables_with_times_max_p` and
+    `toxo_outputs/calculate_all_tables_with_times_max_h`) and get all
     correct penetrance tables (those with all penetrances between 0 and 1).
 
     Then, parse the variables (model, MAFs and prevalence or heritability) of
@@ -68,23 +68,15 @@ class ModelsSolubilityTestSuite(unittest.TestCase):
         """
         # Get all Toxo output files
         toxo_cases = [
-            os.path.join(
-                "test", "toxo_outputs", "calculate_all_tables_with_times_max_h", p
-            )
+            os.path.join("toxo_outputs", "calculate_all_tables_with_times_max_h", p)
             for p in os.listdir(
-                os.path.join(
-                    "test", "toxo_outputs", "calculate_all_tables_with_times_max_h"
-                )
+                os.path.join("toxo_outputs", "calculate_all_tables_with_times_max_h")
             )
             if p.endswith(".csv")
         ] + [
-            os.path.join(
-                "test", "toxo_outputs", "calculate_all_tables_with_times_max_p", p
-            )
+            os.path.join("toxo_outputs", "calculate_all_tables_with_times_max_p", p)
             for p in os.listdir(
-                os.path.join(
-                    "test", "toxo_outputs", "calculate_all_tables_with_times_max_p"
-                )
+                os.path.join("toxo_outputs", "calculate_all_tables_with_times_max_p")
             )
             if p.endswith(".csv")
         ]

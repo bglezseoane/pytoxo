@@ -74,7 +74,7 @@ else:
 
 # Read outputs folder
 path = os.path.join(
-    "test", "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
+    "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
 )
 files = os.listdir(path)
 times_file = os.path.join(path, "times.txt")

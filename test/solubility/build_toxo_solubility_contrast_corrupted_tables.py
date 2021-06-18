@@ -76,7 +76,7 @@ else:
 
 # Some definitions about the Toxo outputs environment
 path = os.path.join(
-    "test", "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
+    "toxo_outputs", f"calculate_all_tables_with_times_max_{prev_or_her_letter}"
 )
 files = os.listdir(path)
 outputs = sorted([f for f in files if f.endswith(".csv")])
