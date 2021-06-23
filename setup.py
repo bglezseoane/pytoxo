@@ -21,7 +21,7 @@ with open("requirements_with_gui.txt") as f:
     requirements = f.read().splitlines()
 
 
-version = "0.1.dev1"
+version = "1.0"
 
 setuptools.setup(
     name="pytoxo",
@@ -38,14 +38,14 @@ setuptools.setup(
     data_files=[
         ("", ["requirements_with_gui.txt"]),
         ("", ["README.md"]),
-        # ("", ["LICENSE"]),
+        ("", ["LICENSE"]),
     ],
     url="https://github.com/bglezseoane/pytoxo",
     download_url=f"https://github.com/bglezseoane/pytoxo/archive/{version}.tar.gz",
     license="LICENSE",
     author="Borja González Seoane",
     author_email="borja.gseoane@udc.es",
-    description="A Python library for calculating penetrance tables of any bivariate epistasis model",
+    description="A Python tool to calculate penetrance tables for high-order epistasis models",
     long_description=long_description,
     long_description_content_type="text/markdown",
     classifiers=[
