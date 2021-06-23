@@ -3,8 +3,8 @@
 ###########################################################
 # PyToxo
 #
-# A Python library for calculating penetrance tables of any
-# bivariate epistasis model.
+# A Python tool to calculate penetrance tables for 
+# high-order epistasis models
 #
 # Copyright 2021 Borja González Seoane
 #
