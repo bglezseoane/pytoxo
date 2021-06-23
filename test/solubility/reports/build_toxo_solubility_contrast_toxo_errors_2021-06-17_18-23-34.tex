@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{float}
+\usepackage{longtable}
+\begin{document}
+\section*{PyToxo Test Suite Report}
+\subsection*{\texttt{build\_toxo\_solubility\_contrast\_toxo\_errors}}
+Generated report:
+
+\begin{longtable}[H]{lrrr}
+\hline
+ Model            &   Order &   MAF &   Prevalence \\
+\hline
+ Multiplicative\_6 &       6 &   0.1 &          0.3 \\
+ Multiplicative\_6 &       6 &   0.1 &          0.6 \\
+ Multiplicative\_6 &       6 &   0.1 &          0.8 \\
+ Multiplicative\_6 &       6 &   0.1 &          0.9 \\
+ Multiplicative\_6 &       6 &   0.2 &          0.3 \\
+ Multiplicative\_6 &       6 &   0.2 &          0.4 \\
+ Multiplicative\_6 &       6 &   0.2 &          0.5 \\
+ Multiplicative\_6 &       6 &   0.2 &          0.9 \\
+ Multiplicative\_6 &       6 &   0.4 &          0.2 \\
+ Multiplicative\_6 &       6 &   0.4 &          0.3 \\
+\hline
+
+\caption{List with some models that Toxo cannot solve (detecting error) but PyToxo yes. This experiment was executed using an initial population of 20 Toxo cases which finished with an error. Maximizing heritability}
+\end{longtable}
+Datetime: 2021-06-17\_18-23-34
+
+Machine: \texttt{macOS-10.16-x86\_64-i386-64bit, 6 core, 6 physical core, 3700.00 MHz max freq.}
+
+Git commit hash: \texttt{e94e6bf94573773d50729cd4b1f13af778cd8fc1}
+
+\end{document}

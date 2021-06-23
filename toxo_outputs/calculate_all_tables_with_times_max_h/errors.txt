@@ -1,0 +1,120 @@
+Warning: (multiplicative_6 with MAF=0.1 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.1 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.2 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.3 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_6 with MAF=0.4 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.1 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.2 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.3 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_7 with MAF=0.4 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.1 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.2 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.3 and p=0.9) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.1) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.2) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.3) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.4) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.5) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.6) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.7) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.8) Could not find a solution to the problem defined.
+Warning: (multiplicative_8 with MAF=0.4 and p=0.9) Could not find a solution to the problem defined.
+Warning: (threshold_2 with MAF=0.2 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.3 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.3 and p=0.2) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.4 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.4 and p=0.2) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.4 and p=0.3) There is no solution to the problem defined.
+Warning: (threshold_2 with MAF=0.4 and p=0.4) There is no solution to the problem defined.
+Warning: (threshold_3 with MAF=0.3 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_3 with MAF=0.4 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_3 with MAF=0.4 and p=0.2) There is no solution to the problem defined.
+Warning: (threshold_4 with MAF=0.4 and p=0.1) There is no solution to the problem defined.
+Warning: (threshold_5 with MAF=0.4 and p=0.1) There is no solution to the problem defined.

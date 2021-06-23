@@ -1,0 +1,10 @@
+Data imported since Toxo's repository after the execution
+of the script 'calculate_all_tables_with_times_max_h.m' with a fix
+to setting the Matlab accuracy digits to 64. Model configurations are
+explicit in the file titles.
+
+Data generated maximizing the heritability.
+
+The time files will be appended to 'times.txt' after several 
+executions in order to calculate an average and thus obtain a 
+better reference.
