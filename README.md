@@ -1,6 +1,12 @@
 <img height="150" src="img/logo.png" alt="PyToxo">
 
-*A Python tool to calculate penetrance tables for high-order epistasis models.*
+***A Python tool to calculate penetrance tables for high-order epistasis models.***  
+
+Mailing list: [freelists.org/list/pytoxo](https://www.freelists.org/list/pytoxo). Join to start the discussion.  
+User manual (English version): [manuals/manual_en.pdf](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_en.pdf).  
+User manual (Spanish version): [manuals/manual_es.pdf](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_es.pdf).  
+
+---------------------------------------------------------------------
 
 PyToxo is a library for calculating penetrance tables of any bivariate epistasis model, developed in Python. It is a improved version of the [Toxo](https://github.com/UDC-GAC/toxo) library.
 
@@ -26,7 +32,7 @@ pip install pytoxo
 - To see how PyToxo is used through its CLI, you can examine this [example](examples/basic_use_of_pytoxo_as_cli.sh). You can also revise the command-line help executing `pytoxo_cli -h`.
 - To see how PyToxo is used through its GUI, you can examine the PyToxo manual. However, the GUI is very intuitive and guides the user step by step. You might want to venture out using the `pytoxo_gui` command to open the interface and take a look on your own.
 
-In any case, I recommend you take a look at the PyToxo user manual. It is available in [English](manuals/manual_en.pdf) and [Spanish](manuals/manual_es.pdf).
+In any case, I recommend you take a look at the PyToxo user manual. It is available in [English](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_en.pdf) and [Spanish](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_es.pdf).
 
 
 ## Run the tests
