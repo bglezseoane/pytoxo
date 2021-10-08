@@ -21,7 +21,7 @@ with open("requirements_with_gui.txt") as f:
     requirements = f.read().splitlines()
 
 
-version = "1.0"
+version = "1.1"
 
 setuptools.setup(
     name="pytoxo",
