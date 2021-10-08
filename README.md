@@ -1,4 +1,4 @@
-<img height="150" src="img/logo_tn.gif" alt="PyToxo">
+<img height="150" src="https://raw.githubusercontent.com/bglezseoane/pytoxo/master/img/logo_tn.gif" alt="PyToxo">
 
 ***A Python tool to calculate penetrance tables for high-order epistasis models.***  
 
@@ -14,7 +14,7 @@ PyToxo is an easy-to-use tool, which can be used directly as a Python library, o
 
 This work is part of Borja González Seoane's final project for his Degree in Computer Engineering studies from the University of A Coruña.
 
-![PyToxo GUI screenshot](img/pytoxo_gui_screenshot.png "PyToxo GUI screenshot")
+![PyToxo GUI screenshot](https://raw.githubusercontent.com/bglezseoane/pytoxo/master/img/pytoxo_gui_screenshot.png "PyToxo GUI screenshot")
 
 
 ## Install
@@ -28,8 +28,8 @@ pip install pytoxo
 
 ## Use
 
-- To see how PyToxo is used as a library, you can examine this [example](examples/basic_use_of_pytoxo_as_library.ipynb).
-- To see how PyToxo is used through its CLI, you can examine this [example](examples/basic_use_of_pytoxo_as_cli.sh). You can also revise the command-line help executing `pytoxo_cli -h`.
+- To see how PyToxo is used as a library, you can examine this [example](https://github.com/bglezseoane/pytoxo/tree/master/examples/basic_use_of_pytoxo_as_library.ipynb).
+- To see how PyToxo is used through its CLI, you can examine this [example](https://github.com/bglezseoane/pytoxo/tree/master/examples/basic_use_of_pytoxo_as_cli.sh). You can also revise the command-line help executing `pytoxo_cli -h`.
 - To see how PyToxo is used through its GUI, you can examine the PyToxo manual. However, the GUI is very intuitive and guides the user step by step. You might want to venture out using the `pytoxo_gui` command to open the interface and take a look on your own.
 
 In any case, I recommend you take a look at the PyToxo user manual. It is available in [English](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_en.pdf) and [Spanish](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_es.pdf).
