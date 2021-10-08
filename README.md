@@ -3,8 +3,8 @@
 ***A Python tool to calculate penetrance tables for high-order epistasis models.***  
 
 Mailing list: [freelists.org/list/pytoxo](https://www.freelists.org/list/pytoxo). Join to start the discussion.  
-User manual (English version): [manuals/manual_en.pdf](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_en.pdf).  
-User manual (Spanish version): [manuals/manual_es.pdf](https://github.com/bglezseoane/pytoxo/blob/master/manuals/manual_es.pdf).  
+User manual (English version): [manuals/manual_en.pdf](https://raw.githubusercontent.com/bglezseoane/pytoxo/master/manuals/manual_en.pdf).  
+User manual (Spanish version): [manuals/manual_es.pdf](https://raw.githubusercontent.com/bglezseoane/pytoxo/master/manuals/manual_es.pdf).  
 
 ---------------------------------------------------------------------
 
