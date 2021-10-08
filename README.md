@@ -1,4 +1,4 @@
-<img height="150" src="img/logo.png" alt="PyToxo">
+<img height="150" src="img/logo_tn.gif" alt="PyToxo">
 
 ***A Python tool to calculate penetrance tables for high-order epistasis models.***  
 
