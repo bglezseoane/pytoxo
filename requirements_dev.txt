@@ -64,7 +64,6 @@ pyparsing==2.4.7
 pyrsistent==0.17.3
 PySimpleGUI==4.43.0
 python-dateutil==2.8.1
-pytoxo2==0.1.dev1
 pyzmq==22.1.0
 qtconsole==5.1.0
 QtPy==1.9.0
