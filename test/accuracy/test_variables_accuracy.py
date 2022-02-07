@@ -3,7 +3,7 @@
 ###########################################################
 # PyToxo
 #
-# A Python tool to calculate penetrance tables for 
+# A Python tool to calculate penetrance tables for
 # high-order epistasis models
 #
 # Copyright 2021 Borja González Seoane
@@ -35,6 +35,10 @@ import pytoxo.model
 
 # Flag to control when the generated reports should be saved
 print_reports = False
+
+# Flag to select between LaTeX or CSV report type
+report_extension = ".tex"
+# report_extension = ".csv"
 
 if print_reports:
     import git
@@ -71,7 +75,9 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "threshold_8",
         ]  # Uncomment ones to use in the test
         mafs = [0.1, 0.4]
+        # mafs = [0.1, 0.2, 0.3, 0.4, 0.5]
         heritabilities = [0.1, 0.8]
+        # heritabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
         # Latex table report content
         table_headers = [
@@ -185,49 +191,55 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                 "test",
                 "accuracy",
                 "reports",
-                f"{test_name}_{now}.tex",
+                f"{test_name}_{now}{report_extension}",
             )
-            final_table = tabulate.tabulate(
-                table_content, headers="firstrow", tablefmt="latex"
-            )
-            machine_info = (
-                f"{platform.platform()}, "
-                f"{psutil.cpu_count(logical=True)} core, "
-                f"{psutil.cpu_count(logical=False)} physical core, "
-                f"{psutil.cpu_freq().max:.2f} MHz max freq."
-            )
-            """Retrieve current repository commit reference to locate the report 
-            in the history"""
-            git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
-            # Some Latex patches
-            test_name_tex = test_name.replace("_", "\\_")
-            module_name_tex = module_name.replace("_", "\\_")
-            now_tex = now.replace("_", "\\_")
-            machine_info_tex = machine_info.replace("_", "\\_")
-            with open(filename, "x") as f:
-                """Paste the table inside a basic document template to can easily
-                print it as PDF"""
-                f.write(
-                    "\\documentclass{article}\n"
-                    "\\usepackage{float}\n"
-                    "\\begin{document}\n"
-                    "\\section*{PyToxo Test Suite Report}\n"
-                    f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
-                    f"Generated report:\n"
-                    "\\begin{figure}[H]\n"
-                    "\\centering\n"
-                    "\n"
-                    f"{final_table}"
-                    "\n"
-                    "\\caption{Accuracies of the the calculated values for the "
-                    "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                    "tables\n"
-                    "\\end{figure}\n"
-                    f"Datetime: {now_tex}\n\n"
-                    f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
-                    f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
-                    "\\end{document}"
+            if report_extension == ".tex":
+                final_table = tabulate.tabulate(
+                    table_content, headers="firstrow", tablefmt="latex"
                 )
+                machine_info = (
+                    f"{platform.platform()}, "
+                    f"{psutil.cpu_count(logical=True)} core, "
+                    f"{psutil.cpu_count(logical=False)} physical core, "
+                    f"{psutil.cpu_freq().max:.2f} MHz max freq."
+                )
+                """Retrieve current repository commit reference to locate the report 
+                in the history"""
+                git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
+                # Some Latex patches
+                test_name_tex = test_name.replace("_", "\\_")
+                module_name_tex = module_name.replace("_", "\\_")
+                now_tex = now.replace("_", "\\_")
+                machine_info_tex = machine_info.replace("_", "\\_")
+                with open(filename, "x") as f:
+                    """Paste the table inside a basic document template to can easily
+                    print it as PDF"""
+                    f.write(
+                        "\\documentclass{article}\n"
+                        "\\usepackage{float}\n"
+                        "\\begin{document}\n"
+                        "\\section*{PyToxo Test Suite Report}\n"
+                        f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
+                        f"Generated report:\n"
+                        "\\begin{figure}[H]\n"
+                        "\\centering\n"
+                        "\n"
+                        f"{final_table}"
+                        "\n"
+                        "\\caption{Accuracies of the the calculated values for the "
+                        "\\texttt{x} and \\texttt{y} variables used in the penetrance "
+                        "tables\n"
+                        "\\end{figure}\n"
+                        f"Datetime: {now_tex}\n\n"
+                        f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
+                        f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
+                        "\\end{document}"
+                    )
+            else:
+                with open(filename, "x") as f:
+                    for line in table_content:
+                        f.write(";".join([str(e) for e in line]))
+                        f.write("\n")
 
         # Automatic checks against configured tolerable delta
         for tolerable_delta, delta in deltas:
@@ -244,8 +256,10 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "multiplicative_7",
             "multiplicative_8",
         ]  # Uncomment ones to use in the test
-        mafs = [0.2]
-        heritabilities = [0.6]
+        mafs = [0.1, 0.4]
+        # mafs = [0.1, 0.2, 0.3, 0.4, 0.5]
+        heritabilities = [0.1, 0.8]
+        # heritabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
         # Latex table report content
         table_headers = [
@@ -357,47 +371,53 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                 "reports",
                 f"{test_name}_{now}.tex",
             )
-            final_table = tabulate.tabulate(
-                table_content, headers="firstrow", tablefmt="latex"
-            )
-            machine_info = (
-                f"{platform.platform()}, "
-                f"{psutil.cpu_count(logical=True)} core, "
-                f"{psutil.cpu_count(logical=False)} physical core, "
-                f"{psutil.cpu_freq().max:.2f} MHz max freq."
-            )
-            """Retrieve current repository commit reference to locate the report 
-            in the history"""
-            git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
-            # Some Latex patches
-            test_name_tex = test_name.replace("_", "\\_")
-            module_name_tex = module_name.replace("_", "\\_")
-            now_tex = now.replace("_", "\\_")
-            machine_info_tex = machine_info.replace("_", "\\_")
-            with open(filename, "x") as f:
-                """Paste the table inside a basic document template to can easily
-                print it as PDF"""
-                f.write(
-                    "\\documentclass{article}\n"
-                    "\\usepackage{float}\n"
-                    "\\begin{document}\n"
-                    "\\section*{PyToxo Test Suite Report}\n"
-                    f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
-                    f"Generated report:\n"
-                    "\\begin{figure}[H]\n"
-                    "\\centering\n"
-                    "\n"
-                    f"{final_table}"
-                    "\n"
-                    "\\caption{Accuracies of the the calculated values for the "
-                    "\\texttt{x} and \\texttt{y} variables used in the penetrance "
-                    "tables\n"
-                    "\\end{figure}\n"
-                    f"Datetime: {now_tex}\n\n"
-                    f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
-                    f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
-                    "\\end{document}"
+            if report_extension == ".tex":
+                final_table = tabulate.tabulate(
+                    table_content, headers="firstrow", tablefmt="latex"
                 )
+                machine_info = (
+                    f"{platform.platform()}, "
+                    f"{psutil.cpu_count(logical=True)} core, "
+                    f"{psutil.cpu_count(logical=False)} physical core, "
+                    f"{psutil.cpu_freq().max:.2f} MHz max freq."
+                )
+                """Retrieve current repository commit reference to locate the report 
+                in the history"""
+                git_hash = git.Repo(search_parent_directories=True).head.object.hexsha
+                # Some Latex patches
+                test_name_tex = test_name.replace("_", "\\_")
+                module_name_tex = module_name.replace("_", "\\_")
+                now_tex = now.replace("_", "\\_")
+                machine_info_tex = machine_info.replace("_", "\\_")
+                with open(filename, "x") as f:
+                    """Paste the table inside a basic document template to can easily
+                    print it as PDF"""
+                    f.write(
+                        "\\documentclass{article}\n"
+                        "\\usepackage{float}\n"
+                        "\\begin{document}\n"
+                        "\\section*{PyToxo Test Suite Report}\n"
+                        f"\\subsection*{{\\texttt{{{module_name_tex}: {test_name_tex}}}}}\n"
+                        f"Generated report:\n"
+                        "\\begin{figure}[H]\n"
+                        "\\centering\n"
+                        "\n"
+                        f"{final_table}"
+                        "\n"
+                        "\\caption{Accuracies of the the calculated values for the "
+                        "\\texttt{x} and \\texttt{y} variables used in the penetrance "
+                        "tables\n"
+                        "\\end{figure}\n"
+                        f"Datetime: {now_tex}\n\n"
+                        f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
+                        f"Git commit hash: \\texttt{{{git_hash}}}\n\n"
+                        "\\end{document}"
+                    )
+            else:
+                with open(filename, "x") as f:
+                    for line in table_content:
+                        f.write(";".join([str(e) for e in line]))
+                        f.write("\n")
 
         # Automatic checks against configured tolerable delta
         for tolerable_delta, delta in deltas:
