@@ -143,7 +143,9 @@ if PLOT:
     # Plot a graph since original data frames. First add new label to distinguish both
     pytoxo_report["Tool"] = ["PyToxo"] * pytoxo_report.shape[0]
     toxo_report["Tool"] = ["Toxo"] * toxo_report.shape[0]
-    concat = pd.concat([pytoxo_report, toxo_report])
+    concat = pd.concat(
+        [pytoxo_report, toxo_report]
+    )  # TODO: This actually contains cases resolvable by only one of the tools
     graph = sns.relplot(
         data=concat,
         y="Error",
