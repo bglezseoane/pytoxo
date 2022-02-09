@@ -96,7 +96,7 @@ if SAVE:
                     "Error PyToxo",
                     "Time (s) avg. 3 PyToxo",
                     "Error Toxo",
-                    "Time (s) avg. 3 Toxo\n",
+                    "Time (s) avg. Toxo\n",
                 ]
             )
         )
@@ -127,8 +127,8 @@ if PLOT:
     print()  # Newline
 
     # Calculate global accumulated times
-    pytoxo_times = merged["Time (s) avg. 3_x"]
-    toxo_times = merged["Time (s) avg. 3_y"]
+    pytoxo_times = merged["Time (s) avg. 3"]
+    toxo_times = merged["Time (s) avg."]
     print(f"Global PyToxo time mean (s): {np.mean(pytoxo_times)}")
     print(f"Global Toxo time mean (s): {np.mean(toxo_times)}")
     print(f"Global PyToxo time sum (s): {np.sum(pytoxo_times)}")
