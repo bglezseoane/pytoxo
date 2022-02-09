@@ -1,4 +1,4 @@
-Model;Order;MAF;Heritability;Error PyToxo;Time (s) avg. 3 PyToxo;Error Toxo;Time (s) avg. 3 Toxo
+Model;Order;MAF;Heritability;Error PyToxo;Time (s) avg. 3 PyToxo;Error Toxo;Time (s) avg. Toxo
 Additive;3;0.1;0.1;1.38777878078145e-17;1.8871;1.05004900599615e-06;3.0366
 Additive;3;0.1;0.2;2.77555756156289e-17;1.8507;4.97001235299777e-05;1.7412
 Additive;3;0.1;0.3;1.11022302462516e-16;1.8415;5.03512007269946e-05;1.8014
