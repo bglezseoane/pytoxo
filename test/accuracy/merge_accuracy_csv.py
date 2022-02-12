@@ -24,16 +24,12 @@ import datetime
 import os
 import sys
 
-import numpy as np
 import pandas as pd  # TODO: Add to requirements
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 # ####################### EDIT HERE #######################
 PYTOXO_REPORT_FILENAME = "test_variables_accuracy_2022-02-08_03-31-41.csv"
 TOXO_REPORT_FILENAME = "build_toxo_accuracy_contrast_2022-02-08_17-51-47.csv"
 SAVE = True
-PLOT = True
 # #########################################################
 
 # Assert project home directory because sources have path since here
@@ -107,64 +103,3 @@ if SAVE:
         sep=";",
         mode="a",
     )
-
-if PLOT:
-    # Calculate global accumulated errors
-    pytoxo_errors = merged.Error_x
-    toxo_errors = merged.Error_y
-    # toxo_error = toxo_error[~(np.isnan(toxo_error))]  # Remove NaN values
-    print(f"Global PyToxo error mean: {np.mean(pytoxo_errors)}")
-    print(f"Global Toxo error mean: {np.mean(toxo_errors)}")
-    print(f"Global PyToxo error sum: {np.sum(pytoxo_errors)}")
-    print(f"Global Toxo error sum: {np.sum(toxo_errors)}")
-    print(
-        f"Global error mean comparison (`Toxo/PyToxo`): {np.mean(toxo_errors) / np.mean(pytoxo_errors)}"
-    )
-    print(
-        f"Global error sums comparison (`Toxo/PyToxo`): {np.sum(toxo_errors) / np.sum(pytoxo_errors)}"
-    )
-
-    print()  # Newline
-
-    # Calculate global accumulated times
-    pytoxo_times = merged["Time (s) avg. 3"]
-    toxo_times = merged["Time (s) avg."]
-    print(f"Global PyToxo time mean (s): {np.mean(pytoxo_times)}")
-    print(f"Global Toxo time mean (s): {np.mean(toxo_times)}")
-    print(f"Global PyToxo time sum (s): {np.sum(pytoxo_times)}")
-    print(f"Global Toxo time sum (s): {np.sum(toxo_times)}")
-    print(
-        f"Global time mean comparison (`Toxo/PyToxo`): {np.mean(toxo_times) / np.mean(pytoxo_times)}"
-    )
-    print(
-        f"Global time sums comparison (`Toxo/PyToxo`): {np.sum(toxo_times) / np.sum(pytoxo_times)}"
-    )
-
-    # Plot a graph since original data frames. First add new label to distinguish both
-    pytoxo_report["Tool"] = ["PyToxo"] * pytoxo_report.shape[0]
-    toxo_report["Tool"] = ["Toxo"] * toxo_report.shape[0]
-    concat = pd.concat(
-        [pytoxo_report, toxo_report]
-    )  # TODO: This actually contains cases resolvable by only one of the tools
-    graph = sns.relplot(
-        data=concat,
-        y="Error",
-        x="Order",
-        col="Model",
-        hue="Tool",
-        # size="Error",
-        kind="scatter",
-        alpha=0.5,
-    )
-    plt.show()
-
-    # Save the generated graphic
-    if SAVE:
-        output_graph_path = os.path.join(
-            "test",
-            "accuracy",
-            "reports",
-            f"{script_name}_{now}_graph.png",
-        )
-        fig = graph.figure
-        fig.savefig(output_graph_path)
