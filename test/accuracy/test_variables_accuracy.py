@@ -53,8 +53,8 @@ PREVS_OR_HERS = [0.1, 0.8]
 # PREVS_OR_HERS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 # Flag to select between LaTeX or CSV report type
-report_extension = ".tex"
-# report_extension = ".csv"
+# report_extension = ".tex"
+report_extension = ".csv"
 # #########################################################
 
 # Calculate some necessary opposites

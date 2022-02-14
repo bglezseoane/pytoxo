@@ -61,8 +61,8 @@ prev_or_her_letter = "p"
 # prev_or_her_letter = "h"
 
 # Flag to select between LaTeX or CSV report type
-report_extension = ".tex"
-# report_extension = ".csv"
+# report_extension = ".tex"
+report_extension = ".csv"
 # #########################################################
 
 # Calculate some necessary opposites
