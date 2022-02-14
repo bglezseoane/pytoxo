@@ -35,7 +35,7 @@ import pytoxo.model
 
 # ####################### EDIT HERE #######################
 # Flag to control when the generated reports should be saved
-print_reports = False
+save_reports = False
 
 # Comment or uncomment firsts or seconds of each pair
 prev_or_her_str = "Prevalence"
@@ -68,7 +68,7 @@ else:
     prev_or_her_letter_op = "p"
 
 
-if print_reports:
+if save_reports:
     import git
 
 _TEST_REPETITIONS = 3  # To confirm computation times with an average
@@ -207,7 +207,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if print_reports:
+        if save_reports:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
