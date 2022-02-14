@@ -186,7 +186,7 @@ filename = os.path.join(
     "test",
     "accuracy",
     "reports",
-    f"{script_name}_{now}{report_extension}",
+    f"{script_name}_max_{prev_or_her_letter}_{now}{report_extension}",
 )
 if report_extension == ".tex":
     final_table = tabulate.tabulate(
