@@ -33,16 +33,16 @@ import numpy as np
 import pandas as pd  # TODO: Add to requirements
 
 # ####################### EDIT HERE #######################
-PYTOXO_REPORT_FILENAME = "test_variables_accuracy_2022-02-08_03-31-41.csv"
-TOXO_REPORT_FILENAME = "build_toxo_accuracy_contrast_2022-02-08_17-51-47.csv"
+PYTOXO_REPORT_FILENAME = "test_variables_accuracy_max_h_2022-02-14_21-31-02.csv"
+TOXO_REPORT_FILENAME = "build_toxo_accuracy_contrast_max_h_2022-02-14_19-11-22.csv"
 SAVE = True
 SOLUBILITY_CONTRIBUTION = True
 
 # Comment or uncomment firsts or seconds of each pair
-prev_or_her_str = "Prevalence"
-# prev_or_her_str = "Heritability"
-prev_or_her_letter = "p"
-# prev_or_her_letter = "h"
+# prev_or_her_str = "Prevalence"
+prev_or_her_str = "Heritability"
+# prev_or_her_letter = "p"
+prev_or_her_letter = "h"
 # #########################################################
 
 # Calculate some necessary opposites
