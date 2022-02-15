@@ -36,7 +36,24 @@ PYTOXO_REPORT_FILENAME = "test_variables_accuracy_2022-02-08_03-31-41.csv"
 TOXO_REPORT_FILENAME = "build_toxo_accuracy_contrast_2022-02-08_17-51-47.csv"
 SAVE = True
 SOLUBILITY_CONTRIBUTION = True
+
+# Comment or uncomment firsts or seconds of each pair
+prev_or_her_str = "Prevalence"
+# prev_or_her_str = "Heritability"
+prev_or_her_letter = "p"
+# prev_or_her_letter = "h"
 # #########################################################
+
+# Calculate some necessary opposites
+if prev_or_her_str == "Prevalence":
+    prev_or_her_str_op = "Heritability"
+else:
+    prev_or_her_str_op = "Prevalence"
+if prev_or_her_letter == "p":
+    prev_or_her_letter_op = "h"
+else:
+    prev_or_her_letter_op = "p"
+
 
 # Assert project home directory because sources have path since here
 if os.path.basename(os.getcwd()) == "test":
@@ -69,7 +86,9 @@ toxo_report = pd.read_csv(
 )
 
 # Merge reports
-merged = pytoxo_report.merge(toxo_report, on=["Model", "Order", "MAF", "Heritability"])
+merged = pytoxo_report.merge(
+    toxo_report, on=["Model", "Order", "MAF", f"{prev_or_her_str_op}"]
+)
 
 # Calculate file name based in current test name and datetime
 now = datetime.datetime.now()
@@ -82,7 +101,7 @@ output_report_path = os.path.join(
     "test",
     "accuracy",
     "reports",
-    f"{script_name}_{now}.csv",
+    f"{script_name}_max_{prev_or_her_letter}_{now}.csv",
 )
 
 # Write final file
@@ -94,7 +113,7 @@ if SAVE:
                     "Model",
                     "Order",
                     "MAF",
-                    "Heritability",
+                    f"{prev_or_her_str_op}",
                     "Error PyToxo",
                     "Time (s) avg. 3 PyToxo",
                     "Error Toxo",
@@ -116,7 +135,7 @@ if SOLUBILITY_CONTRIBUTION:
     # Toxo
     merged = pytoxo_report.merge(
         toxo_report,
-        on=["Model", "Order", "MAF", "Heritability"],
+        on=["Model", "Order", "MAF", f"{prev_or_her_str_op}"],
         how="left",
         indicator=True,
     )
@@ -140,13 +159,16 @@ if SOLUBILITY_CONTRIBUTION:
         )
         contribution_report_paths = [
             os.path.join(
-                contribution_report_base_path, f"{script_name}_only_pytoxo_{now}.csv"
+                contribution_report_base_path,
+                f"{script_name}_max_{prev_or_her_letter}_only_pytoxo_{now}.csv",
             ),
             os.path.join(
-                contribution_report_base_path, f"{script_name}_both_{now}.csv"
+                contribution_report_base_path,
+                f"{script_name}_max_{prev_or_her_letter}_both_{now}.csv",
             ),
             os.path.join(
-                contribution_report_base_path, f"{script_name}_only_toxo_{now}.csv"
+                contribution_report_base_path,
+                f"{script_name}_max_{prev_or_her_letter}_only_toxo_{now}.csv",
             ),
         ]
 
@@ -161,7 +183,7 @@ if SOLUBILITY_CONTRIBUTION:
                             "Model",
                             "Order",
                             "MAF",
-                            "Heritability",
+                            f"{prev_or_her_str_op}",
                             "Error PyToxo",
                             "Time (s) avg. 3 PyToxo",
                             "Error Toxo",
