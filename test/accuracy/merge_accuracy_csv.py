@@ -29,6 +29,7 @@ import datetime
 import os
 import sys
 
+import numpy as np
 import pandas as pd  # TODO: Add to requirements
 
 # ####################### EDIT HERE #######################
@@ -198,3 +199,34 @@ if SOLUBILITY_CONTRIBUTION:
                 sep=";",
                 mode="a",
             )
+
+# Calculate global accumulated errors
+pytoxo_errors = merged.Error_x
+toxo_errors = merged.Error_y
+# toxo_error = toxo_error[~(np.isnan(toxo_error))]  # Remove NaN values
+print(f"Global PyToxo error mean: {np.mean(pytoxo_errors)}")
+print(f"Global Toxo error mean: {np.mean(toxo_errors)}")
+print(f"Global PyToxo error sum: {np.sum(pytoxo_errors)}")
+print(f"Global Toxo error sum: {np.sum(toxo_errors)}")
+print(
+    f"Global error mean comparison (`Toxo/PyToxo`): {np.mean(toxo_errors) / np.mean(pytoxo_errors)}"
+)
+print(
+    f"Global error sums comparison (`Toxo/PyToxo`): {np.sum(toxo_errors) / np.sum(pytoxo_errors)}"
+)
+
+print()  # Newline
+
+# Calculate global accumulated times
+pytoxo_times = merged["Time (s) avg. 3"]
+toxo_times = merged["Time (s) avg."]
+print(f"Global PyToxo time mean (s): {np.mean(pytoxo_times)}")
+print(f"Global Toxo time mean (s): {np.mean(toxo_times)}")
+print(f"Global PyToxo time sum (s): {np.sum(pytoxo_times)}")
+print(f"Global Toxo time sum (s): {np.sum(toxo_times)}")
+print(
+    f"Global time mean comparison (`Toxo/PyToxo`): {np.mean(toxo_times) / np.mean(pytoxo_times)}"
+)
+print(
+    f"Global time sums comparison (`Toxo/PyToxo`): {np.sum(toxo_times) / np.sum(pytoxo_times)}"
+)
