@@ -134,7 +134,10 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     # Get the equation system PyToxo solution
                     try:
                         vars_sol = model._solve(eq_system, solve_timeout=False)
-                    except pytoxo.errors.UnsolvableModelError or pytoxo.errors.ResolutionError:
+                    except (
+                        pytoxo.errors.UnsolvableModelError,
+                        pytoxo.errors.ResolutionError,
+                    ):
                         """If resolution tentative fails, simple go to next
                         case. This test has not the responsibility to check
                         model solubility, only accuracy."""
@@ -161,7 +164,10 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                             )
                             tf = time.time()
                             computation_times.append(tf - t0)
-                    except pytoxo.errors.UnsolvableModelError or pytoxo.errors.ResolutionError:
+                    except (
+                        pytoxo.errors.UnsolvableModelError,
+                        pytoxo.errors.ResolutionError,
+                    ):
                         """If resolution tentative fails, simple go to next
                         case. This test has not the responsibility to check
                         model solubility, only accuracy."""
