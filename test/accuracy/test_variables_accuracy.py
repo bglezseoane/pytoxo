@@ -94,6 +94,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
             "multiplicative_2",
             "multiplicative_3",
             "multiplicative_4",
+            "multiplicative_5",
             "threshold_2",
             "threshold_3",
             "threshold_4",
