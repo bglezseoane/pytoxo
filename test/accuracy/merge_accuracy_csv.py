@@ -54,6 +54,27 @@ PREV_OR_HER_STR = "Prevalence"
 # PREV_OR_HER_STR = "Heritability"
 PREV_OR_HER_LETTER = "p"
 # PREV_OR_HER_LETTER = "h"
+
+MODELS_SCOPE = [
+    "additive_2",
+    "additive_3",
+    "additive_4",
+    "additive_5",
+    "additive_6",
+    "additive_7",
+    "additive_8",
+    "multiplicative_2",
+    "multiplicative_3",
+    "multiplicative_4",
+    "multiplicative_5",
+    "threshold_2",
+    "threshold_3",
+    "threshold_4",
+    "threshold_5",
+    "threshold_6",
+    "threshold_7",
+    "threshold_8",
+]  # Other models are ignored
 # #########################################################
 
 # Calculate some necessary opposites
@@ -145,22 +166,50 @@ if SAVE:
 if SOLUBILITY_CONTRIBUTION:
     # Merge reports again, but preserving cases only solvable by Pytoxo or by
     # Toxo
-    merged = pytoxo_report.merge(
+    merged_left = pytoxo_report.merge(
         toxo_report,
         on=["Model", "Order", "MAF", f"{prev_or_her_str_op}"],
         how="left",
         indicator=True,
     )
+    merged_right = pytoxo_report.merge(
+        toxo_report,
+        on=["Model", "Order", "MAF", f"{prev_or_her_str_op}"],
+        how="right",
+        indicator=True,
+    )
+
+    # Clean models out of scope
+    models_toxo_df = merged_right.iloc[:, :2].drop_duplicates()
+    # Different model-order combs. in Toxo data
+    models_toxo = []
+    for _, row in models_toxo_df.iterrows():
+        models_toxo.append(f"{row['Model'].lower()}_{row['Order']}")
+    models_out_of_scope = [
+        [m.split("_")[0].capitalize(), m.split("_")[1]]
+        for m in models_toxo
+        if m not in MODELS_SCOPE
+    ]
+    # Remove from original data frame
+    for model, order in models_out_of_scope:
+        merged_right.drop(
+            merged_right[
+                (merged_right.Model == model) & (merged_right.Order == int(order))
+            ].index,
+            inplace=True,
+        )
 
     # Achieve masks: only-Pytoxo, only_Toxo, both
-    only_pytoxo_mask = merged["_merge"] == "left_only"
-    both_mask = merged["_merge"] == "both"
-    only_toxo_mask = merged["_merge"] == "right_only"
+    only_pytoxo_mask = merged_left["_merge"] == "left_only"
+    both_mask = merged_left["_merge"] == "both"
+    only_toxo_mask = merged_right["_merge"] == "right_only"
 
     # Prepare solubility contribution aux. data frames
-    only_pytoxo = merged[only_pytoxo_mask].drop("_merge", 1)  # Drop useless columns
-    both = merged[both_mask].drop("_merge", 1)  # Drop useless columns
-    only_toxo = merged[only_toxo_mask].drop("_merge", 1)  # Drop useless columns
+    only_pytoxo = merged_left[only_pytoxo_mask].drop(
+        "_merge", 1
+    )  # Drop useless columns
+    both = merged_left[both_mask].drop("_merge", 1)  # Drop useless columns
+    only_toxo = merged_right[only_toxo_mask].drop("_merge", 1)  # Drop useless columns
 
     if SAVE:
         # Prepare output paths
