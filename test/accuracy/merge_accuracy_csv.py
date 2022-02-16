@@ -33,24 +33,35 @@ import numpy as np
 import pandas as pd  # TODO: Add to requirements
 
 # ####################### EDIT HERE #######################
-PYTOXO_REPORT_FILENAME = "test_variables_accuracy_max_h_2022-02-14_21-31-02.csv"
-TOXO_REPORT_FILENAME = "build_toxo_accuracy_contrast_max_h_2022-02-14_19-11-22.csv"
+PYTOXO_REPORT_FILENAME = (
+    "test_variables_accuracy_max_p_2022-02-16_12-30-11.csv"  # Max. p.
+)
+# PYTOXO_REPORT_FILENAME = (
+#     "test_variables_accuracy_max_h_2022-02-16_17-08-02.csv"  # Max. h.
+# )
+TOXO_REPORT_FILENAME = (
+    "build_toxo_accuracy_contrast_max_p_2022-02-16_15-54-18.csv"  # Max. p.
+)
+# TOXO_REPORT_FILENAME = (
+#     "build_toxo_accuracy_contrast_max_h_2022-02-16_18-11-42.csv"  # Max. h.
+# )
+
 SAVE = True
 SOLUBILITY_CONTRIBUTION = True
 
 # Comment or uncomment firsts or seconds of each pair
-# prev_or_her_str = "Prevalence"
-prev_or_her_str = "Heritability"
-# prev_or_her_letter = "p"
-prev_or_her_letter = "h"
+PREV_OR_HER_STR = "Prevalence"
+# PREV_OR_HER_STR = "Heritability"
+PREV_OR_HER_LETTER = "p"
+# PREV_OR_HER_LETTER = "h"
 # #########################################################
 
 # Calculate some necessary opposites
-if prev_or_her_str == "Prevalence":
+if PREV_OR_HER_STR == "Prevalence":
     prev_or_her_str_op = "Heritability"
 else:
     prev_or_her_str_op = "Prevalence"
-if prev_or_her_letter == "p":
+if PREV_OR_HER_LETTER == "p":
     prev_or_her_letter_op = "h"
 else:
     prev_or_her_letter_op = "p"
@@ -102,7 +113,7 @@ output_report_path = os.path.join(
     "test",
     "accuracy",
     "reports",
-    f"{script_name}_max_{prev_or_her_letter}_{now}.csv",
+    f"{script_name}_max_{PREV_OR_HER_LETTER}_{now}.csv",
 )
 
 # Write final file
@@ -161,15 +172,15 @@ if SOLUBILITY_CONTRIBUTION:
         contribution_report_paths = [
             os.path.join(
                 contribution_report_base_path,
-                f"{script_name}_max_{prev_or_her_letter}_only_pytoxo_{now}.csv",
+                f"{script_name}_max_{PREV_OR_HER_LETTER}_only_pytoxo_{now}.csv",
             ),
             os.path.join(
                 contribution_report_base_path,
-                f"{script_name}_max_{prev_or_her_letter}_both_{now}.csv",
+                f"{script_name}_max_{PREV_OR_HER_LETTER}_both_{now}.csv",
             ),
             os.path.join(
                 contribution_report_base_path,
-                f"{script_name}_max_{prev_or_her_letter}_only_toxo_{now}.csv",
+                f"{script_name}_max_{PREV_OR_HER_LETTER}_only_toxo_{now}.csv",
             ),
         ]
 

@@ -35,17 +35,38 @@ import pytoxo.model
 
 # ####################### EDIT HERE #######################
 # Flag to control when the generated reports should be saved
-save_reports = False
+SAVE_REPORTS = False
 
 # Comment or uncomment firsts or seconds of each pair
-prev_or_her_str = "Prevalence"
-# prev_or_her_str = "Heritability"
-recalc_method = pytoxo.model.Model._build_max_prevalence_system
-# recalc_method = pytoxo.model.Model._build_max_heritability_system
-table_method = pytoxo.model.Model.find_max_prevalence_table
-# table_method = pytoxo.model.Model.find_max_heritability_table
-prev_or_her_letter = "p"
-# prev_or_her_letter = "h"
+PREV_OR_HER_STR = "Prevalence"
+# PREV_OR_HER_STR = "Heritability"
+RECALC_METHOD = pytoxo.model.Model._build_max_prevalence_system
+# RECALC_METHOD = pytoxo.model.Model._build_max_heritability_system
+TABLE_METHOD = pytoxo.model.Model.find_max_prevalence_table
+# TABLE_METHOD = pytoxo.model.Model.find_max_heritability_table
+PREV_OR_HER_LETTER = "p"
+# PREV_OR_HER_LETTER = "h"
+
+MODELS_SCOPE = [
+    "additive_2",
+    "additive_3",
+    "additive_4",
+    "additive_5",
+    "additive_6",
+    "additive_7",
+    "additive_8",
+    "multiplicative_2",
+    "multiplicative_3",
+    "multiplicative_4",
+    "multiplicative_5",
+    "threshold_2",
+    "threshold_3",
+    "threshold_4",
+    "threshold_5",
+    "threshold_6",
+    "threshold_7",
+    "threshold_8",
+]  # Other models are ignored
 
 MAFS = [0.1, 0.4]
 # MAFS = [0.1, 0.2, 0.3, 0.4, 0.5]
@@ -53,22 +74,22 @@ PREVS_OR_HERS = [0.1, 0.8]
 # PREVS_OR_HERS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 # Flag to select between LaTeX or CSV report type
-# report_extension = ".tex"
-report_extension = ".csv"
+# REPORT_EXTENSION = ".tex"
+REPORT_EXTENSION = ".csv"
 # #########################################################
 
 # Calculate some necessary opposites
-if prev_or_her_str == "Prevalence":
+if PREV_OR_HER_STR == "Prevalence":
     prev_or_her_str_op = "Heritability"
 else:
     prev_or_her_str_op = "Prevalence"
-if prev_or_her_letter == "p":
+if PREV_OR_HER_LETTER == "p":
     prev_or_her_letter_op = "h"
 else:
     prev_or_her_letter_op = "p"
 
 
-if save_reports:
+if SAVE_REPORTS:
     import git
 
 _TEST_REPETITIONS = 3  # To confirm computation times with an average
@@ -83,26 +104,6 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
     """
 
     def test_variables_accuracy(self):
-        models = [
-            "additive_2",
-            "additive_3",
-            "additive_4",
-            "additive_5",
-            "additive_6",
-            "additive_7",
-            "additive_8",
-            "multiplicative_2",
-            "multiplicative_3",
-            "multiplicative_4",
-            "multiplicative_5",
-            "threshold_2",
-            "threshold_3",
-            "threshold_4",
-            "threshold_5",
-            "threshold_6",
-            "threshold_7",
-            "threshold_8",
-        ]  # Uncomment ones to use in the test
         mafs = MAFS
         prevs_or_hers = PREVS_OR_HERS
 
@@ -119,7 +120,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
 
         deltas = []  # `(tolerable_delta, delta)` list for automatic checks
 
-        for model_name in models:
+        for model_name in MODELS_SCOPE:
             model_order = int(model_name.split("_")[1])
             for maf in mafs:
                 maf = [maf] * model_order
@@ -130,7 +131,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     )
 
                     # Generate equation system
-                    eq_system = recalc_method(model, maf, prev_or_her)
+                    eq_system = RECALC_METHOD(model, maf, prev_or_her)
 
                     # Get the equation system PyToxo solution
                     try:
@@ -156,7 +157,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                     try:
                         for _ in range(_TEST_REPETITIONS):
                             t0 = time.time()
-                            _ = table_method(
+                            _ = TABLE_METHOD(
                                 model,
                                 maf,
                                 prev_or_her,
@@ -214,7 +215,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         ]
                     )
 
-        if save_reports:
+        if SAVE_REPORTS:
             # Save the generated report
             now = datetime.datetime.now()
             # Calculate file name based in current test name and datetime
@@ -228,9 +229,9 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                 "test",
                 "accuracy",
                 "reports",
-                f"{test_name}_max_{prev_or_her_letter}_{now}{report_extension}",
+                f"{test_name}_max_{PREV_OR_HER_LETTER}_{now}{REPORT_EXTENSION}",
             )
-            if report_extension == ".tex":
+            if REPORT_EXTENSION == ".tex":
                 final_table = tabulate.tabulate(
                     table_content, headers="firstrow", tablefmt="latex"
                 )
@@ -266,7 +267,7 @@ class VariablesAccuracyTestSuite(unittest.TestCase):
                         "\\caption{Accuracies of the the calculated values for the "
                         "\\texttt{x} and \\texttt{y} variables used in the penetrance "
                         "tables. Corrupted tables are discarded. "
-                        f"Maximizing {prev_or_her_str.lower()}}}\n"
+                        f"Maximizing {PREV_OR_HER_STR.lower()}}}\n"
                         "\\end{figure}\n"
                         f"Datetime: {now_tex}\n\n"
                         f"Machine: \\texttt{{{machine_info_tex}}}\n\n"
