@@ -2,6 +2,7 @@
 
 ***A Python tool to calculate penetrance tables for high-order epistasis models.***  
 
+Paper: **González-Seoane, B., Ponte-Fernández, C., González-Domínguez, J. et al. PyToxo: a Python tool for calculating penetrance tables of high-order epistasis models. BMC Bioinformatics 23, 117 (2022). [https://doi.org/10.1186/s12859-022-04645-7](https://doi.org/10.1186/s12859-022-04645-7)**.  
 Mailing list: [freelists.org/list/pytoxo](https://www.freelists.org/list/pytoxo). Join to start the discussion.  
 User manual (English version): [manuals/manual_en.pdf](https://raw.githubusercontent.com/bglezseoane/pytoxo/master/manuals/manual_en.pdf).  
 User manual (Spanish version): [manuals/manual_es.pdf](https://raw.githubusercontent.com/bglezseoane/pytoxo/master/manuals/manual_es.pdf).  
