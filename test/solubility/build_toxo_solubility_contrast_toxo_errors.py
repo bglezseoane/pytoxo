@@ -162,7 +162,7 @@ filename = os.path.join(
     "test",
     "solubility",
     "reports",
-    f"{script_name}_{now}.tex",
+    f"{script_name}_max_{prev_or_her_letter}_{now}.tex",
 )
 final_table = tabulate.tabulate(
     [table_headers] + table_content, headers="firstrow", tablefmt="latex"
